@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
@@ -6,18 +7,16 @@ const ChatMessages = () => {
   const { chatId } = useParams();
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(null);
-  
   const messagesEndRef = useRef(null);
+  const socketRef = useRef();
 
   useEffect(() => {
     const fetchMessages = async () => {
       const token = sessionStorage.getItem('authToken');
-
       if (!token) {
         setError('No token found');
         return;
       }
-
       try {
         const response = await fetch(`http://127.0.0.1:8000/chats/${chatId}/messages`, {
           method: 'GET',
@@ -26,9 +25,7 @@ const ChatMessages = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-
         const data = await response.json();
-
         if (response.ok) {
           setMessages(data.messages);
         } else {
@@ -38,8 +35,21 @@ const ChatMessages = () => {
         setError('Error fetching messages');
       }
     };
-
     fetchMessages();
+  }, [chatId]);
+
+  useEffect(() => {
+    socketRef.current = io("http://127.0.0.1:8000");
+    socketRef.current.emit("joinChat", chatId);
+
+    socketRef.current.on("newMessage", (message) => {
+      setMessages(prev => [...prev, message]);
+    });
+
+    return () => {
+      socketRef.current.emit("leaveChat", chatId);
+      socketRef.current.disconnect();
+    };
   }, [chatId]);
 
   useEffect(() => {
