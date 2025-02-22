@@ -63,6 +63,9 @@ exports.createMessage = async (req, res) => {
 
         await chat.save();
 
+        const io = req.app.get("io");
+        io.to(chatId).emit("newMessage", newMessage);
+    
         res.status(201).send({ message: 'Message sent successfully', chat });
     } catch (err) {
         res.status(500).send({ message: 'Error sending message', error: err.message });
