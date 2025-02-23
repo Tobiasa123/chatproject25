@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 const ChatMessages = () => {
   const { chatId } = useParams();
   const [messages, setMessages] = useState([]);
+  const [otherUser, setOtherUser] = useState(null);
   const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
   const socketRef = useRef();
@@ -28,6 +29,7 @@ const ChatMessages = () => {
         const data = await response.json();
         if (response.ok) {
           setMessages(data.messages);
+          setOtherUser(data.otherUser); 
         } else {
           setError(data.message || 'Error fetching messages');
         }
@@ -59,10 +61,12 @@ const ChatMessages = () => {
   }, [messages]);
 
   return (
-    <div className="bg-white text-black flex flex-col gap-4 p-4 rounded-lg shadow-md">
-      <h1 className="text-lg font-semibold">Messages for Chat ID: {chatId}</h1>
+    <div className="bg-white text-black flex flex-col rounded-lg shadow-md max-h-[80vh] w-full md:w-[90vw] lg:w-[60vw]">
+      <h1 className="text-lg font-semibold">
+        Chat with {otherUser ? otherUser.username : "Loading..."}
+      </h1>
       {error && <p className="text-red-500">{error}</p>}
-      <ul className="flex flex-col gap-6 p-0 max-h-[400px] overflow-y-scroll">
+      <ul className="flex flex-col gap-6 overflow-y-scroll bg-green-200 ">
         {messages.map((message, index) => {
           const decoded = jwtDecode(sessionStorage.getItem('authToken'));
           const isUserMessage = message.sender === decoded._id;
@@ -70,13 +74,13 @@ const ChatMessages = () => {
           return (
             <li
               key={index}
-              className={`max-w-fit p-2 rounded-2xl ${
+              className={`max-w-[80%] break-words p-2 rounded-2xl ${
                 isUserMessage
                   ? "bg-pink-300 self-end"
                   : "bg-blue-600 text-white self-start"
               }`}
             >
-              {isUserMessage ? "You: " : "Other: "}
+              {isUserMessage ? "You: " : `${otherUser?.username || "Other"}: `}
               {message.text}
             </li>
           );

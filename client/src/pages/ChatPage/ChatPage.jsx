@@ -24,7 +24,7 @@ const ChatPage = () => {
   }, []);
 
   return (
-    <div className="chatmessages-wrapper">
+    <div className="w-full h-screen flex flex-col justify-center items-center bg-slate-300">
       <ChatMessages />
 
       <section className="input-section">
