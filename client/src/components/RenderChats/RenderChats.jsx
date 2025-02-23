@@ -36,24 +36,26 @@ const RenderChats = () => {
   
       fetchChats();
     }, []);
-  
+
+  //className="bg-white shadow-lg rounded-2xl w-full h-full"
+
     return (
-      <div className="bg-white shadow-lg rounded-2xl">
+      <div className=" w-full h-full" >
       {error && <p className="text-red-500 text-sm">{error}</p>}
-      <h3 className="text-lg font-semibold">Chats</h3>
+      <h3 className="text-lg font-semibold">Your chats</h3>
       <div>
         {chats.map((chat) => (
           <div
             key={chat.chatId}
-            className="bg-gray-100 hover:bg-gray-200 transition"
+            
           >
             <Chat chatId={chat.chatId} participants={chat.participants} />
           </div>
         ))}
       </div>
     </div>
-      );
-    };
+  );
+};
     
   
   export default RenderChats;

@@ -2,11 +2,10 @@ import RenderChats from "../../components/RenderChats/RenderChats"
 
 const HomePage = () => {
     return(
-        <>
-        <h2>my homepage woo</h2>
-        <RenderChats/>
-        </>
-        
+        <div className="flex flex-col w-1/2 bg-slate-500 h-full">
+            <RenderChats/> 
+        </div>
+         
     )
 }
 

@@ -8,7 +8,7 @@ const Chat = ({ chatId, participants }) => {
     }
 
   return (
-    <div className="chat" onClick={HandleClick}>
+    <div className="bg-blue-400 hover:bg-blue-600 hover:cursor-pointer transition border rounded-md" onClick={HandleClick} >
       <h4>Chat ID: {chatId}</h4>
       <p>Participants:</p>
       <ul>
