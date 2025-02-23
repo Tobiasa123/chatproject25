@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 const ChatMessages = () => {
   const { chatId } = useParams();
   const [messages, setMessages] = useState([]);
+  const [otherUser, setOtherUser] = useState(null);
   const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
   const socketRef = useRef();
@@ -28,6 +29,7 @@ const ChatMessages = () => {
         const data = await response.json();
         if (response.ok) {
           setMessages(data.messages);
+          setOtherUser(data.otherUser); 
         } else {
           setError(data.message || 'Error fetching messages');
         }
@@ -59,8 +61,10 @@ const ChatMessages = () => {
   }, [messages]);
 
   return (
-    <div className="bg-white text-black flex flex-col gap-4 p-4 rounded-lg shadow-md">
-      <h1 className="text-lg font-semibold">Messages for Chat ID: {chatId}</h1>
+    <div className="bg-white text-black flex flex-col gap-4 rounded-lg shadow-md ">
+      <h1 className="text-lg font-semibold">
+        Chat with {otherUser ? otherUser.username : "Loading..."}
+      </h1>
       {error && <p className="text-red-500">{error}</p>}
       <ul className="flex flex-col gap-6 p-0 max-h-[400px] overflow-y-scroll">
         {messages.map((message, index) => {
@@ -76,7 +80,7 @@ const ChatMessages = () => {
                   : "bg-blue-600 text-white self-start"
               }`}
             >
-              {isUserMessage ? "You: " : "Other: "}
+              {isUserMessage ? "You: " : `${otherUser?.username || "Other"}: `}
               {message.text}
             </li>
           );

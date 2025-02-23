@@ -72,25 +72,31 @@ exports.createMessage = async (req, res) => {
     }
 };
 exports.getChatMessages = async (req, res) => {
-    const { chatId } = req.params;
-    const userId = req.user._id
+  const { chatId } = req.params;
+  const userId = req.user._id;
 
-    try {
-        const chat = await Chat.findById(chatId);
+  try {
+      const chat = await Chat.findById(chatId).populate('participants', 'username email'); 
 
-        if (!chat) {
-            return res.status(404).send({ message: 'Chat not found' });
-        }
+      if (!chat) {
+          return res.status(404).send({ message: 'Chat not found' });
+      }
 
-        if (userId && !chat.participants.includes(userId)) {
-            return res.status(403).send({ message: 'User is not part of this chat' });
-        }
+      if (userId && !chat.participants.some(participant => participant._id.toString() === userId.toString())) {
+          return res.status(403).send({ message: 'User is not part of this chat' });
+      }
 
-        res.status(200).send({ messages: chat.messages });
-    } catch (err) {
-        res.status(500).send({ message: 'Error retrieving messages', error: err.message });
-    }
+      const otherParticipant = chat.participants.find(participant => participant._id.toString() !== userId.toString());
+
+      res.status(200).send({ 
+          messages: chat.messages,
+          otherUser: otherParticipant ? { id: otherParticipant._id, username: otherParticipant.username } : null
+      });
+  } catch (err) {
+      res.status(500).send({ message: 'Error retrieving messages', error: err.message });
+  }
 };
+
 exports.getUserChats = async (req, res) => {
     const userId = req.user._id; 
   
