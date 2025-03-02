@@ -22,7 +22,7 @@ app.set("io", io);
 app.use(express.json());
 app.use(cors({
   origin: 'http://localhost:5173',
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST','DELETE','PUT'],
   credentials: true
 }));
 
@@ -31,7 +31,9 @@ mongoose.connect(process.env.MONGO_URL)
 .catch((err) => console.error("MongoDB connection error:", err));
 
 const userRoutes = require('./routes/userRoutes');
-app.use(userRoutes);
+const chatRoutes  =require('./routes/chatRoutes')
+app.use('/',userRoutes);
+app.use('/',chatRoutes);
 
 io.on('connection', (socket) => {
   console.log('A user connected: ' + socket.id);
