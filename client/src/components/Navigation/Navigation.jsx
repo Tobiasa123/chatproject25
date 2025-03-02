@@ -7,6 +7,9 @@ const Navbar = () => {
       <Link to="/home" className="text-white text-xl font-semibold hover:underline">
         Your chats
       </Link>
+      <Link to="/profile" className="text-white text-xl font-semibold hover:underline">
+        Your profile
+      </Link>
     </nav>
   );
 };
