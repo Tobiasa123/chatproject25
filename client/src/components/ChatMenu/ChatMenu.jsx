@@ -14,7 +14,7 @@ const ChatMenu = ({ onViewProfile, onBlock, onDelete }) => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-10">
+        <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg">
           <button className="block w-full text-left px-4 py-2 hover:bg-gray-100" onClick={onViewProfile}>View Profile</button>
           <button className="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100" onClick={onBlock}>Block User</button>
           <button className="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100" onClick={onDelete}>Delete Chat</button>

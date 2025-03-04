@@ -43,6 +43,7 @@ const ProfilePage = () => {
       <h1>Min Profil</h1>
       <p><strong>Username:</strong> {user.username}</p>
       <p><strong>Email:</strong> {user.email}</p>
+      <p><strong>Blocker Users:</strong> {user.blockedUsers}</p>
       <p><strong>Joined:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
       <DeleteProfileBtn/>
     </div>

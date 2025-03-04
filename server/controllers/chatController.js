@@ -20,6 +20,23 @@ exports.createChat = async (req, res) => {
 
       const userId2 = user2._id;
 
+      if (userId1.toString() === userId2.toString()) {
+        return res.status(400).send({ message: 'You cannot start a chat with yourself' });
+      }
+
+      const user1 = await User.findById(userId1);
+      if (!user1) return res.status(404).send({ message: 'User not found' });
+
+      if (user1.blockedUsers.includes(userId2)) {
+        return res.status(403).send({ message: 'You have blocked this user' });
+      }
+  
+      // Check if the recipient has blocked the user
+      if (user2.blockedUsers.includes(userId1)) {
+        return res.status(403).send({ message: 'You have been blocked by this user' });
+      }
+  
+
       const existingChat = await Chat.findOne({
           participants: { $all: [userId1, userId2] },
       });
