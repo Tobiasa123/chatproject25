@@ -43,9 +43,20 @@ const ProfilePage = () => {
       <h1>Min Profil</h1>
       <p><strong>Username:</strong> {user.username}</p>
       <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>Blocker Users:</strong> {user.blockedUsers}</p>
+      <div>
+        <strong>Blocked Users:</strong>
+        {user.blockedUsers.length > 0 ? (
+          <ul>
+            {user.blockedUsers.map((blockedUser) => (
+              <li key={blockedUser._id}>{blockedUser.username}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>No blocked users</p>
+        )}
+      </div>
       <p><strong>Joined:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
-      <DeleteProfileBtn/>
+      <DeleteProfileBtn />
     </div>
   );
 };

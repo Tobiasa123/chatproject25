@@ -20,9 +20,11 @@ const userSchema = new mongoose.Schema({
     default: Date.now
   },
   blockedUsers: {
-    type: [mongoose.Schema.Types.ObjectId], 
-    ref: 'User', 
-    default: [] 
+    type: [{ 
+      _id: mongoose.Schema.Types.ObjectId, 
+      username: String 
+    }], 
+    default: []
   }
 });
 
