@@ -24,7 +24,7 @@ const ChatPage = () => {
   }, []);
 
   return (
-    <div className="w-full h-screen flex flex-col justify-center items-center bg-slate-300">
+    <div className="h-screen flex flex-col w-full md:w-[90vw] lg:w-[60vw] justify-center items-center bg-slate-300">
       <ChatMessages />
 
       <section className="input-section">

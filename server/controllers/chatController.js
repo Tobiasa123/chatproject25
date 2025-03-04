@@ -105,7 +105,6 @@ exports.getUserChats = async (req, res) => {
     const userId = req.user._id; 
   
     try {
- 
       const chats = await Chat.find({ participants: userId })
         .populate('participants', 'username email') 
         .exec();
@@ -113,21 +112,25 @@ exports.getUserChats = async (req, res) => {
       if (!chats || chats.length === 0) {
         return res.status(404).send({ message: 'No chats found for this user' });
       }
-
-      const chatIds = chats.map(chat => chat._id);
-      const chatParticipants = chats.map(chat => chat.participants);
-    //   const chatParticipants = chats.map(chat => {
-    //     // Remove the logged-in user from the participants
-    //     return chat.participants.filter(participant => participant._id.toString() !== userId.toString());
-    // });
-
-    const chatData = chats.map(chat => ({
-        chatId: chat._id,
-        participants: chat.participants.map(participant => participant.username) // Or any other participant info you need
-      }));
-
-      res.status(200).send({chatData});
+  
+      // Map each chat to include only the other participant's info.
+      const chatData = chats.map(chat => {
+        // Remove the logged-in user from participants
+        const otherParticipants = chat.participants.filter(
+          participant => participant._id.toString() !== userId.toString()
+        );
+        // For one-on-one chats, pick the first (and only) other user.
+        const otherUser = otherParticipants[0]; 
+        return {
+          chatId: chat._id,
+          // Return the other user's details; add more fields if needed.
+          otherUser: otherUser ? { username: otherUser.username, _id: otherUser._id } : null,
+        };
+      });
+  
+      res.status(200).send({ chatData });
     } catch (err) {
       res.status(500).send({ message: 'Error fetching chats', error: err.message });
     }
   };
+  
