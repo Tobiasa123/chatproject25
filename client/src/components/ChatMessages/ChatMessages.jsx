@@ -8,7 +8,7 @@ const ChatMessages = () => {
   const [messages, setMessages] = useState([]);
   const [otherUser, setOtherUser] = useState(null);
   const [error, setError] = useState(null);
-  const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
   const socketRef = useRef();
 
   useEffect(() => {
@@ -55,39 +55,42 @@ const ChatMessages = () => {
   }, [chatId]);
 
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
   return (
-    <div className="bg-white text-black flex flex-col rounded-lg shadow-md max-h-[80vh] w-full md:w-[90vw] lg:w-[60vw]">
+    <div className="bg-white text-black flex flex-col rounded-lg shadow-md h-[80vh] w-full md:w-[90vw] lg:w-[60vw]">
       <h1 className="text-lg font-semibold">
         Chat with {otherUser ? otherUser.username : "Loading..."}
       </h1>
       {error && <p className="text-red-500">{error}</p>}
-      <ul className="flex flex-col gap-6 overflow-y-scroll bg-green-200 ">
-        {messages.map((message, index) => {
-          const decoded = jwtDecode(sessionStorage.getItem('authToken'));
-          const isUserMessage = message.sender === decoded._id;
+      <div 
+        ref={messagesContainerRef}
+        className="flex-grow overflow-y-auto flex flex-col-reverse bg-green-200"
+      >
+        <ul className="flex flex-col gap-6 p-4">
+          {messages.map((message, index) => {
+            const decoded = jwtDecode(sessionStorage.getItem('authToken'));
+            const isUserMessage = message.sender === decoded._id;
 
-          return (
-            <li
-              key={index}
-              className={`max-w-[80%] break-words p-2 rounded-2xl ${
-                isUserMessage
-                  ? "bg-pink-300 self-end"
-                  : "bg-blue-600 text-white self-start"
-              }`}
-            >
-              {isUserMessage ? "You: " : `${otherUser?.username || "Other"}: `}
-              {message.text}
-            </li>
-          );
-        })}
-
-        <div ref={messagesEndRef} />
-      </ul>
+            return (
+              <li
+                key={index}
+                className={`max-w-[80%] break-words p-2 rounded-2xl ${
+                  isUserMessage
+                    ? "bg-pink-300 self-end"
+                    : "bg-blue-600 text-white self-start"
+                }`}
+              >
+                {isUserMessage ? "You: " : `${otherUser?.username || "Other"}: `}
+                {message.text}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 };

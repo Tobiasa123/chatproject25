@@ -11,7 +11,7 @@ const LoginForm = () => {
     });
     const [error, setError] = useState(null);
     const [token, setToken] = useState(null);
-    const [isLogin, setIsLogin] = useState(true); // State to toggle between login and signup
+    const [isLogin, setIsLogin] = useState(true); 
   
     const handleChange = (event) => {
       const { name, value } = event.target;
@@ -44,21 +44,21 @@ const LoginForm = () => {
           navigate('/home');
         } else if (response.status === 400) {
           setError("Incorrect email or password");
-          alert("Incorrect email or password"); // Display as a popup
+          alert("Incorrect email or password"); 
         } else {
           setError(data.message || "Request failed");
-          alert(data.message || "Request failed"); // Display as a popup
+          alert(data.message || "Request failed"); 
         }
       } catch (err) {
         setError("An error occurred while processing the request.");
-        alert("An error occurred while processing the request."); // Display as a popup
+        alert("An error occurred while processing the request."); 
         console.error("Backend error message:", err.message);
       }
     };
   
 
     return (
-        <div className="flex flex-col justify-center items-center bg-slate-300 w-1/3 h-1/2 rounded-md gap-3 min-w-80 border border-black">
+        <div className="flex flex-col w-full md:w-[90vw] lg:w-[50vw] justify-center items-center bg-slate-300 h-2/3 rounded-md gap-3 min-w-80 border border-black">
           <h2>{isLogin ? "Login" : "Signup"}</h2>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-2/3">
             {!isLogin && (

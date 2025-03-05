@@ -77,13 +77,16 @@ const ProfilePage = () => {
       }
 
       setIsEditing(false);
-
       fetchProfile();
-
-
     } catch (err) {
       setError(err.message);
     }
+  };
+
+  // Handle cancel edit
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setUpdatedUser({ username: user.username, email: user.email, password: '' });
   };
 
   if (loading) return <p>Loading...</p>;
@@ -91,7 +94,7 @@ const ProfilePage = () => {
   if (!user) return <p>No user data available</p>;
 
   return (
-    <div className="flex flex-col w-1/2 bg-orange-300 h-full p-4">
+    <div className="flex flex-col w-full md:w-[90vw] lg:w-[60vw] bg-orange-300 h-full">
       <h1>{userId ? 'User Profile' : 'My Profile'}</h1>
 
       {isEditing ? (
@@ -122,6 +125,13 @@ const ProfilePage = () => {
           />
           <button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded">
             Save Changes
+          </button>
+          {/* Cancel button */}
+          <button
+            onClick={handleCancelEdit}
+            className="bg-gray-500 text-white p-2 rounded mt-2"
+          >
+            Cancel
           </button>
         </div>
       ) : (
