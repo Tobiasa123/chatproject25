@@ -156,4 +156,42 @@ exports.loginUser = async (req, res) => {
       res.status(500).json({ message: "Error unblocking user", error: err.message });
     }
   };
-  
+  exports.editProfile = async (req, res) => {
+    const userId = req.user._id;
+    const { username, email, password } = req.body;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        if (email && email !== user.email) {
+            const existingUser = await User.findOne({ email });
+            if (existingUser) {
+                return res.status(400).json({ message: "Email is already in use" });
+            }
+            user.email = email;
+        }
+
+        if (username) {
+            user.username = username;
+        }
+
+        if (password) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            user.password = hashedPassword;
+        }
+
+        await user.save();
+
+        res.status(200).json({
+            message: "Profile updated successfully",
+            user: {
+                username: user.username,
+                email: user.email,
+            },
+        });
+    } catch (err) {
+        res.status(500).json({ message: "Error updating profile", error: err.message });
+    }
+};

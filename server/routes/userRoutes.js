@@ -9,6 +9,8 @@ router.post('/login', userController.loginUser);
 router.get('/profile', verifyToken, userController.getProfile);
 router.get('/profile/:id', verifyToken, userController.getUserProfileById);
 
+router.put('/profile/edit', verifyToken, userController.editProfile); 
+
 router.delete('/delete', verifyToken, userController.deleteProfile)
 
 router.post('/block/:id', verifyToken, userController.blockUser);

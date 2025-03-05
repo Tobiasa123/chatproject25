@@ -32,8 +32,8 @@ const DeleteProfileBtn = () => {
   return (
     <button 
     onClick={deleteProfile}
-    className="bg-red-700 text-white font-bold uppercase px-6 py-3 rounded-md 
-                hover:bg-red-600 border-2 border-red-500 hover:animate-pulse transition-all duration-200 w-1/2">
+    className="bg-red-700 text-white font-bold py-3 rounded-md 
+                hover:bg-red-600 border-2 border-red-500 hover:animate-pulse transition-all duration-200">
     DELETE PROFILE
     </button>
   );

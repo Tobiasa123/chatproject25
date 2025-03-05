@@ -33,17 +33,22 @@ const ChatTextForm = ({ onMessageSent }) => {
   };
 
   return (
-    <div className="message-box-wrapper">
-      <div className="input-container">
+    <div className="w-full">
+      <div className="flex flex-row justify-center h-12">
         <input
           type="text"
           id="message-box"
-          className="message-input"
+          className="w-full border border-black"
           placeholder="Type your message..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && message.trim() !== "") {
+              sendMessage();
+            }
+          }}
         />
-        <button className="send-button" onClick={sendMessage}>
+        <button className="bg-blue-400 rounded-md w-14" onClick={sendMessage}>
           Send
         </button>
       </div>
