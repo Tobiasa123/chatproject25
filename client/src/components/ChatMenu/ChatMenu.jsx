@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import { MoreVertical } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-const ChatMenu = ({ onViewProfile, onBlock, onDelete }) => {
+const ChatMenu = ({ otherUserId }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleViewProfile = () => {
+    if (otherUserId) {
+      navigate(`/profile/${otherUserId}`);
+    }
+  };
 
   return (
     <div className="relative">
@@ -15,9 +23,12 @@ const ChatMenu = ({ onViewProfile, onBlock, onDelete }) => {
 
       {isOpen && (
         <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg">
-          <button className="block w-full text-left px-4 py-2 hover:bg-gray-100" onClick={onViewProfile}>View Profile</button>
-          <button className="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100" onClick={onBlock}>Block User</button>
-          <button className="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100" onClick={onDelete}>Delete Chat</button>
+          <button 
+            className="block w-full text-left px-4 py-2 hover:bg-gray-100" 
+            onClick={handleViewProfile}
+          >
+            View Profile
+          </button>
         </div>
       )}
     </div>
