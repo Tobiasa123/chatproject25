@@ -18,6 +18,7 @@ function AppContent() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile/:id" element={<ProfilePage />} /> 
         <Route path="/chat/:chatId/messages" element={<ChatPage />} />
       </Routes>
     </div>
