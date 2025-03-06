@@ -43,7 +43,7 @@ const RenderChats = () => {
     <div className="w-full h-full">
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <h3 className="text-lg font-semibold">Your chats</h3>
-      <div>
+      <div className='flex flex-col gap-1'>
         {chats.map(chat => (
           <div key={chat.chatId}>
             <Chat chatId={chat.chatId} otherUser={chat.otherUser} />
