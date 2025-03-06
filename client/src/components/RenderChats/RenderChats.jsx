@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import {jwtDecode} from "jwt-decode"; 
 import Chat from '../Chat/Chat';
 
 const RenderChats = () => {
   const [chats, setChats] = useState([]);
   const [error, setError] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState(null);
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -38,6 +40,18 @@ const RenderChats = () => {
     fetchChats();
   }, []);
 
+  useEffect(() => {
+    const token = sessionStorage.getItem('authToken');
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token); 
+        setCurrentUserId(decodedToken._id);  
+      } catch (error) {
+        console.error('Error decoding JWT:', error);
+      }
+    }
+  }, []);
+
   return (
     <div className="w-full h-full">
       {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -50,6 +64,8 @@ const RenderChats = () => {
               otherUser={chat.otherUser} 
               latestMessage={chat.latestMessage}
               latestTimestamp={chat.latestTimestamp}
+              latestSenderId={chat.latestSenderId} 
+              currentUserId={currentUserId} 
             />
           </div>
         ))}

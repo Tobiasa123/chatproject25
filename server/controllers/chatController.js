@@ -177,6 +177,9 @@ exports.getUserChats = async (req, res) => {
                     : 'No messages yet',
                     latestTimestamp: chat.messages.length > 0 
                     ? chat.messages[chat.messages.length - 1].timestamp 
+                    : null,
+                    latestSenderId: chat.messages.length > 0 
+                    ? chat.messages[chat.messages.length - 1].sender
                     : null
                     
                 };
