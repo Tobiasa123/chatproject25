@@ -136,47 +136,48 @@ exports.getChatMessages = async (req, res) => {
 };
 
 exports.getUserChats = async (req, res) => {
-  const userId = req.user._id;
-
-  try {
-      const user = await User.findById(userId);
-      if (!user) {
-          return res.status(404).send({ message: 'User not found' });
-      }
-
-      const chats = await Chat.find({ participants: userId })
-          .populate('participants', 'username email blockedUsers') 
-          .exec();
-
-      if (!chats || chats.length === 0) {
-          return res.status(404).send({ message: 'No chats found for this user' });
-      }
-
-      const chatData = chats
-          .map(chat => {
-              const otherParticipants = chat.participants.filter(
-                  participant => participant._id.toString() !== userId.toString()
-              );
-              const otherUser = otherParticipants[0];
-
-              if (!otherUser) return null;
-
-              const userBlockedOther = user.blockedUsers.some(blockedUser => blockedUser._id.toString() === otherUser._id.toString());
-
-              const otherBlockedUser = otherUser.blockedUsers.some(blockedUser => blockedUser._id.toString() === userId.toString());
-
-
-              if (userBlockedOther || otherBlockedUser) return null;
-
-              return {
-                  chatId: chat._id,
-                  otherUser: { username: otherUser.username, _id: otherUser._id },
-              };
-          })
-          .filter(chat => chat !== null); // Remove blocked chats
-
-      res.status(200).send({ chatData });
-  } catch (err) {
-      res.status(500).send({ message: 'Error fetching chats', error: err.message });
-  }
-};
+    const userId = req.user._id;
+  
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+  
+        const chats = await Chat.find({ participants: userId })
+            .populate('participants', 'username email blockedUsers')
+            .sort({ updatedAt: -1 }) 
+            .exec();
+  
+        if (!chats || chats.length === 0) {
+            return res.status(404).send({ message: 'No chats found for this user' });
+        }
+  
+        const chatData = chats
+            .map(chat => {
+                const otherParticipants = chat.participants.filter(
+                    participant => participant._id.toString() !== userId.toString()
+                );
+                const otherUser = otherParticipants[0];
+  
+                if (!otherUser) return null;
+  
+                const userBlockedOther = user.blockedUsers.some(blockedUser => blockedUser._id.toString() === otherUser._id.toString());
+  
+                const otherBlockedUser = otherUser.blockedUsers.some(blockedUser => blockedUser._id.toString() === userId.toString());
+  
+                if (userBlockedOther || otherBlockedUser) return null;
+  
+                return {
+                    chatId: chat._id,
+                    otherUser: { username: otherUser.username, _id: otherUser._id },
+                };
+            })
+            .filter(chat => chat !== null); // Remove blocked chats
+  
+        res.status(200).send({ chatData });
+    } catch (err) {
+        res.status(500).send({ message: 'Error fetching chats', error: err.message });
+    }
+  };
+  
