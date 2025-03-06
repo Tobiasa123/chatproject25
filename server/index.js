@@ -16,7 +16,6 @@ const io = socketIo(server, {
   }
 });
 
-// Make the io instance accessible in your controllers
 app.set("io", io);
 
 app.use(express.json());

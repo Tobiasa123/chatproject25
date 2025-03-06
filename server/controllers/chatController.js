@@ -171,9 +171,17 @@ exports.getUserChats = async (req, res) => {
                 return {
                     chatId: chat._id,
                     otherUser: { username: otherUser.username, _id: otherUser._id },
+                    updatedAt: chat.updatedAt,
+                    latestMessage: chat.messages.length > 0 
+                    ? chat.messages[chat.messages.length - 1].text 
+                    : 'No messages yet',
+                    latestTimestamp: chat.messages.length > 0 
+                    ? chat.messages[chat.messages.length - 1].timestamp 
+                    : null
+                    
                 };
             })
-            .filter(chat => chat !== null); // Remove blocked chats
+            .filter(chat => chat !== null);
   
         res.status(200).send({ chatData });
     } catch (err) {

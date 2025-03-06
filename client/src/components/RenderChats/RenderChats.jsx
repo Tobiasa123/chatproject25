@@ -26,7 +26,6 @@ const RenderChats = () => {
         const data = await response.json();
 
         if (response.ok) {
-          // Each chat now contains an "otherUser" field
           setChats(data.chatData);
         } else {
           setError(data.message || 'Error fetching chats');
@@ -43,10 +42,15 @@ const RenderChats = () => {
     <div className="w-full h-full">
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <h3 className="text-lg font-semibold">Your chats</h3>
-      <div className='flex flex-col gap-1'>
+      <div className="flex flex-col gap-1">
         {chats.map(chat => (
           <div key={chat.chatId}>
-            <Chat chatId={chat.chatId} otherUser={chat.otherUser} />
+            <Chat 
+              chatId={chat.chatId} 
+              otherUser={chat.otherUser} 
+              latestMessage={chat.latestMessage}
+              latestTimestamp={chat.latestTimestamp}
+            />
           </div>
         ))}
       </div>
