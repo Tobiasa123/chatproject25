@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
 const jwtkey = process.env.SECRET_KEY
+const sendEmail = require('../utils/mailer')
 
 exports.registerUser = async (req, res) => {
   const { username, email, password } = req.body;
@@ -37,6 +38,11 @@ exports.registerUser = async (req, res) => {
     await newUser.save();
 
     const token = jwt.sign({ _id: newUser._id}, jwtkey, {expiresIn: '2h'})
+
+    const registrationMessage = 'Thank you for registering with us!';
+    const contactInfo = '\n\nIf you have any inquiries or questions, please contact us at tobiaserikandersson@gmail.com.';
+
+    await sendEmail(sanitizedEmail, 'Welcome to EveryTen', registrationMessage + contactInfo);
 
     res.status(201).send({
         user: {
