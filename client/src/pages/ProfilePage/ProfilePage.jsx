@@ -94,9 +94,11 @@ const ProfilePage = () => {
   if (!user) return <p>No user data available</p>;
 
   return (
-    <div className="flex flex-col w-full md:w-[90vw] lg:w-[60vw] bg-orange-300 h-full">
-      <h1>{userId ? 'User Profile' : 'My Profile'}</h1>
-
+    <div className="flex flex-col w-full md:w-[90vw] lg:w-[60vw] bg-lightBackground dark:bg-darkBackground h-full">
+      <h1 className="text-darkText dark:text-lightText">
+        {userId ? 'User Profile' : 'My Profile'}
+      </h1>
+  
       {isEditing ? (
         <div className="flex flex-col space-y-2">
           <input
@@ -104,7 +106,7 @@ const ProfilePage = () => {
             name="username"
             value={updatedUser.username}
             onChange={handleChange}
-            className="border p-2"
+            className="border border-lightBorder dark:border-darkBorder p-2 rounded bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText placeholder-gray-400 dark:placeholder-gray-500"
             placeholder="New username"
           />
           <input
@@ -112,7 +114,7 @@ const ProfilePage = () => {
             name="email"
             value={updatedUser.email}
             onChange={handleChange}
-            className="border p-2"
+            className="border border-lightBorder dark:border-darkBorder p-2 rounded bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText placeholder-gray-400 dark:placeholder-gray-500"
             placeholder="New email"
           />
           <input
@@ -120,51 +122,59 @@ const ProfilePage = () => {
             name="password"
             value={updatedUser.password}
             onChange={handleChange}
-            className="border p-2"
+            className="border border-lightBorder dark:border-darkBorder p-2 rounded bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText placeholder-gray-400 dark:placeholder-gray-500"
             placeholder="New password (optional)"
           />
-          <button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded">
+          <button onClick={handleSave} className="bg-purpleAccent text-white p-2 rounded hover:bg-purple-700 dark:hover:bg-purple-500">
             Save Changes
           </button>
           {/* Cancel button */}
           <button
             onClick={handleCancelEdit}
-            className="bg-gray-500 text-white p-2 rounded mt-2"
+            className="bg-gray-500 text-white p-2 rounded mt-2 hover:bg-gray-600"
           >
             Cancel
           </button>
         </div>
       ) : (
         <div>
-          <p><strong>Username:</strong> {user.username}</p>
-          <p><strong>Email:</strong> {user.email}</p>
-          <p><strong>Joined:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
+          <p className="text-darkText dark:text-lightText">
+            <strong>Username:</strong> {user.username}
+          </p>
+          <p className="text-darkText dark:text-lightText">
+            <strong>Email:</strong> {user.email}
+          </p>
+          <p className="text-darkText dark:text-lightText">
+            <strong>Joined:</strong> {new Date(user.createdAt).toLocaleDateString()}
+          </p>
           {!userId && (
-            <button onClick={handleEditToggle} className="bg-green-500 text-white p-2 rounded mt-2">
+            <button 
+              onClick={handleEditToggle} 
+              className="bg-purpleAccent text-white p-2 rounded mt-2 hover:bg-purple-700 dark:hover:bg-purple-500">
               Edit Profile
             </button>
           )}
         </div>
       )}
-
+  
       {!userId && (
         <div>
-          <h2 className="mt-4">Blocked Users</h2>
+          <h2 className="text-darkText dark:text-lightText mt-4">Blocked Users</h2>
           {user.blockedUsers?.length > 0 ? (
             <ul>
               {user.blockedUsers.map((blockedUser) => (
-                <li key={blockedUser._id} className="flex items-center justify-between border p-2 mt-2">
-                  <span>{blockedUser.username}</span>
+                <li key={blockedUser._id} className="flex items-center justify-between border border-lightBorder dark:border-darkBorder p-2 mt-2">
+                  <span className="text-darkText dark:text-lightText">{blockedUser.username}</span>
                   <BlockUserButton userId={blockedUser._id} actionType="unblock" />
                 </li>
               ))}
             </ul>
           ) : (
-            <p>No blocked users</p>
+            <p className="text-darkText dark:text-lightText">No blocked users</p>
           )}
         </div>
       )}
-
+  
       {userId && (
         <div className="mt-4">
           {isBlocked ? (
@@ -174,10 +184,11 @@ const ProfilePage = () => {
           )}
         </div>
       )}
-
+  
       {!userId && <DeleteProfileBtn />}
     </div>
   );
+  
 };
 
 export default ProfilePage;

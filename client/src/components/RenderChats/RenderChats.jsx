@@ -102,9 +102,9 @@ const RenderChats = () => {
   }, [chats]);
   
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full bg-lightBackground dark:bg-darkBackground">
       {error && <p className="text-red-500 text-sm">{error}</p>}
-      <h3 className="text-lg font-semibold">Your chats</h3>
+      <h3 className="text-lg font-semibold text-darkText dark:text-lightText">Your chats</h3>
       <div className="flex flex-col gap-1">
         {chats && chats.length > 0 ? (
           chats.map(chat => (

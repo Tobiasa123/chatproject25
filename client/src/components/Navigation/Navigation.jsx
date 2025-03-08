@@ -1,5 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 
+import { ThemeSwitch } from "../ThemeSwitch/ThemeSwitch";
+
 const Navbar = () => {
 
   const navigate = useNavigate();  
@@ -12,19 +14,20 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full bg-blue-600 p-4 flex justify-between items-center shadow-md">
-      <Link to="/home" className="text-white text-xl font-semibold hover:underline">
+    <nav className="w-full bg-lightBackground dark:bg-darkBackground p-4 flex justify-between items-center">
+      <Link to="/home" className="text-purpleAccent text-xl font-semibold hover:underline">
         Your chats
       </Link>
-      <Link to="/profile" className="text-white text-xl font-semibold hover:underline">
+      <Link to="/profile" className="text-purpleAccent text-xl font-semibold hover:underline">
         Your profile
       </Link>
       <button 
         onClick={handleLogout} 
-        className="text-white text-xl font-semibold hover:underline"
+        className="text-purpleAccent text-xl font-semibold hover:underline"
       >
         Logout
       </button>
+      <ThemeSwitch />
     </nav>
   );
 };

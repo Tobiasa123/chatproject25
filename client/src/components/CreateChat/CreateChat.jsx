@@ -43,25 +43,26 @@ const CreateChat = () => {
     }
   };
 
-  return (
-    <div className="create-chat-container">
-      <h2>Create a New Chat</h2>
-      <input
-        type="text"
-        placeholder="Enter recipient's username"
-        value={username}
-        onChange={handleInputChange}
-        className="border p-2 rounded mb-2"
-      />
-      <button
-        onClick={handleCreateChat}
-        className="bg-blue-500 text-white py-2 px-4 rounded"
-      >
-        Create Chat
-      </button>
-      {message && <p>{message}</p>}
-    </div>
-  );
+return (
+  <div className="create-chat-container bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText">
+    <h2 className="text-lg font-semibold text-darkText dark:text-lightText">Create a New Chat</h2>
+    <input
+      type="text"
+      placeholder="Enter recipient's username"
+      value={username}
+      onChange={handleInputChange}
+      className="border border-lightBorder dark:border-darkBorder p-2 rounded mb-2 bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText"
+    />
+    <button
+      onClick={handleCreateChat}
+      className="bg-purpleAccent text-darkText dark:text-lightText py-2 px-4 rounded"
+    >
+      Create Chat
+    </button>
+    {message && <p className="text-purpleAccent">{message}</p>}
+  </div>
+);
+
 };
 
 export default CreateChat;
