@@ -16,15 +16,15 @@ const Chat = ({ chatId, otherUser, latestMessage, latestTimestamp, latestSenderI
   const messageSender = latestSenderId === currentUserId ? 'You' : otherUser?.username;
 
   return (
-    <div className="bg-purpleAccent hover:bg-purpleAccent dark:bg-purpleAccent dark:hover:bg-purpleAccent hover:cursor-pointer transition border border-lightBorder dark:border-darkBorder rounded-md flex items-center h-24 w-full">
+    <div className="bg-purpleAccent  dark:bg-purpleAccent dark:hover:bg-purpleAccent hover:cursor-pointer transition border border-lightBorder dark:border-darkBorder rounded-md flex items-center h-24 w-full">
       <UserIcon username={otherUser?.username} otherUserId={otherUser?._id} />
       {otherUser ? (
         <div 
           onClick={handleClick} 
-          className="bg-lightBackground dark:bg-darkBackground hover:bg-lightBackground dark:hover:bg-darkBackground hover:cursor-pointer transition rounded-r-md flex flex-col justify-center w-full h-full p-4"
+          className="bg-lightBackground dark:bg-darkBackground hover:bg-purpleAccent dark:hover:bg-purpleAccent hover:cursor-pointer transition rounded-r-md flex flex-col justify-center w-full h-full p-4"
 
         >
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center ">
             <h4 className="font-bold text-lg text-darkText dark:text-lightText text-left truncate w-3/4">
               {otherUser?.username}
             </h4>

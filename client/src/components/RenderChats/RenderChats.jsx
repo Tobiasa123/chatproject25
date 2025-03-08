@@ -102,7 +102,7 @@ const RenderChats = () => {
   }, [chats]);
   
   return (
-    <div className="w-full h-full bg-lightBackground dark:bg-darkBackground">
+    <div className="w-full h-full bg-lightBackground dark:bg-darkBackground rounded-b-md">
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <h3 className="text-lg font-semibold text-darkText dark:text-lightText">Your chats</h3>
       <div className="flex flex-col gap-1">

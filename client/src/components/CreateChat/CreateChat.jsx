@@ -44,7 +44,7 @@ const CreateChat = () => {
   };
 
 return (
-  <div className="create-chat-container bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText">
+  <div className="create-chat-container bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText rounded-t-md">
     <h2 className="text-lg font-semibold text-darkText dark:text-lightText">Create a New Chat</h2>
     <input
       type="text"
