@@ -24,9 +24,7 @@ export const ThemeSwitch = () => {
     <motion.button
       onClick={toggleTheme}
       className="grid grid-cols-[min-content_1fr] items-center sm:gap-2 p-2 rounded-md 
-                 bg-purpleAccent text-darkText dark:text-lightText
-                 border border-darkBorder dark:border-lightBorder
-                 transition-transform"
+                 bg-purpleAccent text-darkText dark:text-lightText transition-transform"
     >
       <motion.div
         key={theme}

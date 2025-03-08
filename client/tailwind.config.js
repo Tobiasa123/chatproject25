@@ -10,8 +10,8 @@ export default {
       },
       colors: {
         // Backgrounds
-        lightBackground: '#D1D1D1', // Light gray background for light mode
-        darkBackground: '#2C2C2C',  // Dark gray background for dark mode
+        lightBackground: '#FFFFFF', // Light gray background for light mode
+        darkBackground: '#403f3f',  // Dark gray background for dark mode
         
         // Text Colors
         lightText: '#FFFFFF',       // White text for dark mode
