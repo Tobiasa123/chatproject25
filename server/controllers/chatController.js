@@ -4,59 +4,58 @@ const Chat = require('../models/chatModel')
 
 
 exports.createChat = async (req, res) => {
-  try {
+    try {
       const userId1 = req.user._id; 
       const { username } = req.body; 
-
+  
       if (!userId1 || !username) {
-          return res.status(400).send({ message: 'Authenticated user ID and recipient username are required' });
+        return res.status(400).send({ message: 'Authenticated user ID and recipient username are required' });
       }
-
+  
       const user2 = await User.findOne({ username });
-
       if (!user2) {
-          return res.status(404).send({ message: 'User not found' });
+        return res.status(404).send({ message: 'User not found' });
       }
-
+  
       const userId2 = user2._id;
-
       if (userId1.toString() === userId2.toString()) {
         return res.status(400).send({ message: 'You cannot start a chat with yourself' });
       }
-
+  
       const user1 = await User.findById(userId1);
       if (!user1) return res.status(404).send({ message: 'User not found' });
-
+  
       if (user1.blockedUsers.includes(userId2)) {
         return res.status(403).send({ message: 'You have blocked this user' });
       }
   
-      // Check if the recipient has blocked the user
       if (user2.blockedUsers.includes(userId1)) {
         return res.status(403).send({ message: 'You have been blocked by this user' });
       }
   
-
       const existingChat = await Chat.findOne({
-          participants: { $all: [userId1, userId2] },
+        participants: { $all: [userId1, userId2] },
       });
-
       if (existingChat) {
-          return res.status(200).send({ message: 'Chat already exists', chat: existingChat });
+        return res.status(200).send({ message: 'Chat already exists', chat: existingChat });
       }
-
+  
       const newChat = new Chat({
-          participants: [userId1, userId2],
+        participants: [userId1, userId2],
       });
-
       await newChat.save();
+  
 
+      const io = req.app.get("io");
+
+      io.emit("newChat", newChat);
+  
       res.status(201).send({ message: 'Chat created successfully', chat: newChat });
-
-  } catch (err) {
+    } catch (err) {
       res.status(500).send({ message: 'Error creating chat', error: err.message });
-  }
-};
+    }
+  };
+  
 
 exports.createMessage = async (req, res) => {
   const senderId = req.user._id;
@@ -136,47 +135,59 @@ exports.getChatMessages = async (req, res) => {
 };
 
 exports.getUserChats = async (req, res) => {
-  const userId = req.user._id;
-
-  try {
-      const user = await User.findById(userId);
-      if (!user) {
-          return res.status(404).send({ message: 'User not found' });
-      }
-
-      const chats = await Chat.find({ participants: userId })
-          .populate('participants', 'username email blockedUsers') 
-          .exec();
-
-      if (!chats || chats.length === 0) {
-          return res.status(404).send({ message: 'No chats found for this user' });
-      }
-
-      const chatData = chats
-          .map(chat => {
-              const otherParticipants = chat.participants.filter(
-                  participant => participant._id.toString() !== userId.toString()
-              );
-              const otherUser = otherParticipants[0];
-
-              if (!otherUser) return null;
-
-              const userBlockedOther = user.blockedUsers.some(blockedUser => blockedUser._id.toString() === otherUser._id.toString());
-
-              const otherBlockedUser = otherUser.blockedUsers.some(blockedUser => blockedUser._id.toString() === userId.toString());
-
-
-              if (userBlockedOther || otherBlockedUser) return null;
-
-              return {
-                  chatId: chat._id,
-                  otherUser: { username: otherUser.username, _id: otherUser._id },
-              };
-          })
-          .filter(chat => chat !== null); // Remove blocked chats
-
-      res.status(200).send({ chatData });
-  } catch (err) {
-      res.status(500).send({ message: 'Error fetching chats', error: err.message });
-  }
-};
+    const userId = req.user._id;
+  
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+  
+        const chats = await Chat.find({ participants: userId })
+            .populate('participants', 'username email blockedUsers')
+            .sort({ updatedAt: -1 }) 
+            .exec();
+  
+        if (!chats || chats.length === 0) {
+            return res.status(404).send({ message: 'No chats found for this user' });
+        }
+  
+        const chatData = chats
+            .map(chat => {
+                const otherParticipants = chat.participants.filter(
+                    participant => participant._id.toString() !== userId.toString()
+                );
+                const otherUser = otherParticipants[0];
+  
+                if (!otherUser) return null;
+  
+                const userBlockedOther = user.blockedUsers.some(blockedUser => blockedUser._id.toString() === otherUser._id.toString());
+  
+                const otherBlockedUser = otherUser.blockedUsers.some(blockedUser => blockedUser._id.toString() === userId.toString());
+  
+                if (userBlockedOther || otherBlockedUser) return null;
+  
+                return {
+                    chatId: chat._id,
+                    otherUser: { username: otherUser.username, _id: otherUser._id },
+                    updatedAt: chat.updatedAt,
+                    latestMessage: chat.messages.length > 0 
+                    ? chat.messages[chat.messages.length - 1].text 
+                    : 'No messages yet',
+                    latestTimestamp: chat.messages.length > 0 
+                    ? chat.messages[chat.messages.length - 1].timestamp 
+                    : null,
+                    latestSenderId: chat.messages.length > 0 
+                    ? chat.messages[chat.messages.length - 1].sender
+                    : null
+                    
+                };
+            })
+            .filter(chat => chat !== null);
+  
+        res.status(200).send({ chatData });
+    } catch (err) {
+        res.status(500).send({ message: 'Error fetching chats', error: err.message });
+    }
+  };
+  

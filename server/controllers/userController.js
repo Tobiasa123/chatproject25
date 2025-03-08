@@ -2,11 +2,26 @@ const bcrypt = require('bcryptjs')
 const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
 const jwtkey = process.env.SECRET_KEY
+const sendEmail = require('../utils/mailer')
 
 exports.registerUser = async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
+    //email regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const sanitizedEmail = email.trim().toLowerCase(); 
+    if (!emailRegex.test(sanitizedEmail)) {
+      return res.status(400).json({ message: 'Invalid email format' });
+    }
+    //password regex
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        message: 'Password must be at least 8 characters long, contain a mix of uppercase, lowercase, numbers, and special characters.'
+      });
+    }
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
@@ -23,6 +38,11 @@ exports.registerUser = async (req, res) => {
     await newUser.save();
 
     const token = jwt.sign({ _id: newUser._id}, jwtkey, {expiresIn: '2h'})
+
+    const registrationMessage = 'Thank you for registering with us!';
+    const contactInfo = '\n\nIf you have any inquiries or questions, please contact us at tobiaserikandersson@gmail.com.';
+
+    await sendEmail(sanitizedEmail, 'Welcome to EveryTen', registrationMessage + contactInfo);
 
     res.status(201).send({
         user: {
