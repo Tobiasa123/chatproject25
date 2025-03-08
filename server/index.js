@@ -37,6 +37,7 @@ app.use('/',chatRoutes);
 io.on('connection', (socket) => {
   console.log('A user connected: ' + socket.id);
 
+
   socket.on('joinChat', (chatId) => {
     socket.join(chatId);
     console.log(`Socket ${socket.id} joined chat room ${chatId}`);
@@ -47,10 +48,17 @@ io.on('connection', (socket) => {
     console.log(`Socket ${socket.id} left chat room ${chatId}`);
   });
 
+
+  socket.on('newChat', (chat) => {
+    console.log('New chat created:', chat);
+    io.emit('newChat', chat);
+  });
+
   socket.on('disconnect', () => {
     console.log('User disconnected: ' + socket.id);
   });
 });
+
 
 server.listen(process.env.PORT, () => {
   console.log(`Server running at http://${process.env.URL}:${process.env.PORT}`);

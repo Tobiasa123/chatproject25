@@ -4,59 +4,58 @@ const Chat = require('../models/chatModel')
 
 
 exports.createChat = async (req, res) => {
-  try {
+    try {
       const userId1 = req.user._id; 
       const { username } = req.body; 
-
+  
       if (!userId1 || !username) {
-          return res.status(400).send({ message: 'Authenticated user ID and recipient username are required' });
+        return res.status(400).send({ message: 'Authenticated user ID and recipient username are required' });
       }
-
+  
       const user2 = await User.findOne({ username });
-
       if (!user2) {
-          return res.status(404).send({ message: 'User not found' });
+        return res.status(404).send({ message: 'User not found' });
       }
-
+  
       const userId2 = user2._id;
-
       if (userId1.toString() === userId2.toString()) {
         return res.status(400).send({ message: 'You cannot start a chat with yourself' });
       }
-
+  
       const user1 = await User.findById(userId1);
       if (!user1) return res.status(404).send({ message: 'User not found' });
-
+  
       if (user1.blockedUsers.includes(userId2)) {
         return res.status(403).send({ message: 'You have blocked this user' });
       }
   
-      // Check if the recipient has blocked the user
       if (user2.blockedUsers.includes(userId1)) {
         return res.status(403).send({ message: 'You have been blocked by this user' });
       }
   
-
       const existingChat = await Chat.findOne({
-          participants: { $all: [userId1, userId2] },
+        participants: { $all: [userId1, userId2] },
       });
-
       if (existingChat) {
-          return res.status(200).send({ message: 'Chat already exists', chat: existingChat });
+        return res.status(200).send({ message: 'Chat already exists', chat: existingChat });
       }
-
+  
       const newChat = new Chat({
-          participants: [userId1, userId2],
+        participants: [userId1, userId2],
       });
-
       await newChat.save();
+  
 
+      const io = req.app.get("io");
+
+      io.emit("newChat", newChat);
+  
       res.status(201).send({ message: 'Chat created successfully', chat: newChat });
-
-  } catch (err) {
+    } catch (err) {
       res.status(500).send({ message: 'Error creating chat', error: err.message });
-  }
-};
+    }
+  };
+  
 
 exports.createMessage = async (req, res) => {
   const senderId = req.user._id;
