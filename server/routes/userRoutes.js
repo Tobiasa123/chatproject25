@@ -16,6 +16,7 @@ router.delete('/delete', verifyToken, userController.deleteProfile)
 router.post('/block/:id', verifyToken, userController.blockUser);
 router.post('/unblock/:id', verifyToken, userController.unblockUser);
 
+router.get('/users/search', verifyToken, userController.getUsersByUsername)
 
 
 module.exports = router;
