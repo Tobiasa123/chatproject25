@@ -10,34 +10,34 @@ const RenderChats = () => {
   const socketRef = useRef(null);
 
 
+  const fetchChats = async () => {
+    const token = sessionStorage.getItem('authToken');
+    if (!token) {
+      setError('No token found');
+      return;
+    }
+    try {
+      const response = await fetch('http://127.0.0.1:8000/user/chats', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, 
+        },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setChats(data.chatData);
+      } else {
+        setError(data.message || 'Error fetching chats');
+      }
+    } catch (err) {
+      setError('Error fetching chats');
+    }
+  };
+
   useEffect(() => {
-    const fetchChats = async () => {
-      const token = sessionStorage.getItem('authToken');
-      if (!token) {
-        setError('No token found');
-        return;
-      }
-      try {
-        const response = await fetch('http://127.0.0.1:8000/user/chats', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`, 
-          },
-        });
-        const data = await response.json();
-        if (response.ok) {
-          setChats(data.chatData);
-        } else {
-          setError(data.message || 'Error fetching chats');
-        }
-      } catch (err) {
-        setError('Error fetching chats');
-      }
-    };
     fetchChats();
   }, []);
-
 
   useEffect(() => {
     const token = sessionStorage.getItem('authToken');
@@ -51,11 +51,9 @@ const RenderChats = () => {
     }
   }, []);
 
- 
   useEffect(() => {
-    if (!currentUserId) return; 
+    if (!currentUserId) return;
   
-
     if (!socketRef.current) {
       socketRef.current = io("http://localhost:8000", { withCredentials: true });
   
@@ -63,50 +61,44 @@ const RenderChats = () => {
   
       const handleNewChat = async (newChat) => {
         console.log("New chat received:", newChat);
-        
-        try {
-          const token = sessionStorage.getItem('authToken');
-          
-          const response = await fetch('http://127.0.0.1:8000/user/chats', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          
-          if (response.ok) {
-            const data = await response.json();
-            setChats(data.chatData);
-          } else {
-            console.error("Failed to refresh chats data");
-          }
-        } catch (err) {
-          console.error("Error refreshing chats data:", err);
-        }
+        fetchChats(); 
+      };
+  
+      const handleUpdateChatList = async ({ chatId, latestMessage, latestTimestamp, latestSenderId }) => {
+        console.log("Chat list update received:", chatId, latestMessage, latestSenderId);
+  
+        setChats((prevChats) =>
+          prevChats.map((chat) =>
+            chat.chatId === chatId
+              ? {
+                  ...chat,
+                  latestMessage, 
+                  latestTimestamp: latestTimestamp || new Date().toISOString(),
+                  latestSenderId,  
+                }
+              : chat
+          )
+        );
       };
   
       socketRef.current.on("newChat", handleNewChat);
+      socketRef.current.on("updateChatList", handleUpdateChatList);
   
-
       return () => {
         socketRef.current.off("newChat", handleNewChat);
-        socketRef.current.disconnect(); 
+        socketRef.current.off("updateChatList", handleUpdateChatList);
+        socketRef.current.disconnect();
         socketRef.current = null;
       };
     }
   }, [currentUserId]);
-  
-  useEffect(() => {
-    console.log("Current chats state:", chats);
-  }, [chats]);
-  
+
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full bg-lightBackground dark:bg-darkBackground rounded-b-md">
       {error && <p className="text-red-500 text-sm">{error}</p>}
-      <h3 className="text-lg font-semibold">Your chats</h3>
+      <h3 className="text-lg font-semibold text-darkText dark:text-lightText">Your chats</h3>
       <div className="flex flex-col gap-1">
-        {chats && chats.length > 0 ? (
+        {chats.length > 0 ? (
           chats.map(chat => (
             <div key={chat.chatId}>
               {chat && chat.otherUser ? (

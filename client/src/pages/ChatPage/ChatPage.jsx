@@ -24,12 +24,9 @@ const ChatPage = () => {
   }, []);
 
   return (
-    <div className="h-screen flex flex-col w-full md:w-[90vw] lg:w-[60vw] justify-center items-center bg-slate-300">
-      <ChatMessages />
-
-      <section className="w-full">
-        <ChatTextForm />
-      </section>
+    <div className="h-screen flex flex-col w-full md:w-[90vw] lg:w-[60vw] justify-center items-center gap-2">
+      <ChatMessages  />
+      <ChatTextForm />
     </div>
   );
 };

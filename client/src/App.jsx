@@ -6,6 +6,7 @@ import ChatPage from './pages/ChatPage/ChatPage';
 import Navbar from './components/Navigation/Navigation';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import './App.css'
+import Footer from './components/Footer/Footer';
 
 function AppContent() {
   const location = useLocation(); 
@@ -14,9 +15,9 @@ function AppContent() {
   const isAuthenticated = () => {
     return !!sessionStorage.getItem('authToken'); 
   };
-
+// TEMP BGS HERE
   return (
-    <div className="flex flex-col justify-center items-center h-screen w-full">
+    <div className="flex flex-col justify-center items-center h-screen w-full bg-slate-400 dark:bg-slate-400">
       {showNavbar && <Navbar />} 
       <Routes>
         <Route path="/" element={<LoginPage />} />
@@ -37,6 +38,7 @@ function AppContent() {
           element={isAuthenticated() ? <ChatPage /> : <Navigate to="/" replace />}
         />
       </Routes>
+      <Footer></Footer>
     </div>
   );
 }

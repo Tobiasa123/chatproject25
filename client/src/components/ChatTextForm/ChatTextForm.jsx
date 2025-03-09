@@ -38,7 +38,7 @@ const ChatTextForm = ({ onMessageSent }) => {
         <input
           type="text"
           id="message-box"
-          className="w-full border border-black"
+          className="w-full rounded-l-md bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText"  // Set bg and text color for both light and dark mode
           placeholder="Type your message..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -48,12 +48,13 @@ const ChatTextForm = ({ onMessageSent }) => {
             }
           }}
         />
-        <button className="bg-blue-400 rounded-md w-14" onClick={sendMessage}>
+        <button className="rounded-r-md w-14 bg-purpleAccent text-darkText dark:text-lightText" onClick={sendMessage}>
           Send
         </button>
       </div>
     </div>
   );
+  
 };
 
 export default ChatTextForm; 

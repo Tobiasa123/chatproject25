@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import { ThemeSwitch } from "../ThemeSwitch/ThemeSwitch";
 
 
 const LoginForm = () => {
@@ -58,66 +59,68 @@ const LoginForm = () => {
   
 
     return (
-        <div className="flex flex-col w-full md:w-[90vw] lg:w-[50vw] justify-center items-center bg-slate-300 h-2/3 rounded-md gap-3 min-w-80 border border-black">
-          <h2>{isLogin ? "Login" : "Signup"}</h2>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-2/3">
-            {!isLogin && (
-              <div className="flex flex-col gap-1">
-                <label htmlFor="username" className="mb-1">Username:</label>
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  className="h-10 border rounded-md border-black"
-                />
-              </div>
-            )}
-    
+      <div className="flex flex-col w-full md:w-[90vw] lg:w-[50vw] justify-center items-center bg-lightBackground dark:bg-darkBackground h-2/3 rounded-md gap-3 min-w-80 border border-lightBorder dark:border-darkBorder">
+        <ThemeSwitch />
+        <h2 className="text-darkText dark:text-lightText">{isLogin ? "Login" : "Signup"}</h2>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-2/3">
+          {!isLogin && (
             <div className="flex flex-col gap-1">
-              <label htmlFor="email" className="">Email:</label>
+              <label htmlFor="username" className="mb-1 text-darkText dark:text-lightText">Username:</label>
               <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
+                type="text"
+                id="username"
+                name="username"
+                value={formData.username}
                 onChange={handleChange}
-                className="h-10 border rounded-md border-black"
+                className="h-10 border rounded-md border-lightBorder dark:border-darkBorder bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText placeholder-gray-400 dark:placeholder-gray-500"
               />
             </div>
+          )}
     
-            <div className="flex flex-col gap-1">
-              <label htmlFor="password" className="">Password:</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="h-10 border rounded-md border-black"
-              />
-            </div>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="email" className="text-darkText dark:text-lightText">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="h-10 border rounded-md border-lightBorder dark:border-darkBorder bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText placeholder-gray-400 dark:placeholder-gray-500"
+            />
+          </div>
     
-            <button
-              type="submit"
-              className="h-10 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-            >
-              {isLogin ? "Login" : "Signup"}
-            </button>
-          </form>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="password" className="text-darkText dark:text-lightText">Password:</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="h-10 border rounded-md border-lightBorder dark:border-darkBorder bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText placeholder-gray-400 dark:placeholder-gray-500"
+            />
+          </div>
     
-          <p className="">
-            {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-            <button
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-blue-500"
-            >
-              {isLogin ? "Sign Up" : "Log In"}
-            </button>
-          </p>
-        </div>
-      );
+          <button
+            type="submit"
+            className="h-10 bg-purpleAccent text-white rounded-md hover:bg-purple-700 dark:hover:bg-purple-500"
+          >
+            {isLogin ? "Login" : "Signup"}
+          </button>
+        </form>
+    
+        <p className="text-darkText dark:text-lightText">
+          {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+          <button
+            onClick={() => setIsLogin(!isLogin)}
+            className="text-purpleAccent dark:text-purpleAccent"
+          >
+            {isLogin ? "Sign Up" : "Log In"}
+          </button>
+        </p>
+      </div>
+    );
+    
     };
     
     export default LoginForm;
