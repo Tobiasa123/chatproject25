@@ -107,7 +107,7 @@ const RenderChats = () => {
                   chatId={chat.chatId} 
                   otherUser={chat.otherUser} 
                   latestMessage={chat.latestMessage || "No messages yet"}
-                  latestTimestamp={chat.latestTimestamp || new Date().toISOString()}
+                  latestTimestamp={chat.latestTimestamp}
                   latestSenderId={chat.latestSenderId || ""} 
                   currentUserId={currentUserId} 
                 />
