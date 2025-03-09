@@ -79,6 +79,7 @@ const RenderChats = () => {
               : chat
           )
         );
+        fetchChats(); //fetch after to update order of message list
       };
   
       socketRef.current.on("newChat", handleNewChat);
