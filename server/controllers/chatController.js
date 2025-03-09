@@ -57,56 +57,48 @@ exports.createChat = async (req, res) => {
   };
   
 
-exports.createMessage = async (req, res) => {
-  const senderId = req.user._id;
-  const { chatId } = req.params;
-  const { text } = req.body;
-
-  try {
-      const chat = await Chat.findById(chatId);
-
-      if (!chat) {
-          return res.status(404).send({ message: 'Chat not found' });
-      }
-
-      if (!chat.participants.includes(senderId)) {
-          return res.status(403).send({ message: 'Sender is not part of this chat' });
-      }
-
-      const users = await User.find({ _id: { $in: chat.participants } });
-
-      const user1 = users.find(user => user._id.toString() === senderId.toString());
-      const user2 = users.find(user => user._id.toString() !== senderId.toString());
-
-      if (!user1 || !user2) {
-          return res.status(404).send({ message: 'User not found' });
-      }
-
-      const senderBlockedUser = user1.blockedUsers.some(blockedUser => blockedUser._id.toString() === user2._id.toString());
-      const recipientBlockedSender = user2.blockedUsers.some(blockedUser => blockedUser._id.toString() === user1._id.toString());
-
-      if (senderBlockedUser || recipientBlockedSender) {
-          return res.status(403).send({ message: 'You cannot send messages because you or the recipient has blocked each other' });
-      }
-
-      const newMessage = {
-          sender: senderId,
-          text,
-          timestamp: new Date(),
-      };
-
-      chat.messages.push(newMessage);
-      await chat.save();
-
-      const io = req.app.get("io");
-      io.to(chatId).emit("newMessage", newMessage);
-
-      res.status(201).send({ message: 'Message sent successfully', chat });
-  } catch (err) {
-      res.status(500).send({ message: 'Error sending message', error: err.message });
-  }
-};
-
+  exports.createMessage = async (req, res) => {
+    const senderId = req.user._id;
+    const { chatId } = req.params;
+    const { text } = req.body;
+  
+    try {
+        const chat = await Chat.findById(chatId).populate("participants");
+  
+        if (!chat) return res.status(404).send({ message: "Chat not found" });
+  
+        if (!chat.participants.some(user => user._id.toString() === senderId.toString())) {
+            return res.status(403).send({ message: "Sender is not part of this chat" });
+        }
+  
+        const newMessage = {
+            sender: senderId,
+            text,
+            timestamp: new Date(),
+        };
+  
+        chat.messages.push(newMessage);
+        await chat.save();
+  
+        const io = req.app.get("io");
+  
+        io.to(chatId).emit("newMessage", newMessage);
+  
+        chat.participants.forEach(user => {
+            io.to(user._id.toString()).emit("updateChatList", {
+                chatId,
+                latestMessage: newMessage.text,
+                latestTimestamp: newMessage.timestamp,
+                latestSenderId: newMessage.sender,
+            });
+        });
+  
+        res.status(201).send({ message: "Message sent successfully", chat });
+    } catch (err) {
+        res.status(500).send({ message: "Error sending message", error: err.message });
+    }
+  };
+  
 
 exports.getChatMessages = async (req, res) => {
   const { chatId } = req.params;

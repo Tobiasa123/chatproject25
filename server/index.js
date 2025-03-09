@@ -11,7 +11,7 @@ const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
     origin: 'http://localhost:5173',
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
   }
 });
@@ -34,30 +34,29 @@ const chatRoutes  =require('./routes/chatRoutes')
 app.use('/',userRoutes);
 app.use('/',chatRoutes);
 
-io.on('connection', (socket) => {
-  console.log('A user connected: ' + socket.id);
+io.on("connection", (socket) => {
+  console.log("A user connected: " + socket.id);
 
+  socket.on("joinUserRoom", (userId) => {
+    socket.join(userId); 
+    console.log(`User ${userId} joined personal update room`);
+  });
 
-  socket.on('joinChat', (chatId) => {
+  socket.on("joinChat", (chatId) => {
     socket.join(chatId);
     console.log(`Socket ${socket.id} joined chat room ${chatId}`);
   });
 
-  socket.on('leaveChat', (chatId) => {
+  socket.on("leaveChat", (chatId) => {
     socket.leave(chatId);
     console.log(`Socket ${socket.id} left chat room ${chatId}`);
   });
 
-
-  socket.on('newChat', (chat) => {
-    console.log('New chat created:', chat);
-    io.emit('newChat', chat);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('User disconnected: ' + socket.id);
+  socket.on("disconnect", () => {
+    console.log("User disconnected: " + socket.id);
   });
 });
+
 
 
 server.listen(process.env.PORT, () => {
