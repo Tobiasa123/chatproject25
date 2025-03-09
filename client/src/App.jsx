@@ -38,7 +38,7 @@ function AppContent() {
           element={isAuthenticated() ? <ChatPage /> : <Navigate to="/" replace />}
         />
       </Routes>
-      <Footer></Footer>
+      {showNavbar && <Footer />} 
     </div>
   );
 }

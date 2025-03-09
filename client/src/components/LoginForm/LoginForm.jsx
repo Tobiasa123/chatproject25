@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { ThemeSwitch } from "../ThemeSwitch/ThemeSwitch";
+import Footer from "../Footer/Footer";
 
 
 const LoginForm = () => {
@@ -118,9 +119,8 @@ const LoginForm = () => {
             {isLogin ? "Sign Up" : "Log In"}
           </button>
         </p>
+        <Footer/>
       </div>
     );
-    
-    };
-    
+};
     export default LoginForm;
