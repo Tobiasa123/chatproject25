@@ -95,10 +95,10 @@ const RenderChats = () => {
   }, [currentUserId]);
 
   return (
-    <div className="w-full h-full bg-lightBackground dark:bg-darkBackground rounded-b-md p-2 overflow-y-scroll">
+    <div className="w-full h-full bg-lightBackground dark:bg-darkBackground rounded-b-md p-2 overflow-y-auto">
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <h3 className="text-lg font-semibold text-darkText dark:text-lightText">Your chats</h3>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 max-h-40">
         {chats.length > 0 ? (
           chats.map(chat => (
             <div key={chat.chatId}>
@@ -124,6 +124,7 @@ const RenderChats = () => {
       </div>
     </div>
   );
+  
 };
 
 export default RenderChats;
