@@ -48,7 +48,7 @@ const ChatTextForm = ({ onMessageSent }) => {
             }
           }}
         />
-        <button className="rounded-r-md w-14 bg-purpleAccent text-darkText dark:text-lightText" onClick={sendMessage}>
+        <button className="rounded-r-md w-14 bg-purpleAccent text-lightText" onClick={sendMessage}>
           Send
         </button>
       </div>

@@ -79,6 +79,7 @@ const RenderChats = () => {
               : chat
           )
         );
+        fetchChats(); //fetch after to update order of message list
       };
   
       socketRef.current.on("newChat", handleNewChat);
@@ -94,10 +95,10 @@ const RenderChats = () => {
   }, [currentUserId]);
 
   return (
-    <div className="w-full h-full bg-lightBackground dark:bg-darkBackground rounded-b-md">
+    <div className="w-full h-full bg-lightBackground dark:bg-darkBackground rounded-b-md p-2 overflow-y-auto">
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <h3 className="text-lg font-semibold text-darkText dark:text-lightText">Your chats</h3>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 max-h-40">
         {chats.length > 0 ? (
           chats.map(chat => (
             <div key={chat.chatId}>
@@ -106,7 +107,7 @@ const RenderChats = () => {
                   chatId={chat.chatId} 
                   otherUser={chat.otherUser} 
                   latestMessage={chat.latestMessage || "No messages yet"}
-                  latestTimestamp={chat.latestTimestamp || new Date().toISOString()}
+                  latestTimestamp={chat.latestTimestamp}
                   latestSenderId={chat.latestSenderId || ""} 
                   currentUserId={currentUserId} 
                 />
@@ -123,6 +124,7 @@ const RenderChats = () => {
       </div>
     </div>
   );
+  
 };
 
 export default RenderChats;

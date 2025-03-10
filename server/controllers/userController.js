@@ -8,14 +8,15 @@ exports.registerUser = async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    //email regex
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+    const emailRegex = /^[a-zA-Z0-9åäöÅÄÖ.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
     const sanitizedEmail = email.trim().toLowerCase(); 
     if (!emailRegex.test(sanitizedEmail)) {
       return res.status(400).json({ message: 'Invalid email format' });
     }
     //password regex
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex = /^(?=.*[a-zåäö])(?=.*[A-ZÅÄÖ])(?=.*\d)(?=.*[^\w\s])[A-Za-zÅÄÖåäö\d@$!%*?&.,;:_+={}[\]()<>-]{8,}$/;
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
         message: 'Password must be at least 8 characters long, contain a mix of uppercase, lowercase, numbers, and special characters.'
@@ -214,4 +215,21 @@ exports.loginUser = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: "Error updating profile", error: err.message });
     }
+};
+exports.getUsersByUsername = async (req, res) => {
+  try {
+    const { username } = req.query; // Get the username from query
+    const userId = req.user._id; // Get the logged-in user's ID from the authenticated user
+
+    // Find users that match the username, excluding the logged-in user
+    const users = await User.find({
+      username: { $regex: username, $options: "i" }, // Case-insensitive search
+      _id: { $ne: userId }, // Exclude the logged-in user's ID
+    });
+
+    res.json(users); // Send the filtered users as response
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
