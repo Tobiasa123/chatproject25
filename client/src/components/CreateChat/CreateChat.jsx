@@ -120,7 +120,7 @@ const CreateChat = () => {
         />
         <button
           onClick={handleSearch} 
-          className="bg-purpleAccent text-darkText dark:text-lightText py-2 px-4 rounded whitespace-nowrap"
+          className="bg-purpleAccent text-lightText py-2 px-4 rounded whitespace-nowrap"
         >
           Create Chat
         </button>

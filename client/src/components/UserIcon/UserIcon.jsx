@@ -15,7 +15,7 @@ const UserIcon = ({ username, otherUserId }) => {
     <div className="relative">
       {/* User Icon */}
       <div 
-        className="border border-black w-20 h-20 bg-gray-400 flex items-center justify-center text-white font-bold rounded-full cursor-pointer"
+        className=" border-2 border-slate-500 w-20 h-20 bg-gray-400 flex items-center justify-center text-white font-bold rounded-full cursor-pointer"
         onClick={() => setIsOpen(!isOpen)} // Toggle dropdown on icon click
       >
         {username ? username.charAt(0).toUpperCase() : '?'}
@@ -23,9 +23,9 @@ const UserIcon = ({ username, otherUserId }) => {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute left-full top-0 w-40 bg-white border rounded-lg shadow-lg h-full">
+        <div className="absolute left-full top-0 w-40 bg-white border rounded-md shadow-lg h-full">
           <button 
-            className="block w-full h-full text-center hover:bg-gray-100" 
+            className="block w-full h-full text-center hover:bg-gray-200 rounded-md" 
             onClick={handleViewProfile}
           >
             View Profile

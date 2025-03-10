@@ -16,24 +16,23 @@ const Chat = ({ chatId, otherUser, latestMessage, latestTimestamp, latestSenderI
   const messageSender = latestSenderId === currentUserId ? 'You' : otherUser?.username;
 
   return (
-    <div className="bg-purpleAccent  dark:bg-purpleAccent dark:hover:bg-purpleAccent hover:cursor-pointer transition border border-lightBorder dark:border-darkBorder rounded-md flex items-center h-24 w-full">
+    <div className=" border-b-2 border-b-purpleAccent  dark:border-b-purpleAccent  flex items-center h-20 w-full">
       <UserIcon username={otherUser?.username} otherUserId={otherUser?._id} />
       {otherUser ? (
         <div 
           onClick={handleClick} 
-          className="bg-lightBackground dark:bg-darkBackground hover:bg-purpleAccent dark:hover:bg-purpleAccent hover:cursor-pointer transition rounded-r-md flex flex-col justify-center w-full h-full p-4"
-
+          className="bg-lightBackground dark:bg-darkBackground hover:bg-purpleAccent dark:hover:bg-purpleAccent hover:cursor-pointer transition  flex flex-col justify-center w-full h-full p-3"
         >
-          <div className="flex justify-between items-center ">
-            <h4 className="font-bold text-lg text-darkText dark:text-lightText text-left truncate w-3/4">
+          <div className="flex justify-between items-center w-full">
+            <h4 className="font-bold text-lg text-darkText dark:text-lightText text-left truncate max-w-[65%]">
               {otherUser?.username}
             </h4>
-            <span className="text-xs text-gray-500 dark:text-gray-300 text-right w-1/4">
+            <span className="text-xs text-gray-500 dark:text-gray-300 text-right">
               {formattedTimestamp}
             </span>
           </div>
   
-          <p className="text-lg text-center text-darkText dark:text-lightText mt-1 overflow-hidden">
+          <p className="text-sm text-center text-darkText dark:text-lightText mt-1 overflow-hidden max-w-[80%] mx-auto">
             {messageSender}: {latestMessage || 'No messages yet'}
           </p>
         </div>
@@ -42,6 +41,7 @@ const Chat = ({ chatId, otherUser, latestMessage, latestTimestamp, latestSenderI
       )}
     </div>
   );
+  
   
 };
 

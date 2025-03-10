@@ -95,7 +95,7 @@ const RenderChats = () => {
   }, [currentUserId]);
 
   return (
-    <div className="w-full h-full bg-lightBackground dark:bg-darkBackground rounded-b-md">
+    <div className="w-full h-full bg-lightBackground dark:bg-darkBackground rounded-b-md p-2">
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <h3 className="text-lg font-semibold text-darkText dark:text-lightText">Your chats</h3>
       <div className="flex flex-col gap-1">

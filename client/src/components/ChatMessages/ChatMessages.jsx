@@ -80,8 +80,8 @@ const ChatMessages = () => {
                 key={index}
                 className={`max-w-[80%] break-words p-2 rounded-2xl ${
                   isUserMessage
-                    ? "bg-pink-300 self-end"
-                    : "bg-blue-600 text-white self-start"
+                    ? "bg-purpleAccent text-white  self-end"
+                    : "bg-darkBackground text-white self-start"
                 }`}
               >
                 {isUserMessage ? "You: " : `${otherUser?.username || "Other"}: `}
