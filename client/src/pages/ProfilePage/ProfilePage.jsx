@@ -93,102 +93,106 @@ const ProfilePage = () => {
   if (error) return <p>Error: {error}</p>;
   if (!user) return <p>No user data available</p>;
 
-  return (
-    <div className="flex flex-col w-full md:w-[90vw] lg:w-[60vw] bg-lightBackground dark:bg-darkBackground h-full">
-      <h1 className="text-darkText dark:text-lightText">
-        {userId ? 'User Profile' : 'My Profile'}
-      </h1>
-  
-      {isEditing ? (
-        <div className="flex flex-col space-y-2">
-          <input
-            type="text"
-            name="username"
-            value={updatedUser.username}
-            onChange={handleChange}
-            className="border border-lightBorder dark:border-darkBorder p-2 rounded bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText placeholder-gray-400 dark:placeholder-gray-500"
-            placeholder="New username"
-          />
-          <input
-            type="email"
-            name="email"
-            value={updatedUser.email}
-            onChange={handleChange}
-            className="border border-lightBorder dark:border-darkBorder p-2 rounded bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText placeholder-gray-400 dark:placeholder-gray-500"
-            placeholder="New email"
-          />
-          <input
-            type="password"
-            name="password"
-            value={updatedUser.password}
-            onChange={handleChange}
-            className="border border-lightBorder dark:border-darkBorder p-2 rounded bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText placeholder-gray-400 dark:placeholder-gray-500"
-            placeholder="New password (optional)"
-          />
-          <button onClick={handleSave} className="bg-purpleAccent text-white p-2 rounded hover:bg-purple-700 dark:hover:bg-purple-500">
+ return (
+  <div className="flex flex-col w-full md:w-[90vw] lg:w-[60vw] bg-lightBackground dark:bg-darkBackground h-full px-6 py-4 space-y-6 m-5 rounded-md">
+    {/* Title */}
+    <h1 className="text-3xl font-semibold text-darkText dark:text-lightText">
+      {user.username}
+    </h1>
+
+
+    {/* Editing Mode */}
+    {isEditing ? (
+      <div className="flex flex-col space-y-4">
+        <input
+          type="text"
+          name="username"
+          value={updatedUser.username}
+          onChange={handleChange}
+          className="border border-lightBorder dark:border-darkBorder p-3 rounded-lg bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-purpleAccent focus:outline-none"
+          placeholder="New username"
+        />
+        <input
+          type="email"
+          name="email"
+          value={updatedUser.email}
+          onChange={handleChange}
+          className="border border-lightBorder dark:border-darkBorder p-3 rounded-lg bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-purpleAccent focus:outline-none"
+          placeholder="New email"
+        />
+        <input
+          type="password"
+          name="password"
+          value={updatedUser.password}
+          onChange={handleChange}
+          className="border border-lightBorder dark:border-darkBorder p-3 rounded-lg bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-purpleAccent focus:outline-none"
+          placeholder="New password (optional)"
+        />
+        <div className="flex space-x-4">
+          <button onClick={handleSave} className="bg-purpleAccent text-white p-3 rounded-lg w-full hover:bg-purple-700 dark:hover:bg-purple-500 transition-colors">
             Save Changes
           </button>
-          {/* Cancel button */}
           <button
             onClick={handleCancelEdit}
-            className="bg-gray-500 text-white p-2 rounded mt-2 hover:bg-gray-600"
+            className="bg-gray-500 text-white p-3 rounded-lg w-full hover:bg-gray-600 transition-colors"
           >
             Cancel
           </button>
         </div>
-      ) : (
-        <div>
-          <p className="text-darkText dark:text-lightText">
-            <strong>Username:</strong> {user.username}
-          </p>
-          <p className="text-darkText dark:text-lightText">
+      </div>
+    ) : (
+      <div>
+        <p className="text-darkText dark:text-lightText text-lg">
+          <strong>Username:</strong> {user.username}
+        </p>
+        {!userId && (
+          <p className="text-darkText dark:text-lightText text-lg">
             <strong>Email:</strong> {user.email}
           </p>
-          <p className="text-darkText dark:text-lightText">
-            <strong>Joined:</strong> {new Date(user.createdAt).toLocaleDateString()}
-          </p>
-          {!userId && (
-            <button 
-              onClick={handleEditToggle} 
-              className="bg-purpleAccent text-white p-2 rounded mt-2 hover:bg-purple-700 dark:hover:bg-purple-500">
-              Edit Profile
-            </button>
-          )}
-        </div>
-      )}
-  
-      {!userId && (
-        <div>
-          <h2 className="text-darkText dark:text-lightText mt-4">Blocked Users</h2>
-          {user.blockedUsers?.length > 0 ? (
-            <ul>
-              {user.blockedUsers.map((blockedUser) => (
-                <li key={blockedUser._id} className="flex items-center justify-between border border-lightBorder dark:border-darkBorder p-2 mt-2">
-                  <span className="text-darkText dark:text-lightText">{blockedUser.username}</span>
-                  <BlockUserButton userId={blockedUser._id} actionType="unblock" />
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-darkText dark:text-lightText">No blocked users</p>
-          )}
-        </div>
-      )}
-  
-      {userId && (
-        <div className="mt-4">
-          {isBlocked ? (
-            <BlockUserButton userId={userId} actionType="unblock" />
-          ) : (
-            <BlockUserButton userId={userId} actionType="block" />
-          )}
-        </div>
-      )}
-  
-      {!userId && <DeleteProfileBtn />}
-    </div>
+        )}
+        <p className="text-darkText dark:text-lightText text-lg">
+          <strong>Joined:</strong> {new Date(user.createdAt).toLocaleDateString()}
+        </p>
+        {!userId && (
+          <button 
+            onClick={handleEditToggle} 
+            className="bg-purpleAccent text-white p-3 rounded-lg mt-4 w-full hover:bg-purple-700 dark:hover:bg-purple-500 transition-colors">
+            Edit Profile
+          </button>
+        )}
+      </div>
+    )}
+
+    {/* Blocked Users Section */}
+    {!userId && user.blockedUsers?.length > 0 && (
+      <div>
+        <h2 className="text-2xl font-semibold text-darkText dark:text-lightText mt-6">Blocked Users</h2>
+        <ul>
+          {user.blockedUsers.map((blockedUser) => (
+            <li key={blockedUser._id} className="flex items-center justify-between border border-lightBorder dark:border-darkBorder p-4 rounded-lg mt-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+              <span className="text-darkText dark:text-lightText">{blockedUser.username}</span>
+              <BlockUserButton userId={blockedUser._id} actionType="unblock" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {/* Block/Unblock User Button */}
+    {userId && (
+      <div className="mt-6">
+        {isBlocked ? (
+          <BlockUserButton userId={userId} actionType="unblock" />
+        ) : (
+          <BlockUserButton userId={userId} actionType="block" />
+        )}
+      </div>
+    )}
+
+    {/* Delete Profile Button */}
+    {!userId && <DeleteProfileBtn />}
+  </div>
   );
-  
 };
 
 export default ProfilePage;
