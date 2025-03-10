@@ -8,14 +8,15 @@ exports.registerUser = async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    //email regex
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+    const emailRegex = /^[a-zA-Z0-9åäöÅÄÖ.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
     const sanitizedEmail = email.trim().toLowerCase(); 
     if (!emailRegex.test(sanitizedEmail)) {
       return res.status(400).json({ message: 'Invalid email format' });
     }
     //password regex
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex = /^(?=.*[a-zåäö])(?=.*[A-ZÅÄÖ])(?=.*\d)(?=.*[^\w\s])[A-Za-zÅÄÖåäö\d@$!%*?&.,;:_+={}[\]()<>-]{8,}$/;
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
         message: 'Password must be at least 8 characters long, contain a mix of uppercase, lowercase, numbers, and special characters.'

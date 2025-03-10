@@ -9,29 +9,29 @@ const Chat = ({ chatId, otherUser, latestMessage, latestTimestamp, latestSenderI
     navigate(`/chat/${chatId}/messages`);
   };
 
-  const formattedTimestamp = latestTimestamp
-    ? new Date(latestTimestamp).toLocaleString()
-    : 'No timestamp available';
+
+  const formattedDate = latestTimestamp ? new Date(latestTimestamp).toLocaleDateString() : null;
+  const formattedTime = latestTimestamp ? new Date(latestTimestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : null;
 
   const messageSender = latestSenderId === currentUserId ? 'You' : otherUser?.username;
 
   return (
-    <div className=" border-b-2 border-b-purpleAccent  dark:border-b-purpleAccent  flex items-center h-20 w-full">
+    <div className="border-b-2 border-b-purpleAccent dark:border-b-purpleAccent flex items-center h-20 w-full">
       <UserIcon username={otherUser?.username} otherUserId={otherUser?._id} />
       {otherUser ? (
-        <div 
-          onClick={handleClick} 
-          className="bg-lightBackground dark:bg-darkBackground hover:bg-purpleAccent dark:hover:bg-purpleAccent hover:cursor-pointer transition  flex flex-col justify-center w-full h-full p-3"
+        <div
+          onClick={handleClick}
+          className="bg-lightBackground dark:bg-darkBackground hover:bg-purpleAccent dark:hover:bg-purpleAccent hover:cursor-pointer transition flex flex-col justify-center w-full h-full p-3"
         >
           <div className="flex justify-between items-center w-full">
             <h4 className="font-bold text-lg text-darkText dark:text-lightText text-left truncate max-w-[65%]">
               {otherUser?.username}
             </h4>
             <span className="text-xs text-gray-500 dark:text-gray-300 text-right">
-              {formattedTimestamp}
+              {formattedDate && formattedTime ? `${formattedDate}, ${formattedTime}` : formattedDate || formattedTime}
             </span>
           </div>
-  
+
           <p className="text-sm text-center text-darkText dark:text-lightText mt-1 overflow-hidden max-w-[80%] mx-auto">
             {messageSender}: {latestMessage || 'No messages yet'}
           </p>
@@ -41,8 +41,6 @@ const Chat = ({ chatId, otherUser, latestMessage, latestTimestamp, latestSenderI
       )}
     </div>
   );
-  
-  
 };
 
 export default Chat;
