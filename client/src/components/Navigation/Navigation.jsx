@@ -31,7 +31,7 @@ const Navbar = () => {
         <div className="sm:hidden">
           <button 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="text-2xl text-purple-600 dark:text-purple-400"
+            className="text-2xl text-slate-700 dark:text-slate-300"
           >
             <FontAwesomeIcon icon={faBars} />
           </button>
