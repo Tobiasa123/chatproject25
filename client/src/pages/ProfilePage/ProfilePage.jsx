@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import DeleteProfileBtn from '../../components/DeleteProfileBtn/DeleteProfileBtn';
 import BlockUserButton from '../../components/BlockUserBtn/BlockUserBtn';
+import UserIcon from '../../components/UserIcon/UserIcon';
 
 const ProfilePage = () => {
   const { id: userId } = useParams();
@@ -94,7 +95,10 @@ const ProfilePage = () => {
   if (!user) return <p>No user data available</p>;
 
  return (
-  <div className="flex flex-col w-full md:w-[90vw] lg:w-[60vw] bg-lightBackground dark:bg-darkBackground h-full px-6 py-4 space-y-6 m-5 rounded-md">
+  <div className="flex flex-col items-center w-full md:w-[90vw] lg:w-[60vw] bg-lightBackground dark:bg-darkBackground h-full p-5 gap-2 m-5 rounded-md text-left">
+  <div className="pointer-events-none">
+    <UserIcon username={user.username} />
+  </div>
     {/* Title */}
     <h1 className="text-3xl font-semibold text-darkText dark:text-lightText">
       {user.username}
@@ -103,7 +107,7 @@ const ProfilePage = () => {
 
     {/* Editing Mode */}
     {isEditing ? (
-      <div className="flex flex-col space-y-4">
+      <div className="flex flex-col space-y-4 w-full">
         <input
           type="text"
           name="username"
@@ -190,7 +194,11 @@ const ProfilePage = () => {
     )}
 
     {/* Delete Profile Button */}
-    {!userId && <DeleteProfileBtn />}
+    {!userId && (
+      <div className="mt-auto pt-6">
+        <DeleteProfileBtn />
+      </div>
+    )}
   </div>
   );
 };
