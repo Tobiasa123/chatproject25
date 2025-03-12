@@ -17,7 +17,7 @@ function AppContent() {
 
   return (
     <div className="flex flex-col justify-center items-center h-screen w-full bg-slate-300 dark:bg-slate-800">
-      {showNavbar && <Navbar />} 
+      {/* {showNavbar && <Navbar />}  */}
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route
@@ -37,7 +37,7 @@ function AppContent() {
           element={isAuthenticated() ? <ChatPage /> : <Navigate to="/" replace />}
         />
       </Routes>
-      {showNavbar && <Footer />} 
+      {/* {showNavbar && <Footer />}  */}
     </div>
   );
 }

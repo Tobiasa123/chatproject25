@@ -93,34 +93,32 @@ const RenderChats = () => {
     }
   }, [currentUserId]);
 
-return (
-  <div className="w-full h-full bg-lightBackground dark:bg-darkBackground rounded-b-md p-2 overflow-y-auto">
-    {error && <p className="text-red-500 text-sm">{error}</p>}
-    <div className="grid grid-cols-1 max-h-40 gap-2 ">
-      {chats.length > 0 ? (
-        chats.map(chat => 
-          chat?.otherUser ? (
-            <Chat 
-              key={chat.chatId}
-              chatId={chat.chatId} 
-              otherUser={chat.otherUser} 
-              latestMessage={chat.latestMessage || "No messages yet"}
-              latestTimestamp={chat.latestTimestamp}
-              latestSenderId={chat.latestSenderId || ""} 
-              currentUserId={currentUserId} 
-            />
-          ) : (
-            <p key={chat.chatId} className="p-2 bg-gray-100 rounded">
-              Loading chat information...
-            </p>
+  return (
+    <div className=" w-full h-full bg-lightBackground dark:bg-darkBackground rounded p-4 shadow-md overflow-y-auto">
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+      <div className="grid gap-2">
+        {chats.length > 0 ? (
+          chats.map(chat => 
+            chat?.otherUser ? (
+              <Chat 
+                key={chat.chatId}
+                chatId={chat.chatId} 
+                otherUser={chat.otherUser} 
+                latestMessage={chat.latestMessage || "No messages yet"}
+                latestTimestamp={chat.latestTimestamp}
+                latestSenderId={chat.latestSenderId || ""} 
+                currentUserId={currentUserId} 
+              />
+            ) : (
+              <p key={chat.chatId} className="p-2 bg-gray-100 rounded">Loading chat info...</p>
+            )
           )
-        )
-      ) : (
-        <p className="text-gray-500">No chats available</p>
-      )}
+        ) : (
+          <p className="text-gray-500">No chats available</p>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
 
 };
 
