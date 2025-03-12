@@ -58,8 +58,7 @@ const LoginForm = () => {
   
 
   return (
-    <div className="flex flex-col w-full md:w-[90vw] lg:w-[50vw] justify-center items-center bg-lightBackground dark:bg-darkBackground h-2/3 rounded-md gap-3 min-w-80 border border-lightBorder dark:border-darkBorder">
-      <ThemeSwitch />
+    <div className="flex flex-col  justify-center items-center bg-lightBackground dark:bg-darkBackground h-full rounded-md gap-3 border border-lightBorder dark:border-darkBorder">
       <h2 className="text-darkText dark:text-lightText">{isLogin ? "Login" : "Signup"}</h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-2/3" noValidate>
         {!isLogin && (
@@ -124,7 +123,6 @@ const LoginForm = () => {
           {isLogin ? "Sign Up" : "Log In"}
         </button>
       </p>
-      <Footer />
     </div>
   );
 };
