@@ -3,9 +3,7 @@ import { useLocation } from 'react-router-dom';
 import LoginPage from './pages/LoginPage/LoginPage';
 import HomePage from './pages/HomePage/HomePage';
 import ChatPage from './pages/ChatPage/ChatPage';
-import Navbar from './components/Navigation/Navigation';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
-import Footer from './components/Footer/Footer';
 
 function AppContent() {
   const location = useLocation(); 
@@ -16,8 +14,9 @@ function AppContent() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen w-full bg-slate-300 dark:bg-slate-800">
-      {/* {showNavbar && <Navbar />}  */}
+
+    <div className="h-screen w-full bg-slate-300 dark:bg-slate-800 bg-[url('/src/assets/wave.svg')] bg-cover bg-bottom">
+
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route
@@ -37,7 +36,6 @@ function AppContent() {
           element={isAuthenticated() ? <ChatPage /> : <Navigate to="/" replace />}
         />
       </Routes>
-      {/* {showNavbar && <Footer />}  */}
     </div>
   );
 }

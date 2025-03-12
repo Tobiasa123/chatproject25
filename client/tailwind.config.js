@@ -18,7 +18,7 @@ export default {
         darkText: '#3d3d3d',        // Dark gray text for light mode
         
         // Purple Accent (Stays the same in both modes)
-        purpleAccent: '#9B4DFF',    // Purple accents (links, buttons, etc.)
+        purpleAccent: '#7045f7',    // Purple accents (links, buttons, etc.)
 
         // Border
         lightBorder: '#A0A0A0',     // Slightly darker gray border for light mode
