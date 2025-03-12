@@ -1,16 +1,19 @@
-import RenderChats from "../../components/RenderChats/RenderChats"
-import CreateChat from "../../components/CreateChat/CreateChat"
+import RenderChats from "../../components/RenderChats/RenderChats";
+import CreateChat from "../../components/CreateChat/CreateChat";
+import Navbar from "../../components/Navigation/Navigation";
+import Footer from "../../components/Footer/Footer";
 
-//createchat here temporarily
 const HomePage = () => {
-    return (
-        <div className="flex justify-center items-center w-full h-screen">
-            <div className="flex flex-col w-full md:w-[90vw] lg:w-[60vw] h-[95%]">
-                <CreateChat />
-                <RenderChats className="flex-1 overflow-y-auto" />
-            </div>
-        </div>
-    );
+  return (
+      <div className="grid grid-rows-[auto_1fr_auto] h-full w-full">
+          <Navbar />
+          <main className="flex flex-col w-full md:w-[90vw] lg:w-[60vw] h-full overflow-y-auto mx-auto gap-4 py-6">
+              <CreateChat />
+              <RenderChats />
+          </main>
+          <Footer />
+      </div>
+  );
 };
 
-export default HomePage
+export default HomePage;

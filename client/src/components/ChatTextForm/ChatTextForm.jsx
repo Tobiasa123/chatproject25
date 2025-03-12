@@ -33,12 +33,11 @@ const ChatTextForm = ({ onMessageSent }) => {
   };
 
   return (
-    <div className="w-full">
-      <div className="flex flex-row justify-center h-12">
+    <div className="w-full h-[60px] flex-shrink-0">
+      <div className="flex flex-row justify-center h-full">
         <input
           type="text"
-          id="message-box"
-          className="w-full rounded-l-md bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText"  // Set bg and text color for both light and dark mode
+          className="w-full rounded-l-md bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText"
           placeholder="Type your message..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -54,7 +53,6 @@ const ChatTextForm = ({ onMessageSent }) => {
       </div>
     </div>
   );
-  
 };
 
 export default ChatTextForm; 

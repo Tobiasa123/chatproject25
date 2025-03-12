@@ -105,25 +105,28 @@ const CreateChat = () => {
     }
   };
 
-  return (
-    <div className="create-chat-container bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText rounded-t-md flex flex-col p-2 relative">
-      <div className="flex items-center gap-2">
-        <FontAwesomeIcon icon={faSearch} className="text-gray-500 text-xl" />
-        <input
-          ref={inputRef} 
-          type="text"
-          placeholder="Enter recipient's username"
-          value={username}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown} 
-          className="border border-lightBorder dark:border-darkBorder p-2 rounded bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText w-full"
-        />
-        <button
-          onClick={handleSearch} 
-          className="bg-purpleAccent text-lightText py-2 px-4 rounded whitespace-nowrap"
-        >
-          Create Chat
-        </button>
+    return (
+      <div className="  bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText rounded-md flex flex-col p-2 relative">
+        <div className="grid grid-cols-1 gap-2">
+        <span className="text-xl font-bold">Create a new chat</span>
+        <div className="grid grid-cols-[auto,1fr,auto] items-center gap-2">
+          <FontAwesomeIcon icon={faSearch} className="text-gray-500 text-xl" />
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder="Enter recipient's username"
+            value={username}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            className="border border-lightBorder dark:border-darkBorder p-2 rounded bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText w-full"
+          />
+          <button
+            onClick={handleSearch}
+            className="bg-purpleAccent text-lightText py-2 px-4 rounded whitespace-nowrap"
+          >
+            Create Chat
+          </button>
+        </div>
       </div>
 
       {/* Dropdown */}

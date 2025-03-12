@@ -16,30 +16,31 @@ const Chat = ({ chatId, otherUser, latestMessage, latestTimestamp, latestSenderI
   const messageSender = latestSenderId === currentUserId ? 'You' : otherUser?.username;
 
   return (
-    <div className="border-b-2 border-b-purpleAccent dark:border-b-purpleAccent flex items-center h-20 w-full">
-      <UserIcon username={otherUser?.username} otherUserId={otherUser?._id} />
-      {otherUser ? (
-        <div
-          onClick={handleClick}
-          className="bg-lightBackground dark:bg-darkBackground hover:bg-purpleAccent dark:hover:bg-purpleAccent hover:cursor-pointer transition flex flex-col justify-center w-full h-full p-3"
-        >
-          <div className="flex justify-between items-center w-full">
-            <h4 className="font-bold text-lg text-darkText dark:text-lightText text-left truncate max-w-[65%]">
-              {otherUser?.username}
-            </h4>
-            <span className="text-xs text-gray-500 dark:text-gray-300 text-right">
-              {formattedDate && formattedTime ? `${formattedDate}, ${formattedTime}` : formattedDate || formattedTime}
-            </span>
-          </div>
-
-          <p className="text-sm text-center text-darkText dark:text-lightText mt-1 overflow-hidden max-w-[80%] mx-auto">
-            {messageSender}: {latestMessage || 'No messages yet'}
-          </p>
-        </div>
-      ) : (
-        <h4 className="font-bold text-darkText dark:text-lightText">Other user not found</h4>
-      )}
+    <div className=" grid grid-cols-[auto_1fr] items-center gap-2 w-full ">
+    <UserIcon username={otherUser?.username} otherUserId={otherUser?._id} />
+  
+  {otherUser ? (
+    <div 
+      onClick={handleClick} 
+      className="bg-lightBackground  dark:bg-darkBackground hover:bg-purpleAccent dark:hover:bg-purpleAccent cursor-pointer transition grid grid-rows-[auto_auto] h-full p-3"
+    >
+      <div className="grid grid-cols-[1fr_auto] items-center gap-2">
+        <h4 className="font-bold text-lg text-darkText dark:text-lightText truncate">
+          {otherUser.username}
+        </h4>
+        <span className="text-xs text-gray-500 dark:text-gray-300">
+          {formattedDate && formattedTime ? `${formattedDate}, ${formattedTime}` : formattedDate || formattedTime}
+        </span>
+      </div>
+      <p className="text-sm text-darkText dark:text-lightText mt-1 truncate grid">
+        {messageSender}: {latestMessage || 'No messages yet'}
+      </p>
     </div>
+  ) : (
+    <h4 className="font-bold text-darkText dark:text-lightText grid">Other user not found</h4>
+  )}
+</div>
+
   );
 };
 

@@ -9,7 +9,6 @@ const RenderChats = () => {
   const [currentUserId, setCurrentUserId] = useState(null);
   const socketRef = useRef(null);
 
-
   const fetchChats = async () => {
     const token = sessionStorage.getItem('authToken');
     if (!token) {
@@ -79,7 +78,7 @@ const RenderChats = () => {
               : chat
           )
         );
-        fetchChats(); //fetch after to update order of message list
+        fetchChats(); 
       };
   
       socketRef.current.on("newChat", handleNewChat);
@@ -95,36 +94,32 @@ const RenderChats = () => {
   }, [currentUserId]);
 
   return (
-    <div className="w-full h-full bg-lightBackground dark:bg-darkBackground rounded-b-md p-2 overflow-y-auto">
-      {error && <p className="text-red-500 text-sm">{error}</p>}
-      <h3 className="text-lg font-semibold text-darkText dark:text-lightText">Your chats</h3>
-      <div className="flex flex-col gap-1 max-h-40">
+    <div className=" w-full h-full bg-lightBackground dark:bg-darkBackground rounded p-4 overflow-y-auto">
+      {/* {error && <p className="text-gray-500">{error}</p>} */}
+      <div className="grid gap-2">
         {chats.length > 0 ? (
-          chats.map(chat => (
-            <div key={chat.chatId}>
-              {chat && chat.otherUser ? (
-                <Chat 
-                  chatId={chat.chatId} 
-                  otherUser={chat.otherUser} 
-                  latestMessage={chat.latestMessage || "No messages yet"}
-                  latestTimestamp={chat.latestTimestamp}
-                  latestSenderId={chat.latestSenderId || ""} 
-                  currentUserId={currentUserId} 
-                />
-              ) : (
-                <div className="p-2 bg-gray-100 rounded">
-                  Loading chat information...
-                </div>
-              )}
-            </div>
-          ))
+          chats.map(chat => 
+            chat?.otherUser ? (
+              <Chat 
+                key={chat.chatId}
+                chatId={chat.chatId} 
+                otherUser={chat.otherUser} 
+                latestMessage={chat.latestMessage || "No messages yet"}
+                latestTimestamp={chat.latestTimestamp}
+                latestSenderId={chat.latestSenderId || ""} 
+                currentUserId={currentUserId} 
+              />
+            ) : (
+              <p key={chat.chatId} className="p-2 bg-gray-100 rounded">Loading chat info...</p>
+            )
+          )
         ) : (
           <p className="text-gray-500">No chats available</p>
         )}
       </div>
     </div>
   );
-  
+
 };
 
 export default RenderChats;
