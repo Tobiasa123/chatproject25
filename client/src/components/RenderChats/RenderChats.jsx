@@ -94,8 +94,8 @@ const RenderChats = () => {
   }, [currentUserId]);
 
   return (
-    <div className=" w-full h-full bg-lightBackground dark:bg-darkBackground rounded p-4 shadow-md overflow-y-auto">
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+    <div className=" w-full h-full bg-lightBackground dark:bg-darkBackground rounded p-4 overflow-y-auto">
+      {/* {error && <p className="text-gray-500">{error}</p>} */}
       <div className="grid gap-2">
         {chats.length > 0 ? (
           chats.map(chat => 

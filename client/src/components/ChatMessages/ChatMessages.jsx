@@ -61,26 +61,25 @@ const ChatMessages = () => {
   }, [messages]);
 
   return (
-    <div className="bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText flex flex-col items-center rounded-md h-[80vh] w-full md:w-[90vw] lg:w-[60vw]">
-      <h1 className="text-lg font-semibold my-4">
+    <div className="flex flex-col flex-grow h-0 w-full bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText rounded-md">
+      <h1 className="text-lg font-semibold my-4 text-center">
         Chat with {otherUser ? otherUser.username : "Loading..."}
       </h1>
       {error && <p className="text-red-500">{error}</p>}
       <div 
         ref={messagesContainerRef}
-        className="flex-grow overflow-y-auto flex flex-col-reverse bg-slate-500 w-full rounded-b-lg"
+        className="flex-1 overflow-y-auto flex flex-col-reverse bg-slate-500 w-full rounded-b-md"
       >
         <ul className="flex flex-col gap-6 p-4">
           {messages.map((message, index) => {
             const decoded = jwtDecode(sessionStorage.getItem('authToken'));
             const isUserMessage = message.sender === decoded._id;
-  
             return (
               <li
                 key={index}
                 className={`max-w-[80%] break-words p-2 rounded-2xl ${
                   isUserMessage
-                    ? "bg-purpleAccent text-white  self-end"
+                    ? "bg-purpleAccent text-white self-end"
                     : "bg-darkBackground text-white self-start"
                 }`}
               >
@@ -93,6 +92,7 @@ const ChatMessages = () => {
       </div>
     </div>
   );
+  
   
   
 };
