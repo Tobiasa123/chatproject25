@@ -16,8 +16,8 @@ const Chat = ({ chatId, otherUser, latestMessage, latestTimestamp, latestSenderI
   const messageSender = latestSenderId === currentUserId ? 'You' : otherUser?.username;
 
   return (
-    <div className=" grid grid-cols-[auto_1fr] items-center gap-2 h-20 w-full">
-  <UserIcon username={otherUser?.username} otherUserId={otherUser?._id} />
+    <div className=" grid grid-cols-[auto_1fr] items-center gap-2 w-full ">
+    <UserIcon username={otherUser?.username} otherUserId={otherUser?._id} />
   
   {otherUser ? (
     <div 

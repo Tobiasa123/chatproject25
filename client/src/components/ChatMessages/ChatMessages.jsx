@@ -61,7 +61,7 @@ const ChatMessages = () => {
   }, [messages]);
 
   return (
-    <div className="bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText flex flex-col items-center rounded-lg h-[80vh] w-full md:w-[90vw] lg:w-[60vw]">
+    <div className="bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText flex flex-col items-center rounded-md h-[80vh] w-full md:w-[90vw] lg:w-[60vw]">
       <h1 className="text-lg font-semibold my-4">
         Chat with {otherUser ? otherUser.username : "Loading..."}
       </h1>
