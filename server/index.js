@@ -52,6 +52,11 @@ io.on("connection", (socket) => {
     console.log(`Socket ${socket.id} left chat room ${chatId}`);
   });
 
+  socket.on("deleteChat", (chatId) => {
+    io.emit("chatDeleted", { chatId });
+    console.log(`Chat ${chatId} deleted and emitted to all clients.`);
+  });
+
   socket.on("disconnect", () => {
     console.log("User disconnected: " + socket.id);
   });

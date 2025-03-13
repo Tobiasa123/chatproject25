@@ -6,7 +6,10 @@ const {verifyToken} = require('../middleware/auth')
 
 router.post('/chats', verifyToken ,chatController.createChat);
 router.post('/chats/:chatId/messages', verifyToken ,chatController.createMessage);
+
 router.get('/chats/:chatId/messages', verifyToken ,chatController.getChatMessages);
 router.get('/user/chats', verifyToken ,chatController.getUserChats);
+
+router.delete('/chat/:chatId', verifyToken, chatController.deleteChat);
 
 module.exports = router;

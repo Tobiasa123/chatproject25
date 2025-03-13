@@ -46,7 +46,9 @@ const Chat = ({ chatId, otherUser, latestMessage, latestTimestamp, latestSenderI
       )}
 
       {/* Right Column: ChatMenu */}
-      <ChatMenu otherUserId={otherUser?._id}
+      <ChatMenu 
+      chatId={chatId}
+      otherUserId={otherUser?._id}
       isOpen={openMenuId === chatId} 
       toggleMenu={() => setOpenMenuId(openMenuId === chatId ? null : chatId)} 
        />

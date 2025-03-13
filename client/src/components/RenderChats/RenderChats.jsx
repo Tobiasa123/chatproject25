@@ -82,17 +82,25 @@ const RenderChats = () => {
         fetchChats(); 
       };
   
+      const handleChatDeleted = (deletedChat) => {
+        console.log(`Chat ${deletedChat.chatId} deleted.`);
+        setChats((prevChats) => prevChats.filter(chat => chat.chatId !== deletedChat.chatId));
+      };
+  
       socketRef.current.on("newChat", handleNewChat);
       socketRef.current.on("updateChatList", handleUpdateChatList);
+      socketRef.current.on("chatDeleted", handleChatDeleted);
   
       return () => {
         socketRef.current.off("newChat", handleNewChat);
         socketRef.current.off("updateChatList", handleUpdateChatList);
+        socketRef.current.off("chatDeleted", handleChatDeleted);
         socketRef.current.disconnect();
         socketRef.current = null;
       };
     }
   }, [currentUserId]);
+  
 
   return (
     <div className=" w-full h-full bg-lightBackground dark:bg-darkBackground rounded p-4 overflow-y-auto custom-scrollbar ">
