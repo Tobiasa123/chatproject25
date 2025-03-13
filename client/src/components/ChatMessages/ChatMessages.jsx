@@ -68,7 +68,7 @@ const ChatMessages = () => {
       {error && <p className="text-red-500">{error}</p>}
       <div 
         ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto flex flex-col-reverse bg-slate-500 w-full rounded-b-md"
+        className="flex-1 overflow-y-auto custom-scrollbar flex flex-col-reverse bg-lightBackground dark:bg-darkBackground w-full rounded-b-md"
       >
         <ul className="flex flex-col gap-6 p-4">
           {messages.map((message, index) => {
@@ -77,11 +77,15 @@ const ChatMessages = () => {
             return (
               <li
                 key={index}
-                className={`max-w-[80%] break-words p-2 rounded-2xl ${
+                className={`max-w-[80%] w-fit p-2 rounded-2xl ${
                   isUserMessage
                     ? "bg-purpleAccent text-white self-end"
-                    : "bg-darkBackground text-white self-start"
+                    : "bg-darkBackground dark:bg-slate-800 text-white self-start"
                 }`}
+                style={{
+                  wordBreak: "break-word",
+                  overflowWrap: "break-word",
+                }}
               >
                 {isUserMessage ? "You: " : `${otherUser?.username || "Other"}: `}
                 {message.text}
