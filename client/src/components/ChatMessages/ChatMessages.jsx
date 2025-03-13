@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import BackArrow from "../BackArrow/BackArrow";
 
 const ChatMessages = () => {
   const { chatId } = useParams();
@@ -62,7 +63,10 @@ const ChatMessages = () => {
 
   return (
     <div className="flex flex-col flex-grow h-0 w-full bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText rounded-md">
-      <h1 className="text-lg font-semibold my-4 text-center">
+      <div className="p-4 absolute">
+        <BackArrow />
+      </div>
+      <h1 className="text-lg font-semibold my-4 text-center bg">
         Chat with {otherUser ? otherUser.username : "Loading..."}
       </h1>
       {error && <p className="text-red-500">{error}</p>}
