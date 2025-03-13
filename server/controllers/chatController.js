@@ -182,4 +182,27 @@ exports.getUserChats = async (req, res) => {
         res.status(500).send({ message: 'Error fetching chats', error: err.message });
     }
   };
-  
+  exports.deleteChat = async (req, res) => {
+    const { chatId } = req.params;
+    const userId = req.user._id;
+
+    try {
+        const chat = await Chat.findById(chatId);
+        if (!chat) {
+            return res.status(404).send({ message: "Chat not found" });
+        }
+
+        if (!chat.participants.includes(userId)) {
+            return res.status(403).send({ message: "You are not allowed to delete this chat" });
+        }
+
+        await Chat.findByIdAndDelete(chatId);
+
+        const io = req.app.get("io");
+        io.emit("chatDeleted", { chatId });
+
+        res.status(200).send({ message: "Chat deleted successfully" });
+    } catch (err) {
+        res.status(500).send({ message: "Error deleting chat", error: err.message });
+    }
+};
