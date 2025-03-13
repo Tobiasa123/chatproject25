@@ -9,14 +9,17 @@ const chatSchema = new mongoose.Schema({
         },
     ],
     messages: [
-        {
-            sender: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
-            text: { type: String, required: true},
-            timestamp: {type: Date, default: Date.now}
-    }
+      {
+        sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+        text: { type: String, required: true },
+        timestamp: { type: Date, default: Date.now },
+      },
     ],
-    createdAt: {type: Date, default: Date.now}
-})
+  },
+  {
+    timestamps: true,
+  }
+);
 
 const Chat = mongoose.model('Chat', chatSchema);
 

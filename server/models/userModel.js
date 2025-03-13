@@ -19,6 +19,13 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  blockedUsers: {
+    type: [{ 
+      _id: mongoose.Schema.Types.ObjectId, 
+      username: String 
+    }], 
+    default: []
+  }
 });
 
 const User = mongoose.model('User', userSchema);
