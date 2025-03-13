@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import DeleteProfileBtn from '../../components/DeleteProfileBtn/DeleteProfileBtn';
 import BlockUserButton from '../../components/BlockUserBtn/BlockUserBtn';
 import UserIcon from '../../components/UserIcon/UserIcon';
+import BackArrow from '../BackArrow/BackArrow';
 
 const ProfileContent = () => {
   const { id: userId } = useParams();
@@ -95,6 +96,11 @@ const ProfileContent = () => {
 
   return (
     <div className="flex flex-col items-center bg-lightBackground dark:bg-darkBackground h-full p-6 rounded-md text-left">
+
+      <div className="flex items-center w-full">
+          <BackArrow className="self-start" />
+        </div>
+        
       <div className="pointer-events-none">
         <UserIcon username={user.username} />
       </div>

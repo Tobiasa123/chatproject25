@@ -23,7 +23,7 @@ const Navbar = () => {
   return (
     <nav className="w-full bg-lightBackground dark:bg-darkBackground border-b-2 border-purpleAccent">
       <div className="w-full px-6 py-3 flex justify-between items-center">
-        <div className="text-2xl font-bold text-purpleAccent dark:text-purpleAccent">
+        <div className="text-2xl font-bold text-purpleAccent dark:text-lightText">
           EveryTen
         </div>
 

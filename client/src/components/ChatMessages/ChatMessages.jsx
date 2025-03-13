@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import BackArrow from "../BackArrow/BackArrow";
 
 const ChatMessages = () => {
   const { chatId } = useParams();
@@ -62,13 +63,16 @@ const ChatMessages = () => {
 
   return (
     <div className="flex flex-col flex-grow h-0 w-full bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText rounded-md">
-      <h1 className="text-lg font-semibold my-4 text-center">
+      <div className="p-4 absolute">
+        <BackArrow />
+      </div>
+      <h1 className="text-lg font-semibold my-4 text-center bg">
         Chat with {otherUser ? otherUser.username : "Loading..."}
       </h1>
       {error && <p className="text-red-500">{error}</p>}
       <div 
         ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto flex flex-col-reverse bg-slate-500 w-full rounded-b-md"
+        className="flex-1 overflow-y-auto custom-scrollbar flex flex-col-reverse bg-lightBackground dark:bg-darkBackground w-full rounded-b-md"
       >
         <ul className="flex flex-col gap-6 p-4">
           {messages.map((message, index) => {
@@ -77,11 +81,15 @@ const ChatMessages = () => {
             return (
               <li
                 key={index}
-                className={`max-w-[80%] break-words p-2 rounded-2xl ${
+                className={`max-w-[80%] w-fit p-2 rounded-2xl ${
                   isUserMessage
                     ? "bg-purpleAccent text-white self-end"
-                    : "bg-darkBackground text-white self-start"
+                    : "bg-darkBackground dark:bg-slate-800 text-white self-start"
                 }`}
+                style={{
+                  wordBreak: "break-word",
+                  overflowWrap: "break-word",
+                }}
               >
                 {isUserMessage ? "You: " : `${otherUser?.username || "Other"}: `}
                 {message.text}

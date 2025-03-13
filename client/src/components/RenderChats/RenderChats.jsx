@@ -7,6 +7,7 @@ const RenderChats = () => {
   const [chats, setChats] = useState([]);
   const [error, setError] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
+  const [openMenuId, setOpenMenuId] = useState(null);
   const socketRef = useRef(null);
 
   const fetchChats = async () => {
@@ -94,7 +95,7 @@ const RenderChats = () => {
   }, [currentUserId]);
 
   return (
-    <div className=" w-full h-full bg-lightBackground dark:bg-darkBackground rounded p-4 overflow-y-auto">
+    <div className=" w-full h-full bg-lightBackground dark:bg-darkBackground rounded p-4 overflow-y-auto custom-scrollbar ">
       {/* {error && <p className="text-gray-500">{error}</p>} */}
       <div className="grid gap-2">
         {chats.length > 0 ? (
@@ -107,7 +108,9 @@ const RenderChats = () => {
                 latestMessage={chat.latestMessage || "No messages yet"}
                 latestTimestamp={chat.latestTimestamp}
                 latestSenderId={chat.latestSenderId || ""} 
-                currentUserId={currentUserId} 
+                currentUserId={currentUserId}
+                openMenuId={openMenuId} 
+                setOpenMenuId={setOpenMenuId} 
               />
             ) : (
               <p key={chat.chatId} className="p-2 bg-gray-100 rounded">Loading chat info...</p>
