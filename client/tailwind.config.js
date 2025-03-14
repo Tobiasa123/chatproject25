@@ -10,19 +10,19 @@ export default {
       },
       colors: {
         // Backgrounds
-        lightBackground: '#FFFFFF', // Light gray background for light mode
-        darkBackground: '#403f3f',  // Dark gray background for dark mode
+        lightBackground: '#FFFFFF', 
+        darkBackground: '#403f3f',  
         
         // Text Colors
-        lightText: '#FFFFFF',       // White text for dark mode
-        darkText: '#3d3d3d',        // Dark gray text for light mode
+        lightText: '#FFFFFF',       
+        darkText: '#3d3d3d',        
         
         // Purple Accent (Stays the same in both modes)
-        purpleAccent: '#7045f7',    // Purple accents (links, buttons, etc.)
+        purpleAccent: '#7045f7',  
 
         // Border
-        lightBorder: '#A0A0A0',     // Slightly darker gray border for light mode
-        darkBorder: '#3A3A3A',      // Dark gray border for dark mode
+        lightBorder: '#A0A0A0', 
+        darkBorder: '#3A3A3A',     
       },
     },
   },
