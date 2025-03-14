@@ -218,16 +218,16 @@ exports.loginUser = async (req, res) => {
 };
 exports.getUsersByUsername = async (req, res) => {
   try {
-    const { username } = req.query; // Get the username from query
-    const userId = req.user._id; // Get the logged-in user's ID from the authenticated user
+    const { username } = req.query; 
+    const userId = req.user._id; 
 
-    // Find users that match the username, excluding the logged-in user
+
     const users = await User.find({
-      username: { $regex: username, $options: "i" }, // Case-insensitive search
-      _id: { $ne: userId }, // Exclude the logged-in user's ID
+      username: { $regex: username, $options: "i" },
+      _id: { $ne: userId },
     });
 
-    res.json(users); // Send the filtered users as response
+    res.json(users); 
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).json({ message: "Internal server error" });
