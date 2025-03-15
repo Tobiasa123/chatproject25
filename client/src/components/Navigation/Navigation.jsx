@@ -7,7 +7,7 @@ import DashboardBtn from '../DashboardBtn/DashboardBtn';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // Get current route
+  const location = useLocation(); 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = () => {
