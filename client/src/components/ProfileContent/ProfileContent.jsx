@@ -154,6 +154,9 @@ const ProfileContent = () => {
           <p className="text-lg text-darkText dark:text-lightText">
             <strong>Joined:</strong> {new Date(user.createdAt).toLocaleDateString()}
           </p>
+          <p className="text-lg text-darkText dark:text-lightText">
+            <strong>Role:</strong> {user.role}
+          </p>
           {!userId && (
             <button 
               onClick={handleEditToggle} 

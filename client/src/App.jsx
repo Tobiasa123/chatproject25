@@ -1,14 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 import LoginPage from './pages/LoginPage/LoginPage';
 import HomePage from './pages/HomePage/HomePage';
 import ChatPage from './pages/ChatPage/ChatPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
+import DashboardPage from './pages/DashboardPage/DashBoardPage';
+import { isAdmin } from '../src/utils/isAdmin';
 
 function AppContent() {
-  const location = useLocation(); 
-  const showNavbar = location.pathname !== '/'; 
-
   const isAuthenticated = () => {
     return !!sessionStorage.getItem('authToken'); 
   };
@@ -35,6 +33,9 @@ function AppContent() {
           path="/chat/:chatId/messages"
           element={isAuthenticated() ? <ChatPage /> : <Navigate to="/" replace />}
         />
+        <Route
+         path="/dashboard" element={isAuthenticated() && isAdmin() ? <DashboardPage /> : <Navigate to="/home" replace />} 
+         />
       </Routes>
     </div>
   );

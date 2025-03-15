@@ -38,7 +38,11 @@ exports.registerUser = async (req, res) => {
 
     await newUser.save();
 
-    const token = jwt.sign({ _id: newUser._id}, jwtkey, {expiresIn: '2h'})
+    const token = jwt.sign(
+      { _id: newUser._id, username: newUser.username, role: newUser.role }, 
+      jwtkey, 
+      { expiresIn: '2h' }
+    );
 
     const registrationMessage = 'Thank you for registering with us!';
     const contactInfo = '\n\nIf you have any inquiries or questions, please contact us at tobiaserikandersson@gmail.com.';
@@ -71,7 +75,11 @@ exports.loginUser = async (req, res) => {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
   
-      const token = jwt.sign({ _id: user._id}, jwtkey, {expiresIn: '2h'})
+    const token = jwt.sign(
+      { _id: user._id, username: user.username, role: user.role }, 
+      jwtkey, 
+      { expiresIn: '2h' }
+    );
   
       res.status(201).send({
           user: {
