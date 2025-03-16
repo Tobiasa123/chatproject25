@@ -8,21 +8,16 @@ import DashboardPage from './pages/DashboardPage/DashBoardPage';
 import { isAdmin } from '../src/utils/isAdmin';
 
 function AppContent() {
-
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
+  const [isAuthenticated, setIsAuthenticated] = useState(!!sessionStorage.getItem('authToken'));
   useEffect(() => {
     const checkAuth = () => {
-      const token = sessionStorage.getItem('authToken');
-      setIsAuthenticated(!!token);
+      setIsAuthenticated(!!sessionStorage.getItem('authToken'));
     };
-    
+
     checkAuth();
-    
     window.addEventListener('storage', checkAuth);
-    
     window.addEventListener('authChange', checkAuth);
-    
+
     return () => {
       window.removeEventListener('storage', checkAuth);
       window.removeEventListener('authChange', checkAuth);
@@ -33,25 +28,11 @@ function AppContent() {
     <div className="h-screen w-full bg-slate-300 dark:bg-slate-800 bg-[url('/src/assets/wave.svg')] bg-cover bg-bottom">
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route
-          path="/home"
-          element={isAuthenticated ? <HomePage /> : <Navigate to="/" replace />}
-        />
-        <Route
-          path="/profile"
-          element={isAuthenticated ? <ProfilePage /> : <Navigate to="/" replace />}
-        />
-        <Route
-          path="/profile/:id"
-          element={isAuthenticated ? <ProfilePage /> : <Navigate to="/" replace />}
-        />
-        <Route
-          path="/chat/:chatId/messages"
-          element={isAuthenticated ? <ChatPage /> : <Navigate to="/" replace />}
-        />
-        <Route
-         path="/dashboard" element={isAuthenticated && isAdmin() ? <DashboardPage /> : <Navigate to="/home" replace />} 
-         />
+        <Route path="/home" element={isAuthenticated ? <HomePage /> : <Navigate to="/" replace />} />
+        <Route path="/profile" element={isAuthenticated ? <ProfilePage /> : <Navigate to="/" replace />} />
+        <Route path="/profile/:id" element={isAuthenticated ? <ProfilePage /> : <Navigate to="/" replace />} />
+        <Route path="/chat/:chatId/messages" element={isAuthenticated ? <ChatPage /> : <Navigate to="/" replace />} />
+        <Route path="/dashboard" element={isAuthenticated && isAdmin() ? <DashboardPage /> : <Navigate to="/home" replace />} />
       </Routes>
     </div>
   );
