@@ -12,8 +12,9 @@ const Navbar = () => {
 
   const handleLogout = () => {
     sessionStorage.removeItem('authToken');
-    navigate('/');
     setIsMenuOpen(false);
+    window.dispatchEvent(new Event('authChange'));
+    navigate('/');
   };
 
   const handleNavigation = (path) => {
