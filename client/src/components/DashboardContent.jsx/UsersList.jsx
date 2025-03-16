@@ -40,7 +40,7 @@ const UsersList = () => {
         users.map((user) => (
           <li
             key={user._id}
-            className="flex justify-between items-center p-2 bg-gray-100 dark:bg-gray-800 rounded"
+            className="flex justify-between items-center p-2 bg-white dark:bg-gray-800 rounded border border-black dark:border-white"
           >
             <span>{user.username}</span>
             {user.role === "admin" ? (
@@ -49,7 +49,7 @@ const UsersList = () => {
               <div className="flex gap-2">
                 <button
                   onClick={() => handleEditClick(user)}
-                  className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                  className="px-3 py-1 text-sm bg-purpleAccent text-white rounded hover:bg-blue-600 transition"
                 >
                   Edit
                 </button>
@@ -68,9 +68,9 @@ const UsersList = () => {
       )}
 
       {editingUser && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center">
           <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-2xl w-96">
-            <h2 className="text-xl font-semibold text-center mb-4">Edit User</h2>
+            <h2 className="text-xl font-semibold text-center mb-4">Edit {editingUser.username}</h2>
             <div className="flex flex-col gap-3">
               <div>
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Email:</label>
@@ -116,7 +116,7 @@ const UsersList = () => {
       )}
 
       {deletingUser && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center">
           <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-2xl w-80 text-center">
             <h2 className="text-lg font-semibold mb-4">Are you sure?</h2>
             <p className="text-gray-600 dark:text-gray-300 mb-6">

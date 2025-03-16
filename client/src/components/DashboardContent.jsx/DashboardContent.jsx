@@ -6,12 +6,12 @@ const DashboardContent = () => {
     const [selectedSection, setSelectedSection] = useState("users");
   
     return (
-      <div className="grid grid-cols-[auto_1fr] h-full">
+      <div className="grid grid-cols-[auto_1fr] h-full ">
         <div className="w-64">
           <DashboardSidebar onSelect={setSelectedSection} />
         </div>
   
-        <section className="p-6 bg-lightBackground dark:bg-darkBackground rounded-r-md text-darkText dark:text-lightText">
+        <section className="p-6 bg-lightBackground bg-opacity-50  dark:bg-black dark:bg-opacity-80 text-darkText dark:text-lightText">
           {selectedSection === "users" && <UsersList />}
           {selectedSection === "analytics" && <p>Showing Analytics...</p>}
           {selectedSection === "reports" && <p>Showing Reports...</p>}
