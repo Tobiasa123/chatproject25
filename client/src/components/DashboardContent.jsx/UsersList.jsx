@@ -43,26 +43,29 @@ const UsersList = () => {
             className="flex justify-between items-center p-2 bg-gray-100 dark:bg-gray-800 rounded"
           >
             <span>{user.username}</span>
-            <div className="flex gap-2">
-              <button
-                onClick={() => handleEditClick(user)}
-                className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => handleDeleteClick(user)}
-                className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600 transition"
-              >
-                Delete
-              </button>
-            </div>
+            {user.role === "admin" ? (
+              <span className="text-gray-500">Admin</span>
+            ) : (
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleEditClick(user)}
+                  className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDeleteClick(user)}
+                  className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600 transition"
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </li>
         ))
       ) : (
         <p>No users found.</p>
       )}
-
 
       {editingUser && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -111,7 +114,6 @@ const UsersList = () => {
           </div>
         </div>
       )}
-
 
       {deletingUser && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">

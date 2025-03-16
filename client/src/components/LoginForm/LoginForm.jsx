@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -11,17 +11,9 @@ const LoginForm = () => {
     password: "",
   });
   const [error, setError] = useState(null);
-  const [token, setToken] = useState(null);
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false); 
-
-  useEffect(() => {
-    if (token) {
-      sessionStorage.setItem("authToken", token);
-      setTimeout(() => navigate("/home"), 200); 
-    }
-  }, [token, navigate]);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -48,8 +40,12 @@ const LoginForm = () => {
 
       const data = await response.json();
 
-      if (response.ok) {
-        setToken(data.token);
+      if (response.ok && data.token) {
+        sessionStorage.setItem("authToken", data.token);
+
+        window.dispatchEvent(new Event('authChange'));
+        
+        navigate("/home");
       } else {
         setError(data.message || "Request failed");
         alert(data.message || "Request failed");
