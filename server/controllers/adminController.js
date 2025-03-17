@@ -47,3 +47,15 @@ exports.updateUser = async (req, res) => {
         res.status(500).json({ message: "Error updating user", error: error.message });
     }
 };
+exports.getReportedChats = async (req, res) => {
+    try {
+      const reportedChats = await Chat.find({ reported: true })
+        .populate('participants', 'username') 
+        .populate('messages.sender', 'username');
+  
+      res.status(200).send({ reportedChats });
+    } catch (err) {
+      res.status(500).send({ message: 'Error fetching reported chats', error: err.message });
+    }
+  };
+  

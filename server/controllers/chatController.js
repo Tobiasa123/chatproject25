@@ -206,3 +206,22 @@ exports.getUserChats = async (req, res) => {
         res.status(500).send({ message: "Error deleting chat", error: err.message });
     }
 };
+exports.reportChat = async (req, res) => {
+  try {
+    const chatId = req.params.chatId;
+    const { reason } = req.body;
+
+    const chat = await Chat.findById(chatId);
+    if (!chat) {
+      return res.status(404).send({ message: 'Chat not found' });
+    }
+
+    chat.reported = true;
+    chat.reportReason = reason;
+    await chat.save();
+
+    res.status(200).send({ message: 'Chat reported successfully' });
+  } catch (err) {
+    res.status(500).send({ message: 'Error reporting chat', error: err.message });
+  }
+};
