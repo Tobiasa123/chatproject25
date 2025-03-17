@@ -2,8 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { ThemeSwitch } from "../ThemeSwitch/ThemeSwitch";
-import Footer from "../Footer/Footer";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -13,9 +11,9 @@ const LoginForm = () => {
     password: "",
   });
   const [error, setError] = useState(null);
-  const [token, setToken] = useState(null);
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -25,11 +23,12 @@ const LoginForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null);
-  
+    setLoading(true);
+
     const url = isLogin
       ? "http://127.0.0.1:8000/login"
       : "http://127.0.0.1:8000/register";
-  
+
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -38,32 +37,36 @@ const LoginForm = () => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       const data = await response.json();
-  
-      if (response.ok) {
-        setToken(data.token);
+
+      if (response.ok && data.token) {
         sessionStorage.setItem("authToken", data.token);
+
+        window.dispatchEvent(new Event('authChange'));
+        
         navigate("/home");
       } else {
-        // Display the exact error from the backend
         setError(data.message || "Request failed");
         alert(data.message || "Request failed");
       }
     } catch (err) {
       setError("An error occurred while processing the request.");
       alert("An error occurred while processing the request.");
+    } finally {
+      setLoading(false);
     }
   };
-  
 
   return (
-    <div className="flex flex-col  justify-center items-center bg-lightBackground dark:bg-darkBackground h-full rounded-md gap-3 border border-lightBorder dark:border-darkBorder">
+    <div className="flex flex-col justify-center items-center bg-lightBackground dark:bg-darkBackground h-full rounded-md gap-3 border border-lightBorder dark:border-darkBorder">
       <h2 className="text-darkText dark:text-lightText">{isLogin ? "Login" : "Signup"}</h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-2/3" noValidate>
         {!isLogin && (
           <div className="flex flex-col gap-1">
-            <label htmlFor="username" className="mb-1 text-darkText dark:text-lightText">Username:</label>
+            <label htmlFor="username" className="mb-1 text-darkText dark:text-lightText">
+              Username:
+            </label>
             <input
               type="text"
               id="username"
@@ -109,13 +112,14 @@ const LoginForm = () => {
         <button
           type="submit"
           className="h-10 bg-purpleAccent text-white rounded-md hover:bg-purple-700 dark:hover:bg-purple-500"
+          disabled={loading}
         >
-          {isLogin ? "Login" : "Signup"}
+          {loading ? "Processing..." : isLogin ? "Login" : "Signup"}
         </button>
       </form>
 
       <p className="text-darkText dark:text-lightText">
-        {isLogin ? "Don't have an account?" : "Already have an account?"} {" "}
+        {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
         <button
           onClick={() => setIsLogin(!isLogin)}
           className="text-purpleAccent dark:text-purpleAccent"

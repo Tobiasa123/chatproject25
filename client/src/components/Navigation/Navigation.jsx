@@ -3,16 +3,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUser, faSignOutAlt, faBars } from '@fortawesome/free-solid-svg-icons';
 import { ThemeSwitch } from '../ThemeSwitch/ThemeSwitch';
 import { useState } from 'react';
+import DashboardBtn from '../DashboardBtn/DashboardBtn';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // Get current route
+  const location = useLocation(); 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = () => {
     sessionStorage.removeItem('authToken');
-    navigate('/');
     setIsMenuOpen(false);
+    window.dispatchEvent(new Event('authChange'));
+    navigate('/');
   };
 
   const handleNavigation = (path) => {
@@ -33,7 +35,7 @@ const Navbar = () => {
         ) : (
           <>
             {/* Mobile Menu Button */}
-            <div className="sm:hidden">
+            <div className="md:hidden">
               <button 
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="text-2xl text-slate-700 dark:text-slate-300"
@@ -43,7 +45,8 @@ const Navbar = () => {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden sm:flex space-x-6">
+            <div className="hidden md:flex space-x-6">
+              <DashboardBtn/>
               <button
                 onClick={() => handleNavigation('/home')}
                 className="flex items-center px-4 py-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
@@ -75,7 +78,8 @@ const Navbar = () => {
 
       {/* Mobile Navigation Menu */}
       {isMenuOpen && location.pathname !== '/' && (
-        <div className="sm:hidden flex flex-col space-y-4 px-6 py-3">
+        <div className="md:hidden flex flex-col space-y-4 px-6 py-3">
+          <DashboardBtn/>
           <button
             onClick={() => handleNavigation('/home')}
             className="text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"

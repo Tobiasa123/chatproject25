@@ -30,9 +30,11 @@ mongoose.connect(process.env.MONGO_URL)
 .catch((err) => console.error("MongoDB connection error:", err));
 
 const userRoutes = require('./routes/userRoutes');
-const chatRoutes  =require('./routes/chatRoutes')
+const chatRoutes = require('./routes/chatRoutes')
+const adminRoutes = require('./routes/adminRoutes')
 app.use('/',userRoutes);
 app.use('/',chatRoutes);
+app.use('/',adminRoutes);
 
 io.on("connection", (socket) => {
   console.log("A user connected: " + socket.id);
