@@ -59,3 +59,23 @@ exports.getReportedChats = async (req, res) => {
     }
   };
   
+  exports.resolveChat = async (req, res) => {
+    try {
+      const chatId = req.params.id; 
+  
+      const chat = await Chat.findById(chatId);
+      if (!chat) {
+        return res.status(404).json({ message: 'Chat not found' });
+      }
+
+      chat.reported = false;
+      chat.reportReason = '';
+  
+      await chat.save();
+  
+      res.status(200).json({ message: 'Chat resolved successfully', chat });
+    } catch (error) {
+      res.status(500).json({ message: 'Error resolving chat', error: error.message });
+    }
+  };
+  
