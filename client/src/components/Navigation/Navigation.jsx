@@ -25,78 +25,70 @@ const Navbar = () => {
   return (
     <nav className="w-full bg-lightBackground dark:bg-darkBackground border-b-2 border-purpleAccent">
       <div className="w-full px-6 py-3 flex justify-between items-center">
+
         <div className="text-2xl font-bold text-purpleAccent dark:text-lightText">
           EveryTen
         </div>
 
-        {/* Show only ThemeSwitch if on the "/" route */}
-        {location.pathname === '/' ? (
-          <ThemeSwitch />
-        ) : (
-          <>
-            {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <button 
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-2xl text-slate-700 dark:text-slate-300"
-              >
-                <FontAwesomeIcon icon={faBars} />
-              </button>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex space-x-6">
-              <DashboardBtn/>
-              <button
-                onClick={() => handleNavigation('/home')}
-                className="flex items-center px-4 py-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
-              >
-                <FontAwesomeIcon icon={faHome} className="mr-2" />
-                <span>Chats</span>
-              </button>
-              <button
-                onClick={() => handleNavigation('/profile')}
-                className="flex items-center px-4 py-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
-              >
-                <FontAwesomeIcon icon={faUser} className="mr-2" />
-                <span>Profile</span>
-              </button>
-              <button
-                onClick={handleLogout}
-                className="flex items-center px-4 py-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
-              >
-                <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
-                <span>Logout</span>
-              </button>
-            </div>
-
-            {/* ThemeSwitch (only shown when not on "/") */}
-            <ThemeSwitch />
-          </>
-        )}
-      </div>
-
-      {/* Mobile Navigation Menu */}
-      {isMenuOpen && location.pathname !== '/' && (
-        <div className="md:hidden flex flex-col space-y-4 px-6 py-3">
-          <DashboardBtn/>
+        <div className="hidden md:flex flex-1 justify-center items-center space-x-6">
+          <DashboardBtn />
           <button
             onClick={() => handleNavigation('/home')}
-            className="text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
+            className="flex items-center px-4 py-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
           >
             <FontAwesomeIcon icon={faHome} className="mr-2" />
             <span>Chats</span>
           </button>
           <button
             onClick={() => handleNavigation('/profile')}
-            className="text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
+            className="flex items-center px-4 py-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
           >
             <FontAwesomeIcon icon={faUser} className="mr-2" />
             <span>Profile</span>
           </button>
           <button
             onClick={handleLogout}
-            className="text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
+            className="flex items-center px-4 py-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
+          >
+            <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+            <span>Logout</span>
+          </button>
+        </div>
+
+        <div className="flex items-center space-x-4">
+          <ThemeSwitch />
+          <div className="md:hidden">
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-2xl text-slate-700 dark:text-slate-300"
+            >
+              <FontAwesomeIcon icon={faBars} />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile */}
+      {isMenuOpen && location.pathname !== '/' && (
+        <div className="md:hidden flex flex-col items-start space-y-4 px-6 py-3 w-full">
+          <DashboardBtn />
+          <button
+            onClick={() => handleNavigation('/home')}
+            className="flex items-center w-full text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors py-2 rounded-md"
+          >
+            <FontAwesomeIcon icon={faHome} className="mr-2" />
+            <span>Chats</span>
+          </button>
+          <button
+            onClick={() => handleNavigation('/profile')}
+            className="flex items-center w-full text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors py-2 rounded-md"
+          >
+            <FontAwesomeIcon icon={faUser} className="mr-2" />
+            <span>Profile</span>
+          </button>
+          <button
+            onClick={handleLogout}
+            className="flex items-center w-full text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors py-2 rounded-md"
           >
             <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
             <span>Logout</span>

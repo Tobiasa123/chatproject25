@@ -14,6 +14,7 @@ const LoginForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -42,17 +43,15 @@ const LoginForm = () => {
 
       if (response.ok && data.token) {
         sessionStorage.setItem("authToken", data.token);
-
-        window.dispatchEvent(new Event('authChange'));
-        
+        window.dispatchEvent(new Event("authChange"));
         navigate("/home");
       } else {
         setError(data.message || "Request failed");
-        alert(data.message || "Request failed");
+        setShowErrorPopup(true);
       }
     } catch (err) {
       setError("An error occurred while processing the request.");
-      alert("An error occurred while processing the request.");
+      setShowErrorPopup(true);
     } finally {
       setLoading(false);
     }
@@ -60,7 +59,7 @@ const LoginForm = () => {
 
   return (
     <div className="flex flex-col justify-center items-center bg-lightBackground dark:bg-darkBackground h-full rounded-md gap-3 border border-lightBorder dark:border-darkBorder">
-      <h2 className="text-darkText dark:text-lightText">{isLogin ? "Login" : "Signup"}</h2>
+      <h2 className="text-darkText dark:text-lightText">{isLogin ? "Login" : "Sign Up"}</h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-2/3" noValidate>
         {!isLogin && (
           <div className="flex flex-col gap-1">
@@ -114,12 +113,12 @@ const LoginForm = () => {
           className="h-10 bg-purpleAccent text-white rounded-md hover:bg-purple-700 dark:hover:bg-purple-500"
           disabled={loading}
         >
-          {loading ? "Processing..." : isLogin ? "Login" : "Signup"}
+          {loading ? "Processing..." : isLogin ? "Login" : "Sign Up"}
         </button>
       </form>
 
       <p className="text-darkText dark:text-lightText">
-        {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+        {isLogin ? "Don't have an account?" : "Already have an account?"} {" "}
         <button
           onClick={() => setIsLogin(!isLogin)}
           className="text-purpleAccent dark:text-purpleAccent"
@@ -127,6 +126,23 @@ const LoginForm = () => {
           {isLogin ? "Sign Up" : "Log In"}
         </button>
       </p>
+
+      {showErrorPopup && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-2xl w-96">
+            <h3 className="text-lg font-semibold text-center text-red-600">Error</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300 text-center mt-2">{error}</p>
+            <div className="mt-4 flex justify-center">
+              <button
+                onClick={() => setShowErrorPopup(false)}
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

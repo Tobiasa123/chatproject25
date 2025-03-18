@@ -11,7 +11,7 @@ const DashboardBtn = () => {
     return (
         <button
           onClick={() => navigate('/dashboard')}
-          className="text-darkText dark:text-lightText font-bold px-4 rounded-md border border-darkBorder dark:border-lightBorder flex items-center justify-center gap-2"
+          className="text-darkText dark:text-lightText font-bold border-b border-darkBorder dark:border-lightBorder flex items-center justify-center gap-2"
         >
           <FontAwesomeIcon icon={faUserShield} />
           <span>Dashboard</span>

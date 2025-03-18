@@ -141,7 +141,7 @@ exports.getUserChats = async (req, res) => {
             .exec();
   
         if (!chats || chats.length === 0) {
-            return res.status(404).send({ message: 'No chats found for this user' });
+            return res.status(200).send({ chatData: [] });
         }
   
         const chatData = chats
