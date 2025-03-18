@@ -81,57 +81,53 @@ const ReportedChats = () => {
   };
 
   return (
-    <div className="w-full h-full overflow-y-auto">
-      <h2 className="text-2xl font-semibold text-darkText dark:text-lightText">Reported Chats</h2>
+    <div>
+      <h2 className="text-2xl font-semibold text-darkText dark:text-lightText mb-4">Reported Chats</h2>
       
       {error && <p className="text-red-500">{error}</p>}
-
-      <ul>
+      
+      <ul className="grid gap-2">
         {reportedChats.length > 0 ? (
-          reportedChats.map((chat, index) => (
+          reportedChats.map((chat) => (
             <li
-              key={index}
-              className="bg-gray-100 dark:bg-slate-700 mb-4 rounded-lg cursor-pointer "
-              onClick={() => handleChatClick(chat._id)} 
+              key={chat._id}
+              className="flex flex-col p-2 bg-white dark:bg-gray-800 rounded border border-black dark:border-white cursor-pointer"
+              onClick={() => handleChatClick(chat._id)}
             >
               <div className="flex justify-between items-center">
                 <div>
                   <div className="font-bold text-md text-darkText dark:text-lightText">
-                    Chat between {chat.participants.map(participant => participant.username).join(' and ')}
+                    Chat between {chat.participants.map((participant) => participant.username).join(" and ")}
                   </div>
-                  <div className="text-sm text-gray-700 dark:text-gray-300">Reported: {chat.reported ? 'Yes' : 'No'}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                    Report Reason: {chat.reportReason || 'No reason provided'}
+                  <div className="text-sm text-gray-700 dark:text-gray-300">Reported: {chat.reported ? "Yes" : "No"}</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    User comment {chat.reportReason || "No reason provided"}
                   </div>
                 </div>
-
-                {/* Resolve Button - Align to the right */}
+                
                 {chat.reported && (
-                  <div className="ml-auto flex items-center">
-                    <button
-                      onClick={(event) => resolveChat(chat._id, event)}
-                      className="bg-purpleAccent text-white py-2 px-4 mx-1 rounded-md hover:bg-purple-600 focus:outline-none"
-                    >
-                      Resolve
-                    </button>
-                  </div>
+                  <button
+                    onClick={(event) => resolveChat(chat._id, event)}
+                    className="h-full px-8 bg-purpleAccent text-white rounded hover:bg-purple-600 transition"
+                  >
+                    Mark as resolved
+                  </button>
                 )}
               </div>
               
-              {/* Display the messages of the selected chat */}
               {selectedChatId === chat._id && (
                 <div className="mt-4">
                   <h3 className="text-xl font-semibold text-darkText dark:text-lightText">Messages</h3>
-                  <ul>
+                  <ul className="grid gap-2 mt-2">
                     {chat.messages.length > 0 ? (
                       chat.messages.map((message, index) => (
-                        <li key={index} className="bg-gray-200 dark:bg-slate-600 p-3 mb-2 rounded-md">
+                        <li key={index} className="p-3 bg-gray-200 dark:bg-gray-700 rounded">
                           <div className="font-semibold text-darkText dark:text-lightText">{message.sender.username}:</div>
                           <div className="text-gray-700 dark:text-gray-300">{message.text}</div>
                         </li>
                       ))
                     ) : (
-                      <p>No messages available for this chat.</p>
+                      <p className="text-gray-500 dark:text-gray-400">No messages available for this chat.</p>
                     )}
                   </ul>
                 </div>
@@ -139,11 +135,12 @@ const ReportedChats = () => {
             </li>
           ))
         ) : (
-          <p>No reported chats found</p>
+          <p className="text-gray-500 dark:text-gray-400">No reported chats found.</p>
         )}
       </ul>
     </div>
   );
+
 };
 
 export default ReportedChats;
