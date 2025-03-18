@@ -9,7 +9,7 @@ const ChatMessages = () => {
   const [messages, setMessages] = useState([]);
   const [otherUser, setOtherUser] = useState(null);
   const [error, setError] = useState(null);
-  const [isReporting, setIsReporting] = useState(false); 
+  const [isReporting, setIsReporting] = useState(false);
   const [reportReason, setReportReason] = useState("");
   const messagesContainerRef = useRef(null);
   const socketRef = useRef();
@@ -19,17 +19,16 @@ const ChatMessages = () => {
       setError("Please provide a reason for reporting.");
       return;
     }
-  
+
     const token = sessionStorage.getItem("authToken");
     if (!token) {
       setError("No token found");
       return;
     }
-  
-    const decoded = jwtDecode(token); 
-  
+
+    const decoded = jwtDecode(token);
     const reportWithUsername = `${decoded.username}: ${reportReason}`;
-  
+
     try {
       const response = await fetch(`http://127.0.0.1:8000/chat/${chatId}/report`, {
         method: "POST",
@@ -37,15 +36,13 @@ const ChatMessages = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          reason: reportWithUsername, 
-        }),
+        body: JSON.stringify({ reason: reportWithUsername }),
       });
-  
+
       const data = await response.json();
       if (response.ok) {
-        alert("Chat reported successfully");
-        setIsReporting(false); 
+        setIsReporting(false);
+        setReportReason(""); 
       } else {
         setError(data.message || "Error reporting chat");
       }
@@ -53,7 +50,7 @@ const ChatMessages = () => {
       setError("Error reporting chat");
     }
   };
-  
+
   useEffect(() => {
     const fetchMessages = async () => {
       const token = sessionStorage.getItem('authToken');
@@ -72,7 +69,7 @@ const ChatMessages = () => {
         const data = await response.json();
         if (response.ok) {
           setMessages(data.messages);
-          setOtherUser(data.otherUser); 
+          setOtherUser(data.otherUser);
         } else {
           setError(data.message || 'Error fetching messages');
         }
@@ -104,51 +101,55 @@ const ChatMessages = () => {
   }, [messages]);
 
   return (
-    <div className="flex flex-col flex-grow h-0 w-full bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText rounded-md">
-      <div className="p-4 absolute">
+    <div className="relative flex flex-col flex-grow h-0 w-full bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText rounded-md">
+
+      <div className="relative flex items-center justify-between p-4">
         <BackArrow />
+        <h1 className="absolute left-1/2 transform -translate-x-1/2 text-lg font-semibold">
+          Chat with {otherUser ? otherUser.username : "Loading..."}
+        </h1>
+        <button
+          onClick={() => setIsReporting(true)}
+          className="bg-red-500 text-white px-4 py-2 rounded"
+        >
+          Report Chat
+        </button>
       </div>
-      <h1 className="text-lg font-semibold my-4 text-center bg">
-        Chat with {otherUser ? otherUser.username : "Loading..."}
-      </h1>
-      {error && <p className="text-red-500">{error}</p>}
 
-      {/* Report Chat Button */}
-      <button
-        onClick={() => setIsReporting(true)}
-        className="bg-red-500 text-white px-4 py-2 rounded mt-4 self-center"
-      >
-        Report Chat
-      </button>
 
-      {/* Report Form */}
+      {error && <p className="text-red-500 text-center">{error}</p>}
+
       {isReporting && (
-        <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded">
-          <h3 className="text-lg font-semibold">Provide a reason for reporting</h3>
-          <textarea
-            value={reportReason}
-            onChange={(e) => setReportReason(e.target.value)}
-            placeholder="Enter reason"
-            className="w-full p-2 mt-2 border rounded"
-          />
-          <div className="mt-4 flex gap-3">
-            <button
-              onClick={() => setIsReporting(false)} 
-              className="px-4 py-2 bg-gray-500 text-white rounded"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleReportChat}
-              className="px-4 py-2 bg-blue-500 text-white rounded"
-            >
-              Submit Report
-            </button>
+        <div className="fixed inset-0 flex items-center justify-center">
+          <div className="bg-gray-200 dark:bg-gray-900 p-6 rounded-2xl w-96">
+            <h3 className="text-lg font-semibold text-center">Report Chat</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300 text-center mt-2">Provide a reason for reporting this chat.</p>
+            <textarea
+              value={reportReason}
+              onChange={(e) => setReportReason(e.target.value)}
+              placeholder="Enter reason"
+              className="resize-none w-full p-3 mt-3 border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"
+            />
+            <div className="mt-4 flex justify-end gap-3">
+              <button
+                onClick={() => setIsReporting(false)}
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleReportChat}
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+              >
+                Submit Report
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      <div 
+      {/* Messages List */}
+      <div
         ref={messagesContainerRef}
         className="flex-1 overflow-y-auto custom-scrollbar flex flex-col-reverse bg-lightBackground dark:bg-darkBackground w-full rounded-b-md"
       >

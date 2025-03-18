@@ -21,17 +21,15 @@ export const ThemeSwitch = () => {
       onClick={toggleTheme}
       className="relative w-16 h-8 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center p-1 cursor-pointer transition-colors"
     >
-      {/* Circle Slider */}
       <motion.div
-        className={`w-6 h-6 bg-white dark:bg-gray-900 rounded-full shadow-md flex items-center justify-center transform transition-transform ${
+        className={`w-6 h-6 bg-purpleAccent dark:bg-slate-800 rounded-full shadow-md flex items-center justify-center transform transition-transform ${
           theme === 'dark' ? 'translate-x-8' : 'translate-x-0'
         }`}
         transition={{ duration: 0.3 }}
       >
-        {/* Sun and Moon Icons */}
         <FontAwesomeIcon
           icon={theme === 'light' ? faSun : faMoon}
-          className={`text-lg ${theme === 'light' ? 'text-yellow-400' : 'text-white'}`}
+          className={`text-lg ${theme === 'light' ? 'text-white' : 'text-purpleAccent'}`}
         />
       </motion.div>
     </motion.button>
