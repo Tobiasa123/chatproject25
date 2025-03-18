@@ -77,5 +77,24 @@ exports.getReportedChats = async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: 'Error resolving chat', error: error.message });
     }
-  };
+};
+
+exports.getGeneralStats = async (req, res) => {
+  try {
+      const totalUsers = await User.countDocuments();
+      const totalChats = await Chat.countDocuments();
+      const totalMessages = await Chat.aggregate([
+          { $unwind: "$messages" },
+          { $count: "totalMessages" }
+      ]);
+
+      res.status(200).json({
+          totalUsers,
+          totalChats,
+          totalMessages: totalMessages.length > 0 ? totalMessages[0].totalMessages : 0
+      });
+  } catch (error) {
+      res.status(500).json({ message: "Error fetching general statistics", error: error.message });
+  }
+};
   
