@@ -11,5 +11,7 @@ router.get('/dashboard/chats/reported', verifyToken, isAdmin, adminController.ge
 
 router.put('/dashboard/chats/:id/resolve', verifyToken, isAdmin, adminController.resolveChat);
 
+router.get('/dashboard/stats', verifyToken, isAdmin, adminController.getGeneralStats);
+
 
 module.exports = router;
