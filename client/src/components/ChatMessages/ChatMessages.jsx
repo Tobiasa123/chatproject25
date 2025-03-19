@@ -3,6 +3,8 @@ import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import BackArrow from "../BackArrow/BackArrow";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFlag } from "@fortawesome/free-solid-svg-icons";
 
 const ChatMessages = () => {
   const { chatId } = useParams();
@@ -110,8 +112,9 @@ const ChatMessages = () => {
         </h1>
         <button
           onClick={() => setIsReporting(true)}
-          className="bg-red-500 text-white px-4 py-2 rounded"
+          className="bg-red-500 text-white flex items-center justify-center gap-2 px-4 py-2 rounded"
         >
+          <FontAwesomeIcon icon={faFlag} />
           Report Chat
         </button>
       </div>
@@ -161,7 +164,7 @@ const ChatMessages = () => {
           const isUserMessage = message.sender === decoded._id;
           return (
             <li
-              key={message._id} 
+              key={index} 
               className={`max-w-[80%] w-fit p-2 rounded-2xl ${
                 isUserMessage
                   ? "bg-purpleAccent text-white self-end"

@@ -108,7 +108,7 @@ const ProfileContent = () => {
       {/* Profile Header Section */}
       <div className="w-full max-w-md flex flex-col items-center py-6">
         <div className="relative mb-4">
-          <div className="pointer-events-none">
+          <div>
             <UserIcon username={user.username} />
           </div>
           {user.role === "admin" && (
@@ -127,7 +127,7 @@ const ProfileContent = () => {
       <div className="w-full max-w-md px-6 flex flex-col min-h-0 flex-grow">
         <div className="flex-grow">
           {isEditing ? (
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm mb-6">
+            <div className="bg-slate-300 dark:bg-gray-800 rounded-xl p-6 shadow-sm mb-6">
               <h2 className="text-xl font-semibold text-darkText dark:text-lightText mb-4">
                 Edit Profile
               </h2>
@@ -188,7 +188,7 @@ const ProfileContent = () => {
               </div>
             </div>
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm mb-6">
+            <div className="bg-slate-300 dark:bg-gray-800 rounded-xl p-6 shadow-sm mb-6">
               <h2 className="text-xl font-semibold text-darkText dark:text-lightText mb-4">
                 Profile Details
               </h2>
