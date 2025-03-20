@@ -91,7 +91,7 @@ const UsersList = () => {
             currentUsers.map((user) => (
               <li
                 key={user._id}
-                className="flex justify-between items-center p-2 bg-white dark:bg-gray-800 rounded border border-black dark:border-white"
+                className="flex justify-between items-center p-2 bg-white dark:bg-gray-800 rounded border border-slate-500 dark:border-slate-400"
               >
                 <span>{user.username}</span>
                 {user.role === "admin" ? (

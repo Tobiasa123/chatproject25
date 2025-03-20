@@ -58,9 +58,13 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center bg-lightBackground dark:bg-darkBackground h-full rounded-md gap-3 border border-lightBorder dark:border-darkBorder">
-      <h2 className="text-darkText dark:text-lightText">{isLogin ? "Login" : "Sign Up"}</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-2/3" noValidate>
+    <div className="flex flex-col justify-center items-center bg-lightBackground dark:bg-darkBackground h-full rounded-md gap-4 border border-lightBorder dark:border-darkBorder ">
+      <h2 className="text-darkText dark:text-lightText font-bold text-xl">{isLogin ? "Login" : "Sign Up"}</h2>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 w-5/6 bg-slate-200 dark:bg-slate-800 rounded-md p-6 border border-slate-500"
+        noValidate
+      >
         {!isLogin && (
           <div className="flex flex-col gap-1">
             <label htmlFor="username" className="mb-1 text-darkText dark:text-lightText">
@@ -72,6 +76,7 @@ const LoginForm = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
+              placeholder="Enter your username"
               className="h-10 border rounded-md border-lightBorder dark:border-darkBorder bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
@@ -85,11 +90,12 @@ const LoginForm = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
+            placeholder="Enter your email"
             className="h-10 border rounded-md border-lightBorder dark:border-darkBorder bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText placeholder-gray-400 dark:placeholder-gray-500"
           />
         </div>
 
-        <div className="flex flex-col gap-1 relative">
+        <div className="flex flex-col gap-1 relative mb-4">
           <label htmlFor="password" className="text-darkText dark:text-lightText">Password:</label>
           <div className="relative">
             <input
@@ -98,6 +104,7 @@ const LoginForm = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              placeholder="Enter your password"
               className="h-10 border rounded-md border-lightBorder dark:border-darkBorder bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText placeholder-gray-400 dark:placeholder-gray-500 pr-12 w-full"
             />
             <FontAwesomeIcon
@@ -108,13 +115,15 @@ const LoginForm = () => {
           </div>
         </div>
 
-        <button
-          type="submit"
-          className="h-10 bg-purpleAccent text-white rounded-md hover:bg-purple-700 dark:hover:bg-purple-500"
-          disabled={loading}
-        >
-          {loading ? "Processing..." : isLogin ? "Login" : "Sign Up"}
-        </button>
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="h-10 w-80 bg-purpleAccent text-white rounded-md hover:bg-purple-700 dark:hover:bg-purple-500"
+            disabled={loading}
+          >
+            {loading ? "Processing..." : isLogin ? "Login" : "Sign Up"}
+          </button>
+        </div>
       </form>
 
       <p className="text-darkText dark:text-lightText">

@@ -98,7 +98,7 @@ const ReportedChats = () => {
             currentChats.map((chat) => (
               <li
                 key={chat._id}
-                className="flex flex-col p-2 bg-white dark:bg-gray-800 rounded border border-black dark:border-white cursor-pointer"
+                className="flex flex-col p-2 bg-white dark:bg-gray-800 rounded border border-slate-500 dark:border-slate-400 cursor-pointer"
                 onClick={() => handleChatClick(chat._id)}
               >
                 {/* Header with chat info */}
