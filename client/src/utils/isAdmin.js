@@ -1,5 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 
+//util to check if user is admin
 export const isAdmin = () => {
   const token = sessionStorage.getItem('authToken');
   if (!token) return false;

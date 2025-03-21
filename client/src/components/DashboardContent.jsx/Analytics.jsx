@@ -1,6 +1,7 @@
 import React from "react";
 import useAdminHooks from "../../hooks/useAdminHooks";
 
+//analytics dashboard page
 const Analytics = () => {
   const { stats, error } = useAdminHooks();
 

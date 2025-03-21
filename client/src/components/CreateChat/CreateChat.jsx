@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+//input to create a new chat with a user
 const CreateChat = () => {
   const [username, setUsername] = useState("");
   const [message, setMessage] = useState("");
@@ -22,7 +24,7 @@ const CreateChat = () => {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/users/search?username=${encodeURIComponent(username)}`,
+          `${BASE_URL}/users/search?username=${encodeURIComponent(username)}`,
           {
             method: "GET",
             headers: {
@@ -83,7 +85,7 @@ const CreateChat = () => {
   const handleCreateChat = async () => {
     if (!username.trim()) return;
     try {
-      const response = await fetch("http://127.0.0.1:8000/chats", {
+      const response = await fetch(`${BASE_URL}/chats`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

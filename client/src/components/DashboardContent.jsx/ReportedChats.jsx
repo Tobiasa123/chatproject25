@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Pagination from "../Pagination/Pagination";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+//View all reported chats to view and resolve
 const ReportedChats = () => {
   const [reportedChats, setReportedChats] = useState([]);
   const [selectedChatId, setSelectedChatId] = useState(null);
@@ -18,7 +20,7 @@ const ReportedChats = () => {
 
       try {
         const response = await fetch(
-          "http://127.0.0.1:8000/dashboard/chats/reported",
+          `${BASE_URL}/dashboard/chats/reported`,
           {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` },
@@ -53,7 +55,7 @@ const ReportedChats = () => {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/dashboard/chats/${chatId}/resolve`,
+        `${BASE_URL}/dashboard/chats/${chatId}/resolve`,
         {
           method: "PUT",
           headers: {

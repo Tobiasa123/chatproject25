@@ -1,7 +1,9 @@
 import { MoreVertical, X, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+//menu used to view users profiles/delete chats
 const ChatMenu = ({ chatId, otherUserId, isOpen, toggleMenu }) => {
   const navigate = useNavigate();
 
@@ -14,7 +16,7 @@ const ChatMenu = ({ chatId, otherUserId, isOpen, toggleMenu }) => {
 
   const handleDeleteChat = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/chat/${chatId}`, {
+      const response = await fetch(`${BASE_URL}/chat/${chatId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

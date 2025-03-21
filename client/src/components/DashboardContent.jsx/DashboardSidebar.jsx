@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+
+//sidebar to select  what dasboard page to view
 const DashboardSidebar = ({ onSelect }) => {
   const [selectedKey, setSelectedKey] = useState('users');  
   const menuItems = [

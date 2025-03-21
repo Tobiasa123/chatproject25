@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+//forms for login and register user
 const LoginForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -27,8 +29,8 @@ const LoginForm = () => {
     setLoading(true);
 
     const url = isLogin
-      ? "http://127.0.0.1:8000/login"
-      : "http://127.0.0.1:8000/register";
+      ? `${BASE_URL}/login`
+      : `${BASE_URL}/register`;
 
     try {
       const response = await fetch(url, {

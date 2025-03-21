@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../Pagination/Pagination";
 
+//a list of all users
 const UsersList = () => {
   const { users, error, deleteUser, updateUser } = useAdminHooks();
   const [editingUser, setEditingUser] = useState(null);

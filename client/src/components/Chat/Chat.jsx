@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import UserIcon from '../UserIcon/UserIcon';
 import ChatMenu from '../ChatMenu/ChatMenu';
 
+//chat list items
 const Chat = ({ chatId, otherUser, latestMessage, latestTimestamp, latestSenderId, currentUserId, openMenuId, setOpenMenuId }) => {
   const navigate = useNavigate();
 

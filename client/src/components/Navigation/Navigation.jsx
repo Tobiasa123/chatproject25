@@ -5,6 +5,8 @@ import { ThemeSwitch } from '../ThemeSwitch/ThemeSwitch';
 import { useState } from 'react';
 import DashboardBtn from '../DashboardBtn/DashboardBtn';
 
+
+//navigation
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation(); 

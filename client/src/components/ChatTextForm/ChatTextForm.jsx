@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+//form used to create a chat message
 const ChatTextForm = ({ onMessageSent }) => {
   const { chatId } = useParams(); 
   const [message, setMessage] = useState("");
@@ -10,7 +12,7 @@ const ChatTextForm = ({ onMessageSent }) => {
     if (!message.trim()) return;
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/chats/${chatId}/messages`, {
+      const response = await fetch(`${BASE_URL}/chats/${chatId}/messages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

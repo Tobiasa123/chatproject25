@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+//admin hooks
 const useAdminHooks = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
@@ -10,7 +12,7 @@ const useAdminHooks = () => {
       try {
         const token = sessionStorage.getItem("authToken");
 
-        const response = await fetch("http://127.0.0.1:8000/dashboard/users", {
+        const response = await fetch(`${BASE_URL}/dashboard/users`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -32,7 +34,7 @@ const useAdminHooks = () => {
       try {
         const token = sessionStorage.getItem("authToken");
 
-        const response = await fetch("http://127.0.0.1:8000/dashboard/stats", {
+        const response = await fetch(`${BASE_URL}/dashboard/stats`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -58,7 +60,7 @@ const useAdminHooks = () => {
     try {
       const token = sessionStorage.getItem("authToken");
 
-      const response = await fetch(`http://127.0.0.1:8000/dashboard/users/${userId}`, {
+      const response = await fetch(`${BASE_URL}/dashboard/users/${userId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -80,7 +82,7 @@ const useAdminHooks = () => {
     try {
       const token = sessionStorage.getItem("authToken");
 
-      const response = await fetch(`http://127.0.0.1:8000/dashboard/users/${userId}`, {
+      const response = await fetch(`${BASE_URL}/dashboard/users/${userId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

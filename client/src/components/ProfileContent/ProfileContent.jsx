@@ -7,7 +7,9 @@ import BackArrow from '../BackArrow/BackArrow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'; 
 import { motion } from 'framer-motion';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+//component for profile (both current and other users)
 const ProfileContent = () => {
   const { id: userId } = useParams();
   const [user, setUser] = useState(null);
@@ -22,8 +24,8 @@ const ProfileContent = () => {
     try {
       const token = sessionStorage.getItem('authToken');
       const url = userId
-        ? `http://127.0.0.1:8000/profile/${userId}`
-        : `http://127.0.0.1:8000/profile`;
+        ? `${BASE_URL}/profile/${userId}`
+        : `${BASE_URL}/profile`;
 
       const response = await fetch(url, {
         method: 'GET',
@@ -58,10 +60,6 @@ const ProfileContent = () => {
     fetchProfile();
   }, [fetchProfile]);
 
-  const handleEditToggle = () => {
-    setIsEditing(!isEditing);
-  };
-
   const handleChange = (e) => {
     setUpdatedUser({ ...updatedUser, [e.target.name]: e.target.value });
   };
@@ -69,7 +67,7 @@ const ProfileContent = () => {
   const handleSave = async () => {
     try {
       const token = sessionStorage.getItem('authToken');
-      const response = await fetch('http://127.0.0.1:8000/profile/edit', {
+      const response = await fetch(`${BASE_URL}/profile/edit`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -179,7 +177,7 @@ const ProfileContent = () => {
                     Save
                   </button>
                   <button 
-                    onClick={() => setIsEditing(false)} 
+                    onClick={handleCancelEdit}  
                     className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 p-3 rounded-lg w-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
                   >
                     Cancel
@@ -235,14 +233,14 @@ const ProfileContent = () => {
                 </span>
               </button>
 
-              {/* Animated Blocked Users List */}
+              {/* Blocked users list */}
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{
                   opacity: isBlockedUsersOpen ? 1 : 0,
                   height: isBlockedUsersOpen ? 'auto' : 0,
                 }}
-                transition={{ duration: 0.15 }} // Faster animation duration
+                transition={{ duration: 0.15 }} 
                 className="overflow-hidden"
               >
                 <ul className="divide-y divide-lightBorder dark:divide-darkBorder">
@@ -259,7 +257,7 @@ const ProfileContent = () => {
           )}
         </div>
 
-        {/* Buttons Section (Block & Delete) */}
+        {/* Buttons either block or delete */}
         <div className="w-full flex flex-col items-center gap-4 mt-6 pb-6">
           {userId && (
             <div className="w-full flex justify-center">

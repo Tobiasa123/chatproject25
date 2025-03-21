@@ -5,7 +5,9 @@ import { jwtDecode } from "jwt-decode";
 import BackArrow from "../BackArrow/BackArrow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFlag } from "@fortawesome/free-solid-svg-icons";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+//messages for a chat room
 const ChatMessages = () => {
   const { chatId } = useParams();
   const [messages, setMessages] = useState([]);
@@ -32,7 +34,7 @@ const ChatMessages = () => {
     const reportWithUsername = `${decoded.username}: ${reportReason}`;
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/chat/${chatId}/report`, {
+      const response = await fetch(`${BASE_URL}/chat/${chatId}/report`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +63,7 @@ const ChatMessages = () => {
         return;
       }
       try {
-        const response = await fetch(`http://127.0.0.1:8000/chats/${chatId}/messages`, {
+        const response = await fetch(`${BASE_URL}/chats/${chatId}/messages`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -83,7 +85,7 @@ const ChatMessages = () => {
   }, [chatId]);
 
   useEffect(() => {
-    socketRef.current = io("http://127.0.0.1:8000");
+    socketRef.current = io(`${BASE_URL}`);
     socketRef.current.emit("joinChat", chatId);
 
     socketRef.current.on("newMessage", (message) => {
