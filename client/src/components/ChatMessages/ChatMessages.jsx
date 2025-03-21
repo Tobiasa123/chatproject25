@@ -3,6 +3,8 @@ import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import BackArrow from "../BackArrow/BackArrow";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFlag } from "@fortawesome/free-solid-svg-icons";
 
 const ChatMessages = () => {
   const { chatId } = useParams();
@@ -110,8 +112,9 @@ const ChatMessages = () => {
         </h1>
         <button
           onClick={() => setIsReporting(true)}
-          className="bg-red-500 text-white px-4 py-2 rounded"
+          className="bg-red-500 text-white flex items-center justify-center gap-2 px-4 py-2 rounded"
         >
+          <FontAwesomeIcon icon={faFlag} />
           Report Chat
         </button>
       </div>
@@ -148,34 +151,37 @@ const ChatMessages = () => {
         </div>
       )}
 
-      {/* Messages List */}
+      {/* Messages */}
       <div
         ref={messagesContainerRef}
         className="flex-1 overflow-y-auto custom-scrollbar flex flex-col-reverse bg-lightBackground dark:bg-darkBackground w-full rounded-b-md"
       >
-        <ul className="flex flex-col gap-6 p-4">
-          {messages.map((message, index) => {
-            const decoded = jwtDecode(sessionStorage.getItem('authToken'));
-            const isUserMessage = message.sender === decoded._id;
-            return (
-              <li
-                key={index}
-                className={`max-w-[80%] w-fit p-2 rounded-2xl ${
-                  isUserMessage
-                    ? "bg-purpleAccent text-white self-end"
-                    : "bg-darkBackground dark:bg-slate-800 text-white self-start"
-                }`}
-                style={{
-                  wordBreak: "break-word",
-                  overflowWrap: "break-word",
-                }}
-              >
-                {isUserMessage ? "You: " : `${otherUser?.username || "Other"}: `}
-                {message.text}
-              </li>
-            );
-          })}
-        </ul>
+      <ul className="flex flex-col gap-6 p-4">
+        {messages.slice(-10).map((message, index, arr) => {
+          const reversedIndex = arr.length - 1 - index;
+          const opacity = reversedIndex < 10 ? 1 - reversedIndex * 0.1 : 0;
+          const decoded = jwtDecode(sessionStorage.getItem('authToken'));
+          const isUserMessage = message.sender === decoded._id;
+          return (
+            <li
+              key={index} 
+              className={`max-w-[80%] w-fit p-2 rounded-2xl ${
+                isUserMessage
+                  ? "bg-purpleAccent text-white self-end"
+                  : "bg-darkBackground dark:bg-slate-800 text-white self-start"
+              }`}
+              style={{
+                opacity,
+                wordBreak: "break-word",
+                overflowWrap: "break-word",
+              }}
+            >
+              {isUserMessage ? "You: " : `${otherUser?.username || "Other"}: `}
+              {message.text}
+            </li>
+          );
+        })}
+      </ul>
       </div>
     </div>
   );

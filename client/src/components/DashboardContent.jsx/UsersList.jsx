@@ -2,20 +2,23 @@ import React, { useState, useEffect } from "react";
 import useAdminHooks from "../../hooks/useAdminHooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import Pagination from "../Pagination/Pagination";
 
 const UsersList = () => {
   const { users, error, deleteUser, updateUser } = useAdminHooks();
   const [editingUser, setEditingUser] = useState(null);
   const [deletingUser, setDeletingUser] = useState(null);
   const [formData, setFormData] = useState({ email: "", role: "" });
-  const [searchQuery, setSearchQuery] = useState(""); 
-  const [filteredUsers, setFilteredUsers] = useState(users); 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState(users);
 
- 
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 12;
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
+    setCurrentPage(1); 
   };
-
 
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
@@ -24,7 +27,7 @@ const UsersList = () => {
         user.username.toLowerCase().includes(lowercasedQuery)
       );
       setFilteredUsers(filtered);
-    }, 300); // debounce time is 300ms
+    }, 300);
 
     return () => clearTimeout(debounceTimeout);
   }, [searchQuery, users]);
@@ -44,7 +47,7 @@ const UsersList = () => {
 
   const handleSave = async () => {
     await updateUser(editingUser._id, formData);
-    setEditingUser(null); 
+    setEditingUser(null);
   };
 
   const confirmDelete = async () => {
@@ -54,66 +57,82 @@ const UsersList = () => {
     }
   };
 
+ 
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+
   if (error) return <p className="text-red-500">Error: {error}</p>;
 
   return (
-    <div>
-    {/* Search input */}
-    <div className="mb-4 relative">
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={handleSearchChange}
-        placeholder="Search by username..."
-        className="p-2 pl-3 pr-10 border rounded w-full
-          border-gray-300 dark:border-gray-600 
-          bg-white dark:bg-gray-800 
-          text-darkText dark:text-lightText focus:outline-none"
-      />
-      <FontAwesomeIcon
-        icon={faSearch}
-        className="w-5 h-5 text-gray-500 dark:text-gray-300 absolute right-3 top-1/2 transform -translate-y-1/2"
-      />
-    </div>
+    <div className="flex flex-col h-full">
+      {/* Search input */}
+      <div className="mb-4 relative">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          placeholder="Search by username..."
+          className="p-2 pl-3 pr-10 border rounded w-full
+            border-gray-300 dark:border-gray-600 
+            bg-white dark:bg-gray-800 
+            text-darkText dark:text-lightText focus:outline-none"
+        />
+        <FontAwesomeIcon
+          icon={faSearch}
+          className="w-5 h-5 text-gray-500 dark:text-gray-300 absolute right-3 top-1/2 transform -translate-y-1/2"
+        />
+      </div>
 
+      {/* Users List */}
+      <div className="h-full overflow-y-auto mb-4">
+        <ul className="grid gap-2">
+          {currentUsers.length > 0 ? (
+            currentUsers.map((user) => (
+              <li
+                key={user._id}
+                className="flex justify-between items-center p-2 bg-white dark:bg-gray-800 rounded border border-slate-500 dark:border-slate-400"
+              >
+                <span>{user.username}</span>
+                {user.role === "admin" ? (
+                  <span className="text-gray-500">Admin</span>
+                ) : (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEditClick(user)}
+                      className="px-3 py-1 text-sm bg-purpleAccent text-white rounded hover:bg-blue-600 transition"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteClick(user)}
+                      className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600 transition"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </li>
+            ))
+          ) : (
+            <p>No users found.</p>
+          )}
+        </ul>
+      </div>
 
-      {/* User list */}
-      <ul className="grid gap-2">
-        {filteredUsers.length > 0 ? (
-          filteredUsers.map((user) => (
-            <li
-              key={user._id}
-              className="flex justify-between items-center p-2 bg-white dark:bg-gray-800 rounded border border-black dark:border-white"
-            >
-              <span>{user.username}</span>
-              {user.role === "admin" ? (
-                <span className="text-gray-500">Admin</span>
-              ) : (
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleEditClick(user)}
-                    className="px-3 py-1 text-sm bg-purpleAccent text-white rounded hover:bg-blue-600 transition"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDeleteClick(user)}
-                    className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600 transition"
-                  >
-                    Delete
-                  </button>
-                </div>
-              )}
-            </li>
-          ))
-        ) : (
-          <p>No users found.</p>
-        )}
-      </ul>
+      {/* Pagination  */}
+      {filteredUsers.length > usersPerPage && (
+        <Pagination
+          totalItems={filteredUsers.length}
+          itemsPerPage={usersPerPage}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        />
+      )}
 
       {/* Edit user modal */}
       {editingUser && (
-        <div className="fixed inset-0 flex items-center justify-center">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-2xl w-96">
             <h2 className="text-xl font-semibold text-center mb-4">Edit {editingUser.username}</h2>
             <div className="flex flex-col gap-3">
@@ -162,7 +181,7 @@ const UsersList = () => {
 
       {/* Delete user modal */}
       {deletingUser && (
-        <div className="fixed inset-0 flex items-center justify-center">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-2xl w-80 text-center">
             <h2 className="text-lg font-semibold mb-4">Are you sure?</h2>
             <p className="text-gray-600 dark:text-gray-300 mb-6">

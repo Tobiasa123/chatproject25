@@ -30,41 +30,45 @@ const Navbar = () => {
           EveryTen
         </div>
 
-        <div className="hidden md:flex flex-1 justify-center items-center space-x-6">
-          <DashboardBtn />
-          <button
-            onClick={() => handleNavigation('/home')}
-            className="flex items-center px-4 py-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
-          >
-            <FontAwesomeIcon icon={faHome} className="mr-2" />
-            <span>Chats</span>
-          </button>
-          <button
-            onClick={() => handleNavigation('/profile')}
-            className="flex items-center px-4 py-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
-          >
-            <FontAwesomeIcon icon={faUser} className="mr-2" />
-            <span>Profile</span>
-          </button>
-          <button
-            onClick={handleLogout}
-            className="flex items-center px-4 py-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
-          >
-            <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
-            <span>Logout</span>
-          </button>
-        </div>
+        {location.pathname !== '/' && (
+          <div className="hidden md:flex flex-1 justify-center items-center space-x-6">
+            <DashboardBtn />
+            <button
+              onClick={() => handleNavigation('/home')}
+              className="flex items-center px-4 py-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
+            >
+              <FontAwesomeIcon icon={faHome} className="mr-2" />
+              <span>Chats</span>
+            </button>
+            <button
+              onClick={() => handleNavigation('/profile')}
+              className="flex items-center px-4 py-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
+            >
+              <FontAwesomeIcon icon={faUser} className="mr-2" />
+              <span>Profile</span>
+            </button>
+            <button
+              onClick={handleLogout}
+              className="flex items-center px-4 py-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-purple-500 hover:text-white transition-colors"
+            >
+              <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+              <span>Logout</span>
+            </button>
+          </div>
+        )}
 
         <div className="flex items-center space-x-4">
           <ThemeSwitch />
-          <div className="md:hidden">
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-2xl text-slate-700 dark:text-slate-300"
-            >
-              <FontAwesomeIcon icon={faBars} />
-            </button>
-          </div>
+          {location.pathname !== '/' && (
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-2xl text-slate-700 dark:text-slate-300"
+              >
+                <FontAwesomeIcon icon={faBars} />
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
