@@ -63,7 +63,7 @@ const LoginForm = () => {
     <div className="flex flex-col justify-center items-center h-full">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-6 w-full bg-slate-200 dark:bg-slate-900 rounded-md p-6 border border-purpleAccent "
+        className="flex flex-col gap-6 w-full bg-slate-200 dark:bg-slate-900 rounded-md p-6"
         noValidate
       >
         <h2 className="text-darkText dark:text-lightText font-bold text-xl text-center">{isLogin ? "Log in" : "Sign Up"}</h2>
