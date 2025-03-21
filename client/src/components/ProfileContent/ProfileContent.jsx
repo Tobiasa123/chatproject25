@@ -5,7 +5,7 @@ import BlockUserButton from '../../components/BlockUserBtn/BlockUserBtn';
 import UserIcon from '../../components/UserIcon/UserIcon';
 import BackArrow from '../BackArrow/BackArrow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'; 
+import { faChevronDown, faChevronUp, faEye, faEyeSlash  } from '@fortawesome/free-solid-svg-icons'; 
 import { motion } from 'framer-motion';
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -19,6 +19,7 @@ const ProfileContent = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedUser, setUpdatedUser] = useState({ username: '', email: '', password: '' });
   const [isBlockedUsersOpen, setIsBlockedUsersOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const fetchProfile = useCallback(async () => {
     try {
@@ -98,13 +99,13 @@ const ProfileContent = () => {
 
   return (
     <div className="flex flex-col items-center bg-lightBackground dark:bg-darkBackground h-screen overflow-y-auto custom-scrollbar rounded-md">
-      {/* Header Section with Back Button */}
-      <div className="w-full p-4 flex items-center">
+      {/*Back Button */}
+      <div className="w-full px-4 py-6 flex items-center">
         <BackArrow className="text-darkText dark:text-lightText" />
       </div>
 
-      {/* Profile Header Section */}
-      <div className="w-full max-w-md flex flex-col items-center py-6">
+      {/* Profile Section */}
+      <section className="w-full max-w-md flex flex-col items-center py-6">
         <div className="relative mb-4">
           <div>
             <UserIcon username={user.username} />
@@ -119,13 +120,13 @@ const ProfileContent = () => {
         <p className="text-sm text-gray-500 dark:text-gray-400 ">
           Member since {new Date(user.createdAt).toLocaleDateString()}
         </p>
-      </div>
+      </section>
 
       {/* Main content */}
       <div className="w-full max-w-md px-6 flex flex-col min-h-0 flex-grow">
         <div className="flex-grow">
           {isEditing ? (
-            <div className="bg-slate-300 dark:bg-gray-800 rounded-xl p-6 shadow-sm mb-6">
+            <form className="bg-slate-300 dark:bg-gray-800 rounded-xl p-6 shadow-sm mb-6">
               <h2 className="text-xl font-semibold text-darkText dark:text-lightText mb-4">
                 Edit Profile
               </h2>
@@ -139,7 +140,7 @@ const ProfileContent = () => {
                     name="username"
                     value={updatedUser.username}
                     onChange={handleChange}
-                    className="w-full border border-lightBorder dark:border-darkBorder p-3 rounded-lg bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText focus:ring-2 focus:ring-purpleAccent focus:border-transparent"
+                    className="w-full border border-lightBorder dark:border-darkBorder p-3 rounded-lg bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText"
                   />
                 </div>
 
@@ -152,22 +153,28 @@ const ProfileContent = () => {
                     name="email"
                     value={updatedUser.email}
                     onChange={handleChange}
-                    className="w-full border border-lightBorder dark:border-darkBorder p-3 rounded-lg bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText focus:ring-2 focus:ring-purpleAccent focus:border-transparent"
+                    className="w-full border border-lightBorder dark:border-darkBorder p-3 rounded-lg bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText"
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                    New Password (optional)
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={updatedUser.password}
-                    onChange={handleChange}
-                    className="w-full border border-lightBorder dark:border-darkBorder p-3 rounded-lg bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText focus:ring-2 focus:ring-purpleAccent focus:border-transparent"
-                  />
-                </div>
+                  <div className="flex flex-col gap-1 relative mb-4">
+                    <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">New Password (optional)</label>
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        value={updatedUser.password}
+                        onChange={handleChange}
+                        placeholder="Enter new password"
+                        className="w-full border border-lightBorder dark:border-darkBorder p-3 rounded-lg bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText"
+                      />
+                      <FontAwesomeIcon
+                        icon={showPassword ? faEyeSlash : faEye}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 dark:text-gray-400 w-5"
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    </div>
+                  </div>
 
                 <div className="flex space-x-4 pt-2">
                   <button 
@@ -184,7 +191,7 @@ const ProfileContent = () => {
                   </button>
                 </div>
               </div>
-            </div>
+            </form>
           ) : (
             <div className="bg-slate-300 dark:bg-gray-800 rounded-xl p-6 shadow-sm mb-6">
               <h2 className="text-xl font-semibold text-darkText dark:text-lightText mb-4">
@@ -217,7 +224,7 @@ const ProfileContent = () => {
             </div>
           )}
 
-          {/* Blocked Users Section - Dropdown */}
+          {/* Blocked Users Section */}
           {user.blockedUsers?.length > 0 && (
             <div className="">
               <button

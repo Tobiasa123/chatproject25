@@ -1,6 +1,7 @@
 const User = require('../models/userModel')
 const Chat = require('../models/chatModel')
 
+//for admins only
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.find().select('-password'); 

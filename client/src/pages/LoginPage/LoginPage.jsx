@@ -8,7 +8,7 @@ const LoginPage = () =>{
     return(
      <div className="grid grid-rows-[auto_1fr_auto] h-full w-full">
        <Navbar />
-       <main className="flex flex-col w-full md:w-[90vw] lg:w-[60vw] h-full overflow-y-auto mx-auto gap-4 py-6">
+       <main className="flex flex-col w-full md:w-[90vw] lg:w-[50vw] h-full overflow-y-auto mx-auto gap-4 py-6">
          <LoginForm />
        </main>
        <Footer />

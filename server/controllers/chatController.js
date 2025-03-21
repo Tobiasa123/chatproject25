@@ -2,7 +2,7 @@ const User = require('../models/userModel')
 const Chat = require('../models/chatModel')
 
 
-
+//for chats
 exports.createChat = async (req, res) => {
     try {
       const userId1 = req.user._id; 

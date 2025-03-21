@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const jwtkey = process.env.SECRET_KEY
 const sendEmail = require('../utils/mailer')
 
+//for users
 exports.registerUser = async (req, res) => {
   const { username, email, password } = req.body;
 
