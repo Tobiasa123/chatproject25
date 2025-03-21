@@ -4,13 +4,14 @@ import ChatMessages from "../../components/ChatMessages/ChatMessages";
 import ChatTextForm from "../../components/ChatTextForm/ChatTextForm";
 import Navbar from "../../components/Navigation/Navigation";
 import Footer from "../../components/Footer/Footer";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+//page for a chatroom
 const ChatPage = () => {
 
-    //just testing websocket here, remove later
   useEffect(() => {
 
-    const socket = io("http://127.0.0.1:8000");  
+    const socket = io(`${BASE_URL}`);  
 
     socket.on("connect", () => {
       console.log("Connected to WebSocket server");

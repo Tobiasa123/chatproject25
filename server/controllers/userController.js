@@ -38,7 +38,11 @@ exports.registerUser = async (req, res) => {
 
     await newUser.save();
 
-    const token = jwt.sign({ _id: newUser._id}, jwtkey, {expiresIn: '2h'})
+    const token = jwt.sign(
+      { _id: newUser._id, username: newUser.username, role: newUser.role }, 
+      jwtkey, 
+      { expiresIn: '2h' }
+    );
 
     const registrationMessage = 'Thank you for registering with us!';
     const contactInfo = '\n\nIf you have any inquiries or questions, please contact us at tobiaserikandersson@gmail.com.';
@@ -71,7 +75,11 @@ exports.loginUser = async (req, res) => {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
   
-      const token = jwt.sign({ _id: user._id}, jwtkey, {expiresIn: '2h'})
+    const token = jwt.sign(
+      { _id: user._id, username: user.username, role: user.role }, 
+      jwtkey, 
+      { expiresIn: '2h' }
+    );
   
       res.status(201).send({
           user: {
@@ -218,16 +226,16 @@ exports.loginUser = async (req, res) => {
 };
 exports.getUsersByUsername = async (req, res) => {
   try {
-    const { username } = req.query; // Get the username from query
-    const userId = req.user._id; // Get the logged-in user's ID from the authenticated user
+    const { username } = req.query; 
+    const userId = req.user._id; 
 
-    // Find users that match the username, excluding the logged-in user
+
     const users = await User.find({
-      username: { $regex: username, $options: "i" }, // Case-insensitive search
-      _id: { $ne: userId }, // Exclude the logged-in user's ID
+      username: { $regex: username, $options: "i" },
+      _id: { $ne: userId },
     });
 
-    res.json(users); // Send the filtered users as response
+    res.json(users); 
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).json({ message: "Internal server error" });

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import UserIcon from '../UserIcon/UserIcon';
 import ChatMenu from '../ChatMenu/ChatMenu';
 
+//chat list items
 const Chat = ({ chatId, otherUser, latestMessage, latestTimestamp, latestSenderId, currentUserId, openMenuId, setOpenMenuId }) => {
   const navigate = useNavigate();
 
@@ -18,26 +19,25 @@ const Chat = ({ chatId, otherUser, latestMessage, latestTimestamp, latestSenderI
 
   return (
     <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2 w-full">
-      {/* Left Column: UserIcon */}
+      
       <UserIcon username={otherUser?.username} otherUserId={otherUser?._id} />
 
-      {/* Middle Column: Chat Content */}
       {otherUser ? (
         <div
           onClick={handleClick}
-          className="bg-lightBackground dark:bg-darkBackground hover:bg-purpleAccent dark:hover:bg-purpleAccent cursor-pointer transition grid grid-rows-[auto_auto] h-full p-3"
+          className="bg-lightBackground dark:bg-darkBackground hover:bg-purpleAccent dark:hover:bg-purpleAccent cursor-pointer rounded-md transition grid grid-rows-[auto_auto] h-full p-3 group"
         >
           <div className="grid grid-cols-[1fr_auto] items-center gap-2">
-            <h4 className="font-bold text-lg text-darkText dark:text-lightText truncate">
+            <h4 className="font-bold text-lg text-darkText dark:text-lightText group-hover:text-lightText truncate">
               {otherUser.username}
             </h4>
-            <span className="text-xs text-gray-500 dark:text-gray-300">
+            <span className="text-xs text-gray-500 dark:text-gray-300 group-hover:text-gray-300">
               {formattedDate && formattedTime
                 ? `${formattedDate}, ${formattedTime}`
                 : formattedDate || formattedTime}
             </span>
           </div>
-          <p className="text-sm text-darkText dark:text-lightText mt-1 truncate">
+          <p className="text-sm text-darkText dark:text-lightText group-hover:text-lightText mt-1 truncate">
             {messageSender}: {latestMessage || 'No messages yet'}
           </p>
         </div>
@@ -45,8 +45,9 @@ const Chat = ({ chatId, otherUser, latestMessage, latestTimestamp, latestSenderI
         <h4 className="font-bold text-darkText dark:text-lightText">Other user not found</h4>
       )}
 
-      {/* Right Column: ChatMenu */}
-      <ChatMenu otherUserId={otherUser?._id}
+      <ChatMenu 
+      chatId={chatId}
+      otherUserId={otherUser?._id}
       isOpen={openMenuId === chatId} 
       toggleMenu={() => setOpenMenuId(openMenuId === chatId ? null : chatId)} 
        />

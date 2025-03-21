@@ -141,7 +141,7 @@ exports.getUserChats = async (req, res) => {
             .exec();
   
         if (!chats || chats.length === 0) {
-            return res.status(404).send({ message: 'No chats found for this user' });
+            return res.status(200).send({ chatData: [] });
         }
   
         const chatData = chats
@@ -182,4 +182,46 @@ exports.getUserChats = async (req, res) => {
         res.status(500).send({ message: 'Error fetching chats', error: err.message });
     }
   };
-  
+  exports.deleteChat = async (req, res) => {
+    const { chatId } = req.params;
+    const userId = req.user._id;
+
+    try {
+        const chat = await Chat.findById(chatId);
+        if (!chat) {
+            return res.status(404).send({ message: "Chat not found" });
+        }
+
+        if (!chat.participants.includes(userId)) {
+            return res.status(403).send({ message: "You are not allowed to delete this chat" });
+        }
+
+        await Chat.findByIdAndDelete(chatId);
+
+        const io = req.app.get("io");
+        io.emit("chatDeleted", { chatId });
+
+        res.status(200).send({ message: "Chat deleted successfully" });
+    } catch (err) {
+        res.status(500).send({ message: "Error deleting chat", error: err.message });
+    }
+};
+exports.reportChat = async (req, res) => {
+  try {
+    const chatId = req.params.chatId;
+    const { reason } = req.body;
+
+    const chat = await Chat.findById(chatId);
+    if (!chat) {
+      return res.status(404).send({ message: 'Chat not found' });
+    }
+
+    chat.reported = true;
+    chat.reportReason = reason;
+    await chat.save();
+
+    res.status(200).send({ message: 'Chat reported successfully' });
+  } catch (err) {
+    res.status(500).send({ message: 'Error reporting chat', error: err.message });
+  }
+};

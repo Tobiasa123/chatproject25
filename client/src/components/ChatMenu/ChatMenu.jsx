@@ -1,15 +1,38 @@
-import { MoreVertical, X } from 'lucide-react';
+import { MoreVertical, X, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-const ChatMenu = ({ otherUserId, isOpen, toggleMenu }) => {
+//menu used to view users profiles/delete chats
+const ChatMenu = ({ chatId, otherUserId, isOpen, toggleMenu }) => {
   const navigate = useNavigate();
 
   const handleViewProfile = () => {
     if (otherUserId) {
       navigate(`/profile/${otherUserId}`);
-      toggleMenu(); 
+      toggleMenu();
     }
+  };
+
+  const handleDeleteChat = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/chat/${chatId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
+        },
+      });
+
+      if (response.ok) {
+        console.log('Chat deleted successfully');
+      } else {
+        console.error('Failed to delete chat');
+      }
+    } catch (error) {
+      console.error('Error deleting chat', error);
+    }
+    toggleMenu();
   };
 
   return (
@@ -18,10 +41,7 @@ const ChatMenu = ({ otherUserId, isOpen, toggleMenu }) => {
         onClick={toggleMenu}
         className="rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
       >
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
+        <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
           {isOpen ? <X size={30} className="text-red-600" /> : <MoreVertical size={30} />}
         </motion.div>
       </button>
@@ -29,7 +49,7 @@ const ChatMenu = ({ otherUserId, isOpen, toggleMenu }) => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="absolute right-0 w-40 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md"
+            className="absolute right-0 w-40 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md z-20"
             initial={{ opacity: 0, scale: 0.95, y: -10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -10 }}
@@ -41,12 +61,17 @@ const ChatMenu = ({ otherUserId, isOpen, toggleMenu }) => {
             >
               View Profile
             </button>
+            <button
+              className="w-full px-4 py-2 text-left text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+              onClick={handleDeleteChat}
+            >
+              <Trash2 size={18} /> Delete Chat
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
 };
-
 
 export default ChatMenu;

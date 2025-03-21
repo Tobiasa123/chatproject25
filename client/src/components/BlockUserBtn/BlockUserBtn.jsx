@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+//button to block another user
 const BlockUserButton = ({ userId }) => {
   const [isBlocked, setIsBlocked] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -9,7 +11,7 @@ const BlockUserButton = ({ userId }) => {
     const checkIfBlocked = async () => {
       try {
         const token = sessionStorage.getItem('authToken');
-        const response = await fetch(`http://127.0.0.1:8000/profile`, {
+        const response = await fetch(`${BASE_URL}/profile`, {
           method: 'GET',
           headers: { 'Authorization': `Bearer ${token}` },
         });
@@ -37,7 +39,7 @@ const BlockUserButton = ({ userId }) => {
 
     try {
       const token = sessionStorage.getItem('authToken');
-      const url = `http://127.0.0.1:8000/${isBlocked ? 'unblock' : 'block'}/${userId}`;
+      const url = `${BASE_URL}/${isBlocked ? 'unblock' : 'block'}/${userId}`;
 
       const response = await fetch(url, {
         method: 'POST',

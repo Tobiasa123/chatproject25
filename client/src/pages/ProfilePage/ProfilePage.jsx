@@ -2,6 +2,7 @@ import ProfileContent from "../../components/ProfileContent/ProfileContent";
 import Navbar from "../../components/Navigation/Navigation";
 import Footer from "../../components/Footer/Footer";
 
+//profile page
 const ProfilePage = () => {
   return (
     <div className="grid grid-rows-[auto_1fr_auto] h-full w-full">
