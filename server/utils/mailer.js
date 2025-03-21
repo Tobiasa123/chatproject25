@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-
+//mailer when creating account
 const sendEmail = async (to, subject, text) => {
   try {
     await resend.emails.send({

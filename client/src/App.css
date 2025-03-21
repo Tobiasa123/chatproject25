@@ -18,12 +18,12 @@ html, body {
 
 }
 .custom-scrollbar {
-  scrollbar-width: thin; /* Firefox */
+  scrollbar-width: thin; 
 }
 
-/* Light Mode */
+
 .custom-scrollbar {
-  scrollbar-color: rgba(150, 150, 150, 0.5) rgba(240, 240, 240, 0.2); /* Firefox */
+  scrollbar-color: rgba(150, 150, 150, 0.5) rgba(240, 240, 240, 0.2); 
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -31,7 +31,7 @@ html, body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(240, 240, 240, 0.2); /* Subtle light mode */
+  background: rgba(240, 240, 240, 0.2); 
   border-radius: 10px;
 }
 
@@ -45,7 +45,7 @@ html, body {
   background: rgba(100, 100, 100, 0.8);
 }
 
-/* Dark Mode */
+
 @media (prefers-color-scheme: dark) {
   .custom-scrollbar {
     scrollbar-color: rgba(100, 100, 100, 0.5) rgba(30, 30, 30, 0.2);

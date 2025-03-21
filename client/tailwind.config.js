@@ -17,7 +17,7 @@ export default {
         lightText: '#FFFFFF',       
         darkText: '#3d3d3d',        
         
-        // Purple Accent (Stays the same in both modes)
+        // Purple Accent 
         purpleAccent: '#7045f7',  
 
         // Border

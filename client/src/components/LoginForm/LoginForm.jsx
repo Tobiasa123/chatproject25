@@ -60,13 +60,13 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center bg-lightBackground dark:bg-darkBackground h-full rounded-md gap-4 border border-lightBorder dark:border-darkBorder ">
-      <h2 className="text-darkText dark:text-lightText font-bold text-xl">{isLogin ? "Login" : "Sign Up"}</h2>
+    <div className="flex flex-col justify-center items-center h-full">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 w-5/6 bg-slate-200 dark:bg-slate-800 rounded-md p-6 border border-slate-500"
+        className="flex flex-col gap-6 w-full bg-slate-200 dark:bg-slate-900 rounded-md p-6"
         noValidate
       >
+        <h2 className="text-darkText dark:text-lightText font-bold text-xl text-center">{isLogin ? "Log in" : "Sign Up"}</h2>
         {!isLogin && (
           <div className="flex flex-col gap-1">
             <label htmlFor="username" className="mb-1 text-darkText dark:text-lightText">
@@ -126,17 +126,19 @@ const LoginForm = () => {
             {loading ? "Processing..." : isLogin ? "Login" : "Sign Up"}
           </button>
         </div>
-      </form>
-
-      <p className="text-darkText dark:text-lightText">
+        <p className="text-darkText dark:text-lightText text-center">
         {isLogin ? "Don't have an account?" : "Already have an account?"} {" "}
         <button
+          type="button"
           onClick={() => setIsLogin(!isLogin)}
           className="text-purpleAccent dark:text-purpleAccent"
         >
           {isLogin ? "Sign Up" : "Log In"}
         </button>
       </p>
+      </form>
+
+      
 
       {showErrorPopup && (
         <div className="fixed inset-0 flex items-center justify-center">

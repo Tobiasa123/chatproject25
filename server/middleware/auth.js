@@ -13,7 +13,7 @@ exports.verifyToken = (req, res, next) => {
         res.status(401).json({ error: 'Unauthorized: Invalid token' });
     }
 };
-//check if user is admin to view routes
+//check if user is admin to get certain routes
 exports.isAdmin = (req, res, next) => {
     if (!req.user || req.user.role !== 'admin') {
         return res.status(403).json({ error: 'Access denied: Admins only' });
