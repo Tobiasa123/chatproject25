@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 //form used to create a chat message
@@ -49,8 +51,11 @@ const ChatTextForm = ({ onMessageSent }) => {
             }
           }}
         />
-        <button className="rounded-r-md w-14 bg-purpleAccent text-lightText border-2 border-lightText dark:border-darkBackground" onClick={sendMessage}>
-          Send
+        <button
+          className="rounded-r-md px-10 bg-purpleAccent text-lightText border-2 border-lightText dark:border-darkBackground flex items-center justify-center hover:bg-purple-700 transition-all duration-200"
+          onClick={sendMessage}
+        >
+          <FontAwesomeIcon icon={faPaperPlane} size="lg" />
         </button>
       </div>
     </div>
