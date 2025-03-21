@@ -2,7 +2,10 @@ import { useEffect, useState, useRef } from 'react';
 import { jwtDecode } from "jwt-decode"; 
 import Chat from '../Chat/Chat';
 import { io } from "socket.io-client";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+
+//render chats in home
 const RenderChats = () => {
   const [chats, setChats] = useState([]);
   const [error, setError] = useState(null);
@@ -17,7 +20,7 @@ const RenderChats = () => {
       return;
     }
     try {
-      const response = await fetch('http://127.0.0.1:8000/user/chats', {
+      const response = await fetch(`${BASE_URL}/user/chats`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +58,7 @@ const RenderChats = () => {
     if (!currentUserId) return;
   
     if (!socketRef.current) {
-      socketRef.current = io("http://localhost:8000", { withCredentials: true });
+      socketRef.current = io(`${BASE_URL}`, { withCredentials: true });
   
       socketRef.current.emit('joinUserRoom', currentUserId);
   
@@ -105,7 +108,7 @@ const RenderChats = () => {
   return (
     <div className=" w-full h-full bg-lightBackground dark:bg-darkBackground rounded p-4 overflow-y-auto custom-scrollbar ">
       {/* {error && <p className="text-gray-500">{error}</p>} */}
-      <div className="grid gap-2">
+      <section className="grid gap-2">
         {chats.length > 0 ? (
           chats.map(chat => 
             chat?.otherUser ? (
@@ -127,7 +130,7 @@ const RenderChats = () => {
         ) : (
           <p className="text-gray-500">No chats available</p>
         )}
-      </div>
+      </section>
     </div>
   );
 

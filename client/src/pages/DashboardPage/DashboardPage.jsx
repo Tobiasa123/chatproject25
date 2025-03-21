@@ -3,6 +3,7 @@ import Navbar from "../../components/Navigation/Navigation"
 import Footer from "../../components/Footer/Footer"
 import DashboardContent from '../../components/DashboardContent.jsx/DashboardContent'
 
+//dashboard page
 const DashboardPage = () => {
     return(
         <div className="grid grid-rows-[auto_1fr_auto] h-full w-full">

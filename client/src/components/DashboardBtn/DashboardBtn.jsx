@@ -3,6 +3,7 @@ import { faUserShield } from '@fortawesome/free-solid-svg-icons';
 import { isAdmin } from '../../utils/isAdmin'
 import { useNavigate } from 'react-router-dom';
 
+//navigate to the admin dashboard (admins) 
 const DashboardBtn = () => {
     const navigate = useNavigate();
 

@@ -4,6 +4,7 @@ import UsersList from "./UsersList";
 import ReportedChats from "./ReportedChats";
 import Analytics from "./Analytics";
 
+//parent component for dashboard pages
 const DashboardContent = () => {
     const [selectedSection, setSelectedSection] = useState("users");
   

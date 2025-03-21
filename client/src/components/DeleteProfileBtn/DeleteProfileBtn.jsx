@@ -1,5 +1,7 @@
 import { useState } from 'react';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+//button to delete user profile
 const DeleteProfileBtn = () => {
   const [showConfirmPopup, setShowConfirmPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
@@ -8,7 +10,7 @@ const DeleteProfileBtn = () => {
   const deleteProfile = async () => {
     const token = sessionStorage.getItem('authToken');
     try {
-      const response = await fetch('http://127.0.0.1:8000/delete', {
+      const response = await fetch(`${BASE_URL}/delete`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

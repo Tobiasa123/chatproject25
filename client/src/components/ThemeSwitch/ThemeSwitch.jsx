@@ -3,6 +3,7 @@ import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
 
+//themeswitch button
 export const ThemeSwitch = () => {
   const [theme, setTheme] = useState(
     (localStorage.getItem('theme') === 'dark' ? 'dark' : 'light') || 'light'
