@@ -188,7 +188,7 @@ exports.loginUser = async (req, res) => {
   };
   exports.editProfile = async (req, res) => {
     const userId = req.user._id;
-    const { username, email, password } = req.body;
+    const { username, email, password, isPublic  } = req.body;
 
     try {
         const user = await User.findById(userId);
@@ -201,6 +201,9 @@ exports.loginUser = async (req, res) => {
                 return res.status(400).json({ message: "Email is already in use" });
             }
             user.email = email;
+        }
+        if (typeof isPublic === 'boolean') {
+          user.isPublic = isPublic;
         }
 
         if (username) {
@@ -219,6 +222,7 @@ exports.loginUser = async (req, res) => {
             user: {
                 username: user.username,
                 email: user.email,
+                isPublic: user.isPublic,
             },
         });
     } catch (err) {

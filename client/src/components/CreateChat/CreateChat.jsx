@@ -160,7 +160,7 @@ const CreateChat = () => {
             <input
               ref={inputRef}
               type="text"
-              placeholder="Enter recipient's username"
+              placeholder="Enter recipient's username or Friend ID"
               value={username}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
