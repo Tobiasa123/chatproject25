@@ -158,7 +158,7 @@ const ProfileContent = () => {
           <div className="mt-4">
             <button 
               onClick={handleTogglePrivacy} 
-              className="flex items-center bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 p-2 rounded-md border border-darkBorder dark:border-slate-500"
+              className="flex items-center bg-slate-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 p-2 rounded-md border border-slate-300 dark:border-slate-600"
             >
               <FontAwesomeIcon 
                 icon={user.isPublic ? faGlobe : faLock}
@@ -274,11 +274,24 @@ const ProfileContent = () => {
             </div>
           )}
 
+        {!userId && user.friendId && (
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-gray-500 dark:text-gray-400">Friend ID</span>
+            <div className="flex items-center space-x-2">
+              <span className="text-darkText dark:text-lightText font-medium">{user.friendId}</span>
+                <button onClick={handleCopyFriendId} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                  <FontAwesomeIcon icon={copied ? faCheck : faCopy} />
+                </button>
+            </div>
+          </div>
+        )}
+
+
           {/* Blocked Users Section */}
           {user.blockedUsers?.length > 0 && (
             <div className="">
               <button
-                className="flex justify-between items-center w-full text-left text-xl font-semibold text-darkText dark:text-lightText mb-4"
+                className="flex justify-between items-center w-full text-leftfont-semibold text-darkText dark:text-lightText mb-4"
                 onClick={() => setIsBlockedUsersOpen(!isBlockedUsersOpen)}
               >
                 Blocked Users
@@ -313,17 +326,6 @@ const ProfileContent = () => {
           )}
         </div>
 
-        {!userId && user.friendId && (
-          <div className="flex justify-between items-center">
-            <span className="text-gray-500 dark:text-gray-400">Friend ID</span>
-            <div className="flex items-center space-x-2">
-              <span className="text-darkText dark:text-lightText font-medium">{user.friendId}</span>
-                <button onClick={handleCopyFriendId} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-                  <FontAwesomeIcon icon={copied ? faCheck : faCopy} />
-                </button>
-            </div>
-          </div>
-        )}
 
         {/* Buttons either block or delete */}
         <div className="w-full flex flex-col items-center gap-4 mt-6 pb-6">
