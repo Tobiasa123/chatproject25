@@ -4,57 +4,70 @@ const Chat = require('../models/chatModel')
 
 //for chats
 exports.createChat = async (req, res) => {
-    try {
-      const userId1 = req.user._id; 
-      const { username } = req.body; 
-  
-      if (!userId1 || !username) {
-        return res.status(400).send({ message: 'Authenticated user ID and recipient username are required' });
-      }
-  
-      const user2 = await User.findOne({ username });
-      if (!user2) {
-        return res.status(404).send({ message: 'User not found' });
-      }
-  
-      const userId2 = user2._id;
-      if (userId1.toString() === userId2.toString()) {
-        return res.status(400).send({ message: 'You cannot start a chat with yourself' });
-      }
-  
-      const user1 = await User.findById(userId1);
-      if (!user1) return res.status(404).send({ message: 'User not found' });
-  
-      if (user1.blockedUsers.includes(userId2)) {
-        return res.status(403).send({ message: 'You have blocked this user' });
-      }
-  
-      if (user2.blockedUsers.includes(userId1)) {
-        return res.status(403).send({ message: 'You have been blocked by this user' });
-      }
-  
-      const existingChat = await Chat.findOne({
-        participants: { $all: [userId1, userId2] },
-      });
-      if (existingChat) {
-        return res.status(200).send({ message: 'Chat already exists', chat: existingChat });
-      }
-  
-      const newChat = new Chat({
-        participants: [userId1, userId2],
-      });
-      await newChat.save();
-  
+  try {
+    const userId1 = req.user._id; 
+    const { username } = req.body;
 
-      const io = req.app.get("io");
-
-      io.emit("newChat", newChat);
-  
-      res.status(201).send({ message: 'Chat created successfully', chat: newChat });
-    } catch (err) {
-      res.status(500).send({ message: 'Error creating chat', error: err.message });
+    if (!userId1 || !username) {
+      return res.status(400).send({ message: 'Authenticated user ID and recipient username (or friendId) are required' });
     }
-  };
+
+    // either username or friendID
+    const user2 = await User.findOne({
+      $or: [
+        { username: username },
+        { friendId: username }
+      ]
+    });
+    
+    if (!user2) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+
+    // bypass privacy if useing friendID
+    if (username !== user2.friendId) {
+      if (user2.isPublic === false) {
+        return res.status(403).send({ message: 'This user is private' });
+      }
+    }
+
+    const userId2 = user2._id;
+    if (userId1.toString() === userId2.toString()) {
+      return res.status(400).send({ message: 'You cannot start a chat with yourself' });
+    }
+
+    const user1 = await User.findById(userId1);
+    if (!user1) return res.status(404).send({ message: 'User not found' });
+
+    if (user1.blockedUsers.includes(userId2)) {
+      return res.status(403).send({ message: 'You have blocked this user' });
+    }
+
+    if (user2.blockedUsers.includes(userId1)) {
+      return res.status(403).send({ message: 'You have been blocked by this user' });
+    }
+
+    const existingChat = await Chat.findOne({
+      participants: { $all: [userId1, userId2] },
+    });
+    if (existingChat) {
+      return res.status(200).send({ message: 'Chat already exists', chat: existingChat });
+    }
+
+    const newChat = new Chat({
+      participants: [userId1, userId2],
+    });
+    await newChat.save();
+
+    const io = req.app.get("io");
+    io.emit("newChat", newChat);
+
+    res.status(201).send({ message: 'Chat created successfully', chat: newChat });
+  } catch (err) {
+    res.status(500).send({ message: 'Error creating chat', error: err.message });
+  }
+};
+
   
 
   exports.createMessage = async (req, res) => {

@@ -5,7 +5,7 @@ import BlockUserButton from '../../components/BlockUserBtn/BlockUserBtn';
 import UserIcon from '../../components/UserIcon/UserIcon';
 import BackArrow from '../BackArrow/BackArrow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
-import { faChevronDown, faChevronUp, faEye, faEyeSlash  } from '@fortawesome/free-solid-svg-icons'; 
+import { faChevronDown, faChevronUp, faEye, faEyeSlash, faCopy, faCheck,faLock, faGlobe } from '@fortawesome/free-solid-svg-icons'; 
 import { motion } from 'framer-motion';
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -20,6 +20,7 @@ const ProfileContent = () => {
   const [updatedUser, setUpdatedUser] = useState({ username: '', email: '', password: '' });
   const [isBlockedUsersOpen, setIsBlockedUsersOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [copied, setCopied] = useState(false); 
 
   const fetchProfile = useCallback(async () => {
     try {
@@ -74,7 +75,7 @@ const ProfileContent = () => {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updatedUser),
+        body: JSON.stringify({ ...updatedUser, isPublic: user.isPublic }),
       });
 
       if (!response.ok) {
@@ -93,13 +94,42 @@ const ProfileContent = () => {
     setUpdatedUser({ username: user.username, email: user.email, password: '' });
   };
 
+  const handleTogglePrivacy = async () => {
+    try {
+      const token = sessionStorage.getItem('authToken');
+      const newPrivacyValue = !user.isPublic;
+      const response = await fetch(`${BASE_URL}/profile/edit`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ isPublic: newPrivacyValue }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update privacy setting');
+      }
+      setUser(prev => ({ ...prev, isPublic: newPrivacyValue }));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+  const handleCopyFriendId = () => {
+    if (user.friendId) {
+      navigator.clipboard.writeText(user.friendId);
+      setCopied(true);
+  
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
   if (!user) return <p>No user data available</p>;
 
   return (
     <div className="flex flex-col items-center bg-lightBackground dark:bg-darkBackground h-screen overflow-y-auto custom-scrollbar rounded-md">
-      {/*Back Button */}
+      {/* Back Button */}
       <div className="w-full px-4 py-6 flex items-center">
         <BackArrow className="text-darkText dark:text-lightText" />
       </div>
@@ -116,14 +146,32 @@ const ProfileContent = () => {
             </span>
           )}
         </div>
-        <h1 className="text-3xl font-bold text-darkText dark:text-lightText mb-2">{user.username}</h1>
+        <h1 className="text-3xl font-bold text-darkText dark:text-lightText mb-2">
+          {user.username}
+        </h1>
         <p className="text-sm text-gray-500 dark:text-gray-400 ">
           Member since {new Date(user.createdAt).toLocaleDateString()}
         </p>
+
+        {/* Toggle button for privacy setting (only for current user) */}
+        { !userId && (
+          <div className="mt-4">
+            <button 
+              onClick={handleTogglePrivacy} 
+              className="flex items-center bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 p-2 rounded-md border border-darkBorder dark:border-slate-500"
+            >
+              <FontAwesomeIcon 
+                icon={user.isPublic ? faGlobe : faLock}
+                className="mr-2" 
+              />
+              {user.isPublic ? "Public" : "Private"}
+            </button>
+          </div>
+        )}
       </section>
 
       {/* Main content */}
-      <div className="w-full max-w-md px-6 flex flex-col min-h-0 flex-grow">
+      <div className="w-full max-w-md flex flex-col flex-grow">
         <div className="flex-grow">
           {isEditing ? (
             <form className="bg-slate-300 dark:bg-gray-800 rounded-xl p-6 shadow-sm mb-6">
@@ -157,24 +205,26 @@ const ProfileContent = () => {
                   />
                 </div>
 
-                  <div className="flex flex-col gap-1 relative mb-4">
-                    <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">New Password (optional)</label>
-                    <div className="relative">
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        name="password"
-                        value={updatedUser.password}
-                        onChange={handleChange}
-                        placeholder="Enter new password"
-                        className="w-full border border-lightBorder dark:border-darkBorder p-3 rounded-lg bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText"
-                      />
-                      <FontAwesomeIcon
-                        icon={showPassword ? faEyeSlash : faEye}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 dark:text-gray-400 w-5"
-                        onClick={() => setShowPassword(!showPassword)}
-                      />
-                    </div>
+                <div className="flex flex-col gap-1 relative mb-4">
+                  <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+                    New Password (optional)
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={updatedUser.password}
+                      onChange={handleChange}
+                      placeholder="Enter new password"
+                      className="w-full border border-lightBorder dark:border-darkBorder p-3 rounded-lg bg-lightBackground dark:bg-darkBackground text-darkText dark:text-lightText"
+                    />
+                    <FontAwesomeIcon
+                      icon={showPassword ? faEyeSlash : faEye}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 dark:text-gray-400 w-5"
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
                   </div>
+                </div>
 
                 <div className="flex space-x-4 pt-2">
                   <button 
@@ -259,10 +309,21 @@ const ProfileContent = () => {
                   ))}
                 </ul>
               </motion.div>
-
             </div>
           )}
         </div>
+
+        {!userId && user.friendId && (
+          <div className="flex justify-between items-center">
+            <span className="text-gray-500 dark:text-gray-400">Friend ID</span>
+            <div className="flex items-center space-x-2">
+              <span className="text-darkText dark:text-lightText font-medium">{user.friendId}</span>
+                <button onClick={handleCopyFriendId} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                  <FontAwesomeIcon icon={copied ? faCheck : faCopy} />
+                </button>
+            </div>
+          </div>
+        )}
 
         {/* Buttons either block or delete */}
         <div className="w-full flex flex-col items-center gap-4 mt-6 pb-6">
