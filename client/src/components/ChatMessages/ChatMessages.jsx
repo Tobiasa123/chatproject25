@@ -178,7 +178,7 @@ const ChatMessages = () => {
                 overflowWrap: "break-word",
               }}
             >
-              {isUserMessage ? "You: " : `${otherUser?.username || "Other"}: `}
+              {isUserMessage ? "" : `${otherUser?.username || "Other"}: `}
               {message.text}
             </li>
           );
